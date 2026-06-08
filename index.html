@@ -245,6 +245,10 @@
   .kgd-bar{height:6px;border-radius:4px;background:#eef2f7;margin-top:7px;overflow:hidden}
   .kgd-bar i{display:block;height:100%;border-radius:4px}
   .kgd-m{font-size:10.5px;color:var(--muted);margin-top:4px}
+  .democodes{display:flex;flex-direction:column;gap:7px}
+  .democode{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff}
+  .democode code{font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:13px;color:#b45309;background:#fef3c7;border-radius:6px;padding:2px 8px;letter-spacing:.5px}
+  .democode .who{font-size:12.5px;color:#475569}
 
   /* ---------- Overall diagram ---------- */
   .diagram{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:8px}
@@ -320,6 +324,11 @@
       </div>
       <div>
         <div class="hint">👆 Touchez les boutons — <b>ou écrivez / dictez 🎤 une question</b> dans la barre du bas, à tout moment.</div>
+        <div class="panel" style="border-color:#fde68a;background:linear-gradient(120deg,#fffbeb,#fff);margin-bottom:18px">
+          <h3>🔑 Codes enseignant de démonstration</h3>
+          <div class="sub" style="margin-bottom:8px">Utilisez l'un de ces codes sur l'écran de connexion (format <b>ENS-XXXX</b>).</div>
+          <div id="democodes" class="democodes"></div>
+        </div>
         <div class="panel" style="border-color:#bae6fd;background:linear-gradient(120deg,#f0f9ff,#fff);margin-bottom:18px">
           <h3>💬🎤 Question libre &amp; voix <span style="font-size:11px;font-weight:700;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:999px;vertical-align:middle">disponible partout</span></h3>
           <div class="sub" style="margin-bottom:10px">L'enseignant n'est jamais bloqué dans les menus. Modèle hybride : menus guidés + conversation naturelle.</div>
@@ -544,8 +553,13 @@
    ============================================================ */
 const FLOWS = {
   teacher:{
-    start:"onboarding",
+    start:"login",
     screens:{
+      login:{
+        step:"Connexion — code enseignant", desc:"L'enseignant s'identifie avec son code personnel avant d'accéder au système.",
+        msgs:[],
+        opts:[]
+      },
       onboarding:{
         step:"Onboarding — classes", desc:"Sélection d'une OU plusieurs classes. Stocké une fois, jamais redemandé.",
         type:"multiselect", kind:"class", to:"subjectpick",
@@ -696,7 +710,7 @@ const FLOWS = {
       fieldreport_done:{ step:"Rapport enregistré", desc:"Confirmation de la remontée terrain.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
       profile:{ step:"👤 Modifier votre profil", desc:"Voir/modifier classes, matières, langue d'apprentissage.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
       endsession:{ step:"🚪 Terminer la session", desc:"Confirmation de déconnexion.", msgs:[], opts:[{k:"0",label:"Revenir",to:"home"}] },
-      session_end:{ step:"Session terminée", desc:"Déconnecté — reconnexion possible.", msgs:[], opts:[{k:"1",label:"Se reconnecter",to:"onboarding"}] },
+      session_end:{ step:"Session terminée", desc:"Déconnecté — reconnexion par code.", msgs:[], opts:[{k:"1",label:"Se reconnecter",to:"login"}] },
       planning:{
         step:"Planification hebdo", desc:"Dérivée automatiquement du graphe de curriculum.",
         msgs:[{f:"bot",t:"🗓️ Semaine 4",x:"Lun : Nombre 6\nMar : Composition du 6\nMer : Décomposition du 6\nJeu : Addition\nVen : Révision"}],
@@ -945,6 +959,21 @@ let reportSupport="", reportState="";
 /* ---- Guides par matière & niveau ---- */
 let guideSubject="math", guideLevel="CI";
 
+/* ---- Connexion : code enseignant ---- */
+const TEACHER_ACCOUNTS={
+  "ENS-2026":"Mme Diallo",
+  "ENS-1804":"M. Ndiaye",
+  "ENS-7421":"Mme Sow"
+};
+let teacherCode="", teacherName="Mme Diallo", loggedIn=false;
+function normalizeCode(c){return (c||"").trim().toUpperCase().replace(/\s+/g,"");}
+function checkTeacherCode(c){
+  const code=normalizeCode(c);
+  if(TEACHER_ACCOUNTS[code]) return {ok:true,code:code,name:TEACHER_ACCOUNTS[code]};
+  if(/^ENS-\d{3,5}$/.test(code)) return {ok:true,code:code,name:"Enseignant"};   // tout code au bon format est accepté (prototype)
+  return {ok:false,code:code};
+}
+
 /* dynamic messages depending on class / subject / knowledge graph */
 function getMsgs(flowName,id,scr){
   if(flowName==='teacher'){
@@ -953,7 +982,7 @@ function getMsgs(flowName,id,scr){
       let lessonLine;
       if(activeSubject==='math'){const c=curMathLesson();lessonLine="📖 Leçon active : S"+c.semaine+" · "+c.jour+" · Leçon "+c.lecon+" — "+c.titre;}
       else {const cur=curFrNode();lessonLine="📖 Leçon active : "+cur.label+" (format libre)";}
-      return [{f:"bot",t:"Bonjour Mme Diallo 👋",
+      return [{f:"bot",t:"Bonjour "+teacherName+" 👋",
         x:"📚 Classes : "+fmtClasses()+"\n📕 Matière : "+sm.icon+" "+sm.label+"\n🎯 Classe active : "+(activeClass||'—')+
           "\n\n"+lessonLine+"\n🧩 Suivie depuis le graphe de connaissances"}];
     }
@@ -977,19 +1006,24 @@ function getMsgs(flowName,id,scr){
     if(id==='exercise_subject') return [{f:"bot",t:"📝 Générer des exercices",x:"Pour quelle matière générer les exercices ?"}];
     if(id==='exercise'){const s=subjMeta(exoSubj());return [{f:"bot",t:"📝 Exercices — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
     if(id==='exercise_out') return buildExercise();
+    if(id==='login') return [
+      {f:"bot",t:"🔐 Connexion enseignant",x:"Bienvenue sur ARED Edu.\nEntrez votre code enseignant pour vous connecter."},
+      {f:"bot",t:"🔑 Codes de démonstration",x:Object.keys(TEACHER_ACCOUNTS).map(c=>"• "+c+" — "+TEACHER_ACCOUNTS[c]).join("\n")+"\n\n⌨️ Saisissez un code (format ENS-XXXX) dans la barre du bas, ou touchez-en un ci-dessous."}
+    ];
     if(id==='guides') return [{f:"bot",t:"📚 Accéder aux guides",x:"Guides pédagogiques par matière et par niveau.\nPour quelle matière ?"}];
     if(id==='guides_level'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📚 Guides — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
     if(id==='guide_view'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📘 Guide "+s.icon+" "+s.label+" · "+guideLevel,
-      x:"Sommaire du guide :\n• 🎯 Objectifs du niveau\n• 🪜 Progression conseillée\n• 🧩 Activités types\n• ✅ Modalités d'évaluation\n\n💬 Pour interagir : posez votre question via la barre du bas (ex. « Comment introduire ce chapitre ? »)."}];}
+      x:"Sommaire du guide :\n• 🎯 Objectifs du niveau\n• 🪜 Progression conseillée\n• 🧩 Activités types\n• ✅ Modalités d'évaluation"},
+      {f:"bot",t:"💬 Posez-moi vos questions sur ce guide",x:"Touchez une question ci-dessous, ou écrivez / dictez 🎤 librement dans la barre du bas."}];}
     if(id==='learning') return [{f:"bot",t:"🌍 Apprentissage continu",x:"Apprenez une langue locale du Sénégal (contenu à valider par des linguistes).\nChoisissez la langue :"}];
     if(id==='lang_lesson'){const l=langMeta(learnLang);return [{f:"bot",t:"🗣️ "+l.label+" — leçon du jour",x:"Expression du jour :\n"+l.phrase+"\n\n🔊 (audio disponible dans le bot réel)"}];}
     if(id==='fieldreport') return [{f:"bot",t:"📝 Rapport terrain — supports pédagogiques",x:"De quel support souhaitez-vous faire un rapport ?"}];
     if(id==='fieldreport_state') return [{f:"bot",t:"📝 "+reportSupport,x:"Quel est l'état constaté ?"}];
     if(id==='fieldreport_done') return [{f:"bot",t:"✅ Rapport enregistré",x:"Support : "+reportSupport+"\nÉtat : "+reportState+"\n\nMerci ! Ces remontées améliorent la distribution des supports."}];
     if(id==='profile'){const subs=teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', '):'—';
-      return [{f:"bot",t:"👤 Votre profil",x:"Nom : Mme Diallo\nRôle : Enseignant\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue en cours : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
+      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n🔑 Code : "+(teacherCode||'—')+"\nRôle : Enseignant\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue en cours : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
     if(id==='endsession') return [{f:"bot",t:"🚪 Terminer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}];
-    if(id==='session_end') return [{f:"bot",t:"👋 Session terminée",x:"À bientôt Mme Diallo !\nReconnectez-vous quand vous voulez."}];
+    if(id==='session_end') return [{f:"bot",t:"👋 Session terminée",x:"À bientôt "+teacherName+" !\nReconnectez-vous avec votre code quand vous voulez."}];
     if(id==='analytics'){
       const done=kgLabels('done'), weak=kg().nodes.filter(n=>n.status==='weak'||n.status==='current').map(n=>n.label);
       return [{f:"bot",t:"📊 Classe "+(activeClass||'CI')+"-A · "+sm.icon+" "+sm.label+" · 24 élèves",
@@ -1021,6 +1055,10 @@ function getMsgs(flowName,id,scr){
 /* dynamic options (extra menu entries depending on class/subject count) */
 function getOpts(flowName,id,scr){
   if(flowName==='teacher'){
+    if(id==='login')
+      return Object.keys(TEACHER_ACCOUNTS).map(code=>(
+        {k:"🔑",label:code+" — "+TEACHER_ACCOUNTS[code],to:"__login:"+code}
+      )).concat([{k:"❓",label:"Je n'ai pas de code",to:"__nocode"}]);
     if(id==='home'){
       const o=[
         {label:"📘 Enseignement",to:"teaching"},
@@ -1079,8 +1117,15 @@ function getOpts(flowName,id,scr){
     if(id==='guides_level')
       return CLASSES.map((c,i)=>({k:String(i+1),label:c.id+" — "+c.sub,to:"__guidelvl:"+c.id}))
         .concat([{k:"0",label:"Retour",to:"guides"}]);
-    if(id==='guide_view')
-      return [{k:"1",label:"Autre guide",to:"guides"},{k:"0",label:"Menu Plus",to:"more"}];
+    if(id==='guide_view'){
+      const qs = guideSubject==='math'
+        ? ["Comment introduire ce chapitre ?","Quelles activités pratiques proposer ?","Comment évaluer les élèves ?","Quel matériel utiliser ?"]
+        : ["Comment introduire ce chapitre ?","Quelles activités de lecture proposer ?","Comment évaluer les élèves ?","Que faire si un élève bloque ?"];
+      const o=qs.map(q=>({k:"💬",label:q,to:"__ask:"+q}));
+      o.push({k:"1",label:"📚 Autre guide",to:"guides"});
+      o.push({k:"0",label:"🏠 Menu principal",to:"home"});
+      return o;
+    }
     if(id==='learning')
       return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
         .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
@@ -1164,6 +1209,14 @@ function render(flowName){
       btn.className='reply';
       btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
       btn.onclick=()=>{
+        if(o.to.indexOf('__ask:')===0){askTeacher(o.to.slice(6));return;}
+        if(o.to==='__nocode'){
+          chat.appendChild(makeBubble({f:'user',x:o.label}));
+          chat.appendChild(makeBubble({f:'bot',t:"ℹ️ Pas encore de code ?",x:"Votre code enseignant est fourni par votre encadreur ARED.\nPour tester, utilisez le code de démonstration ENS-2026."}));
+          chat.scrollTop=chat.scrollHeight;return;
+        }
+        if(o.to.indexOf('__login:')===0){loginTeacher(o.to.slice(8));return;}
+        if(o.to==='session_end'){loggedIn=false;}
         const u=makeBubble({f:'user',x:o.label});
         chat.appendChild(u);chat.scrollTop=chat.scrollHeight;
         setTimeout(()=>{
@@ -1241,7 +1294,10 @@ function showSuggestions(flowName,suggestions){
     const btn=document.createElement('button');
     btn.className='reply suggest';
     btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
-    btn.onclick=()=>{state[flowName]=o.to;render(flowName);};
+    btn.onclick=()=>{
+      if(o.to.indexOf('__ask:')===0){askTeacher(o.to.slice(6));return;}
+      state[flowName]=o.to;render(flowName);
+    };
     rep.appendChild(btn);
   });
   const back=document.createElement('button');
@@ -1272,8 +1328,61 @@ function answerTeacher(q){
     [{k:"1",label:"Préparer une leçon",to:"prepare"},{k:"2",label:"Générer un exercice",to:"exercise"},{k:"4",label:"Suivi de classe",to:"analytics"}]);
 }
 
+function loginTeacher(code){
+  const chat=document.getElementById('chat-teacher');
+  chat.appendChild(makeBubble({f:'user',x:'🔑 '+normalizeCode(code)}));
+  chat.scrollTop=chat.scrollHeight;
+  const res=checkTeacherCode(code);
+  const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+  setTimeout(()=>{
+    typing.remove();
+    if(res.ok){
+      loggedIn=true;teacherCode=res.code;teacherName=res.name;
+      chat.appendChild(makeBubble({f:'bot',t:"✅ Connexion réussie",x:"Bienvenue "+teacherName+" !\nCode : "+teacherCode+"\n\nConfigurons votre espace."}));
+      chat.scrollTop=chat.scrollHeight;
+      setTimeout(()=>{state.teacher='onboarding';render('teacher');},650);
+    }else{
+      chat.appendChild(makeBubble({f:'bot',t:"❌ Code invalide",x:"Le code « "+res.code+" » n'est pas reconnu.\nFormat attendu : ENS-XXXX (ex. ENS-2026)."}));
+      chat.scrollTop=chat.scrollHeight;
+    }
+  },450);
+}
+
+function guideAnswer(q){
+  const s=q.toLowerCase();
+  const sm=subjMeta(guideSubject);
+  const head="📘 Guide "+sm.icon+" "+sm.label+" · "+guideLevel+"\n";
+  const A=(t,sug)=>({t:head+t,sug:sug||[{k:"💬",label:"Poser une autre question",to:"guide_view"}]});
+  if(/(introdu|commenc|démarr|demarr|débuter|debuter|amorce|entrée|entree|lancer)/.test(s))
+    return A("Pour introduire le chapitre :\n1️⃣ Partez du vécu de l'élève (objets de la classe).\n2️⃣ Posez une question ouverte.\n3️⃣ Faites manipuler avant d'écrire.\n4️⃣ Faites verbaliser en groupe.");
+  if(/(activ|exercice|jeu|pratique|manipul)/.test(s))
+    return A(guideSubject==='math'
+      ? "Activités proposées :\n• Compter des objets réels\n• Jeux de cartes à compter\n• Ardoise : écrire le nombre\n• Travail en binôme"
+      : "Activités proposées :\n• Jeux de sons (phonèmes)\n• Lecture de syllabes au tableau\n• Chasse aux mots dans la classe\n• Copie sur ardoise");
+  if(/(éval|eval|test|contrôle|controle|vérifi|verifi|note|mesur)/.test(s))
+    return A("Évaluation suggérée :\n• Observation continue pendant les activités\n• Mini-quiz de 5 questions\n• Grille : reconnaît · écrit · utilise le concept");
+  if(/(matériel|materiel|support|outil|besoin)/.test(s))
+    return A(guideSubject==='math'
+      ? "Matériel : bâtonnets, cailloux, capsules, ardoise + craie, images du nombre."
+      : "Matériel : alphabet mural, cartes-syllabes, ardoise + craie, petits textes illustrés.");
+  if(/(bloque|difficult|comprend pas|n'y arrive|aider|lent|faible|échou|echou)/.test(s))
+    return A("Si un élève bloque :\n• Revenez au prérequis (voir le graphe).\n• Repassez par la manipulation concrète.\n• Donnez un exemple proche de son quotidien.\n• Valorisez chaque petit progrès.",
+      [{k:"1",label:"Ouvrir la remédiation",to:"remediation"},{k:"💬",label:"Autre question",to:"guide_view"}]);
+  if(/(durée|duree|temps|combien de temps|minute)/.test(s))
+    return A("Durée conseillée : 30 à 45 min en 3 temps — découverte 10' · pratique 20' · synthèse 10'.");
+  if(/(objectif|but|compétence|competence|finalité|finalite)/.test(s))
+    return A("Objectif : amener l'élève à maîtriser le concept et ses prérequis avant de passer au suivant (voir le graphe de connaissances).");
+  if(/(progress|ordre|suite|étape|etape|séquence|sequence|prérequis|prerequis)/.test(s))
+    return A("Progression conseillée : suivez l'ordre des prérequis du graphe — chaque concept s'appuie sur le précédent.");
+  return A("Je réponds sur ce guide : introduction, activités, évaluation, matériel, durée, progression et élèves en difficulté. Posez votre question 👇",
+    [{k:"💬",label:"Comment introduire ?",to:"__ask:Comment introduire ce chapitre ?"},
+     {k:"💬",label:"Comment évaluer ?",to:"__ask:Comment évaluer les élèves ?"},
+     {k:"📚",label:"Autre guide",to:"guides"}]);
+}
+
 function askTeacher(text,viaVoice){
   if(!text||!text.trim()) return;
+  if(state.teacher==='login'){loginTeacher(text);return;}
   const chat=document.getElementById('chat-teacher');
   if(viaVoice){
     chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
@@ -1281,7 +1390,8 @@ function askTeacher(text,viaVoice){
     chat.appendChild(makeBubble({f:'user',x:text}));
   }
   chat.scrollTop=chat.scrollHeight;
-  const ans=answerTeacher(text);
+  const inGuide = state.teacher==='guide_view';
+  const ans = inGuide ? guideAnswer(text) : answerTeacher(text);
   // typing indicator then answer
   const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
   setTimeout(()=>{
@@ -1316,8 +1426,8 @@ function wireTeacherInput(){
   };
   const homeBtn=document.getElementById('home-teacher');
   const endBtn=document.getElementById('end-teacher');
-  if(homeBtn) homeBtn.onclick=()=>{state.teacher='home';render('teacher');};
-  if(endBtn) endBtn.onclick=()=>{state.teacher='endsession';render('teacher');};
+  if(homeBtn) homeBtn.onclick=()=>{state.teacher=loggedIn?'home':'login';render('teacher');};
+  if(endBtn) endBtn.onclick=()=>{state.teacher=loggedIn?'endsession':'login';render('teacher');};
 }
 
 /* ============================================================
@@ -1393,6 +1503,14 @@ function renderKG(){
 wireTeacherInput();
 buildKGtabs();
 renderKG();
+
+/* Affiche les codes enseignant par défaut */
+(function(){
+  const box=document.getElementById('democodes');if(!box)return;
+  box.innerHTML=Object.keys(TEACHER_ACCOUNTS).map(c=>
+    '<div class="democode"><code>'+c+'</code><span class="who">'+TEACHER_ACCOUNTS[c]+'</span></div>'
+  ).join('');
+})();
 
 /* Q&A search filter */
 (function(){
