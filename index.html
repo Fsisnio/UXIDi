@@ -25,6 +25,7 @@
     --overall:#8b5cf6;
     --req:#0d9488;
     --qa:#e11d48;
+    --map:#7c3aed;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -67,6 +68,7 @@
   .tab[data-flow="overall"] .dot{background:var(--overall)}
   .tab[data-flow="req"] .dot{background:var(--req)}
   .tab[data-flow="qa"] .dot{background:var(--qa)}
+  .tab[data-flow="map"] .dot{background:var(--map)}
   .tab:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
   .tab.active{color:#fff;border-color:transparent}
   .tab.active[data-flow="teacher"]{background:var(--teacher)}
@@ -74,6 +76,7 @@
   .tab.active[data-flow="overall"]{background:var(--overall)}
   .tab.active[data-flow="req"]{background:var(--req)}
   .tab.active[data-flow="qa"]{background:var(--qa)}
+  .tab.active[data-flow="map"]{background:var(--map)}
 
   /* ---------- Layout ---------- */
   .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 60px}
@@ -249,6 +252,20 @@
   .democode{display:flex;align-items:center;gap:9px;border:1px solid var(--line);border-radius:10px;padding:8px 11px;background:#fff}
   .democode code{font-family:ui-monospace,Menlo,monospace;font-weight:800;font-size:13px;color:#b45309;background:#fef3c7;border-radius:6px;padding:2px 8px;letter-spacing:.5px}
   .democode .who{font-size:12.5px;color:#475569}
+  /* ---- Teacher journey map tab ---- */
+  .journey{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff}
+  .journey .jt{font-weight:800;font-size:13.5px;margin-bottom:9px;color:#1e293b}
+  .journey .chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .jchip{display:inline-flex;align-items:center;font-size:12px;font-weight:600;color:#3730a3;background:#eef2ff;border:1px solid #e0e7ff;border-radius:999px;padding:5px 11px}
+  .jarrow{color:#a5b4fc;font-weight:800;font-size:13px}
+  .maplegend{display:flex;flex-wrap:wrap;gap:12px;margin:8px 0 12px;font-size:11.5px;color:var(--muted)}
+  .maplegend span{display:inline-flex;align-items:center;gap:5px}
+  .maplegend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .mapscroll{overflow:auto;border:1px solid var(--line);border-radius:12px;background:linear-gradient(120deg,#faf5ff,#fff)}
+  #teachermap{min-width:760px}
+  .tmedge{transition:opacity .15s,stroke-width .15s}
+  .tmnode{transition:opacity .15s}
+  .tmnode{cursor:pointer}
 
   /* ---------- Overall diagram ---------- */
   .diagram{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:8px}
@@ -287,6 +304,7 @@
   <button class="tab active" data-flow="teacher"><span class="dot"></span> 👩‍🏫 Enseignant</button>
   <button class="tab" data-flow="student"><span class="dot"></span> 🧒 Élève</button>
   <button class="tab" data-flow="overall"><span class="dot"></span> 🕸️ Système global</button>
+  <button class="tab" data-flow="map"><span class="dot"></span> 🗺️ Parcours</button>
   <button class="tab" data-flow="req"><span class="dot"></span> 📋 Exigences</button>
   <button class="tab" data-flow="qa"><span class="dot"></span> ❓ Q&A</button>
 </nav>
@@ -447,6 +465,27 @@
         <div class="pri"><div class="pt">Hors-ligne & faible débit</div><div class="pd">Texte + notes vocales + petites images. Aucun lien web nécessitant data/login.</div></div>
         <div class="pri"><div class="pt">Français d'abord, voix locale</div><div class="pd">Texte en français (curriculum) ; instructions vocales possibles en langue locale pour les petits.</div></div>
       </div>
+    </div>
+  </section>
+
+  <!-- ============ TEACHER JOURNEY MAP ============ -->
+  <section class="view" id="view-map" data-color="map">
+    <div class="view-head">
+      <h2><span class="badge" style="background:#ede9fe;color:#6d28d9">Parcours</span> Cartographie des interfaces enseignant</h2>
+      <p>Vue d'ensemble de la navigation : les <b>parcours types</b> d'un enseignant et la <b>carte des connexions</b> entre tous les écrans (qui mène où). Généré à partir du graphe de flow réel de l'application.</p>
+    </div>
+
+    <div class="panel" style="margin-bottom:18px">
+      <h3>🧭 Parcours types</h3>
+      <div class="sub" style="margin-bottom:12px">Les enchaînements les plus fréquents, du début à la fin.</div>
+      <div id="journeys"></div>
+    </div>
+
+    <div class="panel">
+      <h3>🗺️ Carte des connexions entre écrans</h3>
+      <div class="sub" style="margin-bottom:6px">Chaque carte est un écran ; les flèches indiquent les transitions. 👉 <b>Survolez ou touchez un écran</b> pour isoler ses connexions (les retours vers l'accueil s'affichent alors).</div>
+      <div id="maplegend" class="maplegend"></div>
+      <div class="mapscroll"><div id="teachermap"></div></div>
     </div>
   </section>
 
@@ -1511,6 +1550,140 @@ renderKG();
     '<div class="democode"><code>'+c+'</code><span class="who">'+TEACHER_ACCOUNTS[c]+'</span></div>'
   ).join('');
 })();
+
+/* ============================================================
+   TEACHER JOURNEY MAP  (onglet « Parcours »)
+   ============================================================ */
+const TEACHER_JOURNEYS=[
+  {t:"🔑 Connexion & configuration", s:["Connexion (code)","Choix des classes","Choix des matières","Accueil"]},
+  {t:"📘 Préparer & enseigner",      s:["Accueil","Enseignement","Préparer la leçon","Mode assistant (5 étapes)","Évaluation rapide"]},
+  {t:"✏️ Générer des exercices",     s:["Accueil","Enseignement","Générer exercices","Matière (si 2)","Niveau","Exercice généré"]},
+  {t:"📊 Suivi & remédiation",       s:["Accueil","Plus","Analyses de classe","Remédiation","Pousser à l'élève"]},
+  {t:"🗓️ Planifier la semaine",     s:["Accueil","Plus","Planifier la semaine"]},
+  {t:"📚 Guides interactifs",        s:["Accueil","Accéder aux guides","Matière","Niveau","Guide + Q&A 💬"]},
+  {t:"🌍 Apprentissage continu",     s:["Accueil","Apprentissage continu","Langue locale","Leçon du jour"]},
+  {t:"📝 Rapport terrain",           s:["Accueil","Rapport terrain","Support","État","Confirmation"]},
+  {t:"👤 Profil & session",          s:["Accueil","Modifier le profil","Classes / matières / langue","Terminer la session"]},
+  {t:"💬 Question libre (partout)",  s:["Tout écran","Question texte / voix 🎤","Réponse + suggestions","Écran ciblé"]}
+];
+function renderJourneys(){
+  const box=document.getElementById('journeys');if(!box)return;
+  box.innerHTML=TEACHER_JOURNEYS.map(j=>
+    '<div class="journey"><div class="jt">'+j.t+'</div><div class="chain">'+
+    j.s.map((st,i)=>(i?'<span class="jarrow">→</span>':'')+'<span class="jchip">'+st+'</span>').join('')+
+    '</div></div>').join('');
+}
+
+const TZONE={
+  auth:{c:'#0284c7',l:'Connexion'}, cfg:{c:'#6366f1',l:'Configuration'},
+  hub:{c:'#7c3aed',l:'Accueil (hub)'}, teach:{c:'#2563eb',l:'Enseignement'},
+  mod:{c:'#0d9488',l:'Modules'}, more:{c:'#d97706',l:'Plus (secondaire)'},
+  session:{c:'#dc2626',l:'Session'}
+};
+const TNODES=[
+  {id:'login',l:'🔑 Connexion (code)',lay:0,z:'auth'},
+  {id:'onboarding',l:'🏫 Choix classes',lay:1,z:'cfg'},
+  {id:'subjectpick',l:'📕 Choix matières',lay:2,z:'cfg'},
+  {id:'home',l:'🏠 Accueil',lay:3,z:'hub'},
+  {id:'teaching',l:'📘 Enseignement',lay:4,z:'teach'},
+  {id:'guides',l:'📚 Guides',lay:4,z:'mod'},
+  {id:'learning',l:'🌍 Apprentissage',lay:4,z:'mod'},
+  {id:'fieldreport',l:'📝 Rapport terrain',lay:4,z:'mod'},
+  {id:'profile',l:'👤 Profil',lay:4,z:'mod'},
+  {id:'more',l:'➕ Plus',lay:4,z:'more'},
+  {id:'endsession',l:'🚪 Fin de session',lay:4,z:'session'},
+  {id:'prepare',l:'📖 Préparer leçon',lay:5,z:'teach'},
+  {id:'exercise',l:'✏️ Exercices',lay:5,z:'teach'},
+  {id:'assess',l:'✅ Évaluation',lay:5,z:'teach'},
+  {id:'lessonswitch',l:'🔁 Changer leçon',lay:5,z:'teach'},
+  {id:'classswitch',l:'🔁 Changer classe',lay:5,z:'teach'},
+  {id:'subjectswitch',l:'🔁 Changer matière',lay:5,z:'teach'},
+  {id:'guide_view',l:'💬 Guide + Q&A',lay:5,z:'mod'},
+  {id:'lang_lesson',l:'🗣️ Langue locale',lay:5,z:'mod'},
+  {id:'planning',l:'🗓️ Planifier',lay:5,z:'more'},
+  {id:'analytics',l:'📊 Analyses',lay:5,z:'more'},
+  {id:'remediation',l:'🎯 Remédiation',lay:5,z:'more'},
+  {id:'assistant',l:'🧭 Mode assistant',lay:6,z:'teach'}
+];
+const TEDGES=[
+  ['login','onboarding'],['onboarding','subjectpick'],['subjectpick','home'],
+  ['home','teaching'],['home','guides'],['home','learning'],['home','fieldreport'],['home','profile'],['home','more'],['home','endsession'],
+  ['teaching','prepare'],['teaching','exercise'],['teaching','assess'],['teaching','lessonswitch'],['teaching','classswitch'],['teaching','subjectswitch'],
+  ['prepare','assistant'],['assistant','assess'],['exercise','assess'],['assess','analytics'],
+  ['more','planning'],['more','analytics'],['more','remediation'],['analytics','remediation'],
+  ['guides','guide_view'],['learning','lang_lesson'],
+  ['profile','onboarding'],['profile','subjectpick'],['profile','learning'],
+  ['endsession','login'],
+  ['teaching','home','b'],['prepare','home','b'],['exercise','home','b'],['assess','home','b'],
+  ['lessonswitch','home','b'],['classswitch','home','b'],['subjectswitch','home','b'],
+  ['guide_view','home','b'],['lang_lesson','home','b'],['fieldreport','home','b'],
+  ['planning','home','b'],['analytics','home','b'],['remediation','home','b'],
+  ['more','home','b'],['endsession','home','b'],['profile','more','b']
+];
+function renderTeacherMap(){
+  const host=document.getElementById('teachermap');if(!host)return;
+  const NW=152,NH=34,colW=184,rowH=50,padX=16,padY=20;
+  const byLay={};TNODES.forEach(n=>{(byLay[n.lay]=byLay[n.lay]||[]).push(n);});
+  const pos={};let maxRows=0,maxLay=0;
+  Object.keys(byLay).forEach(L=>{maxLay=Math.max(maxLay,+L);maxRows=Math.max(maxRows,byLay[L].length);});
+  Object.keys(byLay).forEach(L=>{byLay[L].forEach((n,i)=>{pos[n.id]={x:padX+(+L)*colW,y:padY+i*rowH,z:n.z};});});
+  const W=padX*2+maxLay*colW+NW, H=padY*2+maxRows*rowH;
+  let edges='';
+  TEDGES.forEach(e=>{
+    const s=pos[e[0]],d=pos[e[1]];if(!s||!d)return;
+    const back=e[2]==='b', col=back?'#94a3b8':TZONE[s.z].c;
+    let path;
+    if(d.x>s.x){ // forward (left → right)
+      const sx=s.x+NW,sy=s.y+NH/2,dx=d.x,dy=d.y+NH/2,mx=sx+(dx-sx)*0.5;
+      path='M'+sx+' '+sy+' C '+mx+' '+sy+', '+mx+' '+dy+', '+dx+' '+dy;
+    }else{ // same column or back (right → left) : arc underneath
+      const sbx=s.x+NW/2,sby=s.y+NH,dbx=d.x+NW/2,dby=d.y+NH,dip=Math.max(sby,dby)+22+Math.abs(s.y-d.y)*0.12;
+      path='M'+sbx+' '+sby+' C '+sbx+' '+dip+', '+dbx+' '+dip+', '+dbx+' '+dby;
+    }
+    const init=back?'0':'0.45';
+    edges+='<path class="tmedge'+(back?' tmback':'')+'" data-s="'+e[0]+'" data-d="'+e[1]+'" d="'+path+'" fill="none" stroke="'+col+'" stroke-width="'+(back?1.4:1.8)+'" opacity="'+init+'" '+(back?'stroke-dasharray="5 4" ':'')+'marker-end="url(#'+(back?'tmarrb':'tmarr')+')"/>';
+  });
+  let nodes='';
+  TNODES.forEach(n=>{const p=pos[n.id],c=TZONE[n.z].c;
+    nodes+='<g class="tmnode" data-id="'+n.id+'"><rect x="'+p.x+'" y="'+p.y+'" width="'+NW+'" height="'+NH+'" rx="9" fill="#fff" stroke="'+c+'" stroke-width="1.8"/>'
+      +'<rect x="'+p.x+'" y="'+p.y+'" width="4" height="'+NH+'" rx="2" fill="'+c+'"/>'
+      +'<text x="'+(p.x+12)+'" y="'+(p.y+NH/2+4)+'" font-size="11" font-family="sans-serif" fill="#0f172a">'+n.l+'</text></g>';
+  });
+  host.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'">'
+    +'<defs><marker id="tmarr" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#94a3b8"/></marker>'
+    +'<marker id="tmarrb" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#94a3b8"/></marker></defs>'
+    +edges+nodes+'</svg>';
+  const leg=document.getElementById('maplegend');
+  if(leg) leg.innerHTML=Object.keys(TZONE).map(z=>'<span><i style="background:'+TZONE[z].c+'"></i>'+TZONE[z].l+'</span>').join('')
+    +'<span><i style="background:#94a3b8"></i>Retour à l\'accueil (au survol)</span>';
+
+  // ----- interactivité : isoler les connexions d'un écran -----
+  const svgEl=host.querySelector('svg');
+  const edgeEls=[...host.querySelectorAll('.tmedge')];
+  const nodeEls=[...host.querySelectorAll('.tmnode')];
+  let pinned=null;
+  function reset(){
+    edgeEls.forEach(p=>{p.style.opacity=p.classList.contains('tmback')?'0':'0.45';p.style.strokeWidth=p.classList.contains('tmback')?'1.4':'1.8';});
+    nodeEls.forEach(g=>{g.style.opacity='1';});
+  }
+  function focus(id){
+    const conn=new Set([id]);
+    edgeEls.forEach(p=>{if(p.dataset.s===id)conn.add(p.dataset.d);if(p.dataset.d===id)conn.add(p.dataset.s);});
+    edgeEls.forEach(p=>{const on=p.dataset.s===id||p.dataset.d===id;
+      p.style.opacity=on?'1':'0.05';p.style.strokeWidth=on?'2.6':'1';});
+    nodeEls.forEach(g=>{g.style.opacity=conn.has(g.dataset.id)?'1':'0.22';});
+  }
+  nodeEls.forEach(g=>{
+    g.addEventListener('mouseenter',()=>{if(!pinned)focus(g.dataset.id);});
+    g.addEventListener('mouseleave',()=>{if(!pinned)reset();});
+    g.addEventListener('click',e=>{e.stopPropagation();
+      if(pinned===g.dataset.id){pinned=null;reset();}else{pinned=g.dataset.id;focus(g.dataset.id);}});
+  });
+  if(svgEl) svgEl.addEventListener('click',()=>{pinned=null;reset();});
+  reset();
+}
+renderJourneys();
+renderTeacherMap();
 
 /* Q&A search filter */
 (function(){
