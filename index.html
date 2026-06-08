@@ -140,6 +140,11 @@
   .wa-head .av{width:36px;height:36px;border-radius:50%;background:var(--wa-light);display:flex;align-items:center;justify-content:center;font-size:18px}
   .wa-head .nm{font-weight:700;font-size:14px;line-height:1.1}
   .wa-head .st{font-size:11px;color:#cdeee2}
+  .wa-head .wa-acts{margin-left:auto;display:flex;gap:6px}
+  .wa-head .wa-act{width:30px;height:30px;border:none;border-radius:50%;cursor:pointer;
+    background:rgba(255,255,255,.15);color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;transition:background .15s}
+  .wa-head .wa-act:hover{background:rgba(255,255,255,.32)}
+  .wa-head #end-teacher:hover{background:#ef4444}
   .chat{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:8px}
   .chat::-webkit-scrollbar{width:0}
   .bubble{max-width:85%;padding:8px 11px;border-radius:10px;font-size:13.5px;color:#e9edef;white-space:pre-wrap;
@@ -223,10 +228,23 @@
   .kgtabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
   .kgtab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#475569}
   .kgtab.on{background:var(--overall);color:#fff;border-color:transparent}
-  #kgview{display:flex;justify-content:center}
+  #kgview{display:flex;flex-direction:column;align-items:center}
   .kglegend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px;font-size:11.5px;color:var(--muted)}
   .kglegend span{display:flex;align-items:center;gap:5px}
   .kglegend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .kgdetails{width:100%;margin-top:14px;border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:9px}
+  .kgd-title{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .kgd{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#fff}
+  .kgd-h{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .kgd-dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .kgd-h b{font-size:12.5px;color:#0f172a}
+  .kgd-tag{font-size:9.5px;font-weight:700;border:1px solid;border-radius:999px;padding:1px 7px}
+  .kgd-diff{margin-left:auto;font-size:10px;color:#94a3b8;letter-spacing:1px}
+  .kgd-obj{font-size:11.5px;color:#475569;margin-top:5px}
+  .kgd-pre{font-size:11px;color:#64748b;margin-top:3px}
+  .kgd-bar{height:6px;border-radius:4px;background:#eef2f7;margin-top:7px;overflow:hidden}
+  .kgd-bar i{display:block;height:100%;border-radius:4px}
+  .kgd-m{font-size:10.5px;color:var(--muted);margin-top:4px}
 
   /* ---------- Overall diagram ---------- */
   .diagram{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:8px}
@@ -285,6 +303,10 @@
             <div class="wa-head">
               <div class="av">🤖</div>
               <div><div class="nm">ARED Edu</div><div class="st">en ligne</div></div>
+              <div class="wa-acts">
+                <button class="wa-act" id="home-teacher" title="Revenir à l'accueil">🏠</button>
+                <button class="wa-act" id="end-teacher" title="Terminer la discussion">✖</button>
+              </div>
             </div>
             <div class="chat" id="chat-teacher"></div>
             <div class="replies" id="replies-teacher"></div>
@@ -552,13 +574,29 @@ const FLOWS = {
         opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
       },
       home:{
-        step:"Accueil enseignant", desc:"Chaque matin. 3 actions principales + menu « Plus ».",
+        step:"Accueil enseignant", desc:"Menu principal : Enseignement + grands modules.",
         msgs:[{f:"bot",t:"Bonjour Mme Diallo 👋",x:"Aujourd'hui :\n📖 Prochaine leçon : Nombre 6\n🎯 Objectif : Découvrir le nombre 6"}],
+        opts:[
+          {k:"1",label:"📘 Enseignement",to:"teaching"},
+          {k:"2",label:"📚 Accéder aux guides",to:"guides"},
+          {k:"3",label:"🌍 Apprentissage continu",to:"learning"},
+          {k:"4",label:"📝 Rapport terrain (supports)",to:"fieldreport"},
+          {k:"5",label:"👤 Modifier votre profil",to:"profile"},
+          {k:"6",label:"➕ Plus (planning · suivi · remédiation)",to:"more"},
+          {k:"7",label:"🚪 Terminer la session",to:"endsession"}
+        ]
+      },
+      teaching:{
+        step:"📘 Enseignement", desc:"Regroupe : préparation, exercices, évaluation, changement de leçon/classe/matière.",
+        msgs:[{f:"bot",t:"📘 Enseignement",x:"Préparer, enseigner et évaluer.\nChoisissez :"}],
         opts:[
           {k:"1",label:"Préparer ma leçon",to:"prepare"},
           {k:"2",label:"Générer des exercices",to:"exercise"},
           {k:"3",label:"Évaluation rapide",to:"assess"},
-          {k:"9",label:"Plus (planning · suivi · remédiation)",to:"more"}
+          {k:"4",label:"Changer de leçon",to:"lessonswitch"},
+          {k:"5",label:"Changer de classe",to:"classswitch"},
+          {k:"6",label:"Changer de matière",to:"subjectswitch"},
+          {k:"0",label:"Retour à l'accueil",to:"home"}
         ]
       },
       prepare:{
@@ -639,17 +677,12 @@ const FLOWS = {
         opts:[{k:"4",label:"Voir analyses classe",to:"analytics"},{k:"0",label:"Accueil",to:"home"}]
       },
       more:{
-        step:"Menu « Plus »", desc:"Fonctions secondaires et nouveaux modules.",
+        step:"Menu « Plus »", desc:"Fonctions secondaires : planning, suivi, remédiation.",
         msgs:[{f:"bot",t:"➕ Plus",x:"Choisissez :"}],
         opts:[
           {k:"1",label:"Planifier la semaine",to:"planning"},
           {k:"2",label:"Suivi / Analyses classe",to:"analytics"},
           {k:"3",label:"Remédiation",to:"remediation"},
-          {k:"4",label:"📚 Accéder aux guides",to:"guides"},
-          {k:"5",label:"🌍 Apprentissage continu (langues locales)",to:"learning"},
-          {k:"6",label:"📝 Rapport terrain (supports pédagogiques)",to:"fieldreport"},
-          {k:"7",label:"👤 Modifier votre profil",to:"profile"},
-          {k:"8",label:"🚪 Terminer la session",to:"endsession"},
           {k:"0",label:"Accueil",to:"home"}
         ]
       },
@@ -818,20 +851,27 @@ function fmtSubjects(){return teacherSubjects.length?teacherSubjects.map(s=>subj
 /* ---- KNOWLEDGE GRAPH (concepts + prérequis + statut) ---- */
 const KG={
   math:{ title:"Mathématiques · CI", nodes:[
-    {id:"n05",   label:"Nombres 0–5",        status:"done",    prereq:[]},
-    {id:"comp",  label:"Comparaison",        status:"done",    prereq:["n05"]},
-    {id:"n6",    label:"Nombre 6",           status:"current", prereq:["n05","comp"]},
-    {id:"compo6",label:"Composition du 6",   status:"next",    prereq:["n6"]},
-    {id:"deco6", label:"Décomposition du 6", status:"weak",    prereq:["compo6"]},
-    {id:"add",   label:"Addition",           status:"next",    prereq:["deco6"]}
+    {id:"geo",   label:"Formes géométriques", status:"done",    prereq:[],              diff:1, mastery:78, obj:"Reconnaître carré, rond, triangle"},
+    {id:"n05",   label:"Nombres 0–5",         status:"done",    prereq:[],              diff:1, mastery:92, obj:"Lire, écrire et dénombrer de 0 à 5"},
+    {id:"comp",  label:"Comparaison",         status:"done",    prereq:["n05"],         diff:1, mastery:84, obj:"Comparer des quantités (plus / moins / autant)"},
+    {id:"mes",   label:"Grandeurs & mesures", status:"done",    prereq:["comp"],        diff:2, mastery:70, obj:"Comparer longueurs et tailles"},
+    {id:"n6",    label:"Nombre 6",            status:"current", prereq:["n05","comp"],  diff:1, mastery:61, obj:"Découvrir, lire et écrire le nombre 6"},
+    {id:"n79",   label:"Nombres 7–9",         status:"next",    prereq:["n6"],          diff:2, mastery:0,  obj:"Lire et écrire 7, 8 et 9"},
+    {id:"compo6",label:"Composition du 6",    status:"next",    prereq:["n6"],          diff:2, mastery:0,  obj:"Composer 6 (5+1, 4+2, 3+3)"},
+    {id:"deco6", label:"Décomposition du 6",  status:"weak",    prereq:["compo6"],      diff:2, mastery:38, obj:"Décomposer 6 en deux parts"},
+    {id:"n10",   label:"Nombre 10 · dizaine", status:"next",    prereq:["n79"],         diff:2, mastery:0,  obj:"Découvrir 10 et l'idée de dizaine"},
+    {id:"add",   label:"Addition ≤ 10",       status:"next",    prereq:["deco6"],       diff:2, mastery:0,  obj:"Additionner deux nombres jusqu'à 10"},
+    {id:"sub",   label:"Soustraction ≤ 10",   status:"next",    prereq:["add"],         diff:3, mastery:0,  obj:"Retirer une quantité (≤ 10)"}
   ]},
   fr:{ title:"Français · CI", nodes:[
-    {id:"sa",   label:"Son [a]",           status:"done",    prereq:[]},
-    {id:"si",   label:"Son [i]",           status:"done",    prereq:[]},
-    {id:"syl",  label:"Syllabes simples",  status:"current", prereq:["sa","si"]},
-    {id:"mot",  label:"Mots simples",      status:"next",    prereq:["syl"]},
-    {id:"phr",  label:"Phrase courte",     status:"weak",    prereq:["mot"]},
-    {id:"lec",  label:"Lecture autonome",  status:"next",    prereq:["phr"]}
+    {id:"voy",  label:"Voyelles a, i, o, u", status:"done",    prereq:[],            diff:1, mastery:92, obj:"Reconnaître et lire les voyelles"},
+    {id:"scm",  label:"Consonnes m, l, r",   status:"done",    prereq:[],            diff:1, mastery:76, obj:"Lire les consonnes m, l, r"},
+    {id:"syl",  label:"Syllabes simples",    status:"current", prereq:["voy","scm"], diff:2, mastery:57, obj:"Lire des syllabes (ma, li, ro)"},
+    {id:"ecr",  label:"Écriture de syllabes",status:"weak",    prereq:["syl"],       diff:2, mastery:44, obj:"Copier et écrire des syllabes"},
+    {id:"mot",  label:"Mots simples",        status:"next",    prereq:["syl"],       diff:2, mastery:0,  obj:"Lire des mots de 2 syllabes"},
+    {id:"phr",  label:"Phrase courte",       status:"next",    prereq:["mot"],       diff:3, mastery:0,  obj:"Lire une phrase simple"},
+    {id:"dict", label:"Dictée de syllabes",  status:"next",    prereq:["ecr"],       diff:3, mastery:0,  obj:"Écrire des syllabes sous la dictée"},
+    {id:"lec",  label:"Lecture autonome",    status:"next",    prereq:["phr"],       diff:3, mastery:0,  obj:"Lire seul un court texte"}
   ]}
 };
 let kgViewSubject="math";
@@ -842,12 +882,17 @@ function prereqLabels(sub,nodeId){const g=KG[sub];if(!g)return[];const n=g.nodes
 
 /* ---- MOCK DATA · Mathématiques (format : semaine · jour · n° leçon) ---- */
 const MATH_COURSES=[
-  {semaine:3, jour:"Lundi",    lecon:14, titre:"Nombres 0–5",        objectif:"Reconnaître les nombres de 0 à 5", node:"n05",    statut:"done"},
-  {semaine:3, jour:"Mardi",    lecon:15, titre:"Comparaison",        objectif:"Comparer deux quantités (plus/moins)", node:"comp",  statut:"done"},
-  {semaine:4, jour:"Lundi",    lecon:16, titre:"Nombre 6",           objectif:"Découvrir le nombre 6",            node:"n6",     statut:"current"},
-  {semaine:4, jour:"Mardi",    lecon:17, titre:"Composition du 6",   objectif:"Composer le nombre 6",             node:"compo6", statut:"next"},
-  {semaine:4, jour:"Mercredi", lecon:18, titre:"Décomposition du 6", objectif:"Décomposer le nombre 6",           node:"deco6",  statut:"weak"},
-  {semaine:4, jour:"Jeudi",    lecon:19, titre:"Addition",           objectif:"Additionner jusqu'à 10",           node:"add",    statut:"next"}
+  {semaine:2, jour:"Jeudi",    lecon:8,  titre:"Formes géométriques", objectif:"Reconnaître carré, rond, triangle",  node:"geo",    statut:"done"},
+  {semaine:3, jour:"Lundi",    lecon:14, titre:"Nombres 0–5",         objectif:"Lire, écrire et dénombrer de 0 à 5", node:"n05",    statut:"done"},
+  {semaine:3, jour:"Mardi",    lecon:15, titre:"Comparaison",         objectif:"Comparer des quantités",             node:"comp",   statut:"done"},
+  {semaine:3, jour:"Jeudi",    lecon:16, titre:"Grandeurs & mesures", objectif:"Comparer longueurs et tailles",      node:"mes",    statut:"done"},
+  {semaine:4, jour:"Lundi",    lecon:17, titre:"Nombre 6",            objectif:"Découvrir le nombre 6",              node:"n6",     statut:"current"},
+  {semaine:4, jour:"Mardi",    lecon:18, titre:"Nombres 7–9",         objectif:"Lire et écrire 7, 8 et 9",           node:"n79",    statut:"next"},
+  {semaine:4, jour:"Mercredi", lecon:19, titre:"Composition du 6",    objectif:"Composer le nombre 6",               node:"compo6", statut:"next"},
+  {semaine:4, jour:"Jeudi",    lecon:20, titre:"Décomposition du 6",  objectif:"Décomposer le nombre 6",             node:"deco6",  statut:"weak"},
+  {semaine:5, jour:"Lundi",    lecon:21, titre:"Nombre 10 · dizaine", objectif:"Découvrir 10 et la dizaine",         node:"n10",    statut:"next"},
+  {semaine:5, jour:"Mardi",    lecon:22, titre:"Addition ≤ 10",       objectif:"Additionner jusqu'à 10",             node:"add",    statut:"next"},
+  {semaine:5, jour:"Jeudi",    lecon:23, titre:"Soustraction ≤ 10",   objectif:"Retirer une quantité (≤ 10)",        node:"sub",    statut:"next"}
 ];
 function mathCurrent(){return MATH_COURSES.find(c=>c.statut==='current')||MATH_COURSES[0];}
 
@@ -977,14 +1022,30 @@ function getMsgs(flowName,id,scr){
 function getOpts(flowName,id,scr){
   if(flowName==='teacher'){
     if(id==='home'){
-      let base=scr.opts.slice();
-      if(teacherSubjects.length>1)
-        base=base.map(o=>o.to==='exercise'?Object.assign({},o,{to:'exercise_subject'}):o);
-      let at=3;
-      base.splice(at++,0,{k:"5",label:"Changer de leçon",to:"lessonswitch"});
-      if(teacherClasses.length>1) base.splice(at++,0,{k:"6",label:"Changer de classe ("+activeClass+")",to:"classswitch"});
-      if(teacherSubjects.length>1) base.splice(at++,0,{k:"7",label:"Changer de matière ("+subjMeta(activeSubject).icon+")",to:"subjectswitch"});
-      return base;
+      const o=[
+        {label:"📘 Enseignement",to:"teaching"},
+        {label:"📚 Accéder aux guides",to:"guides"},
+        {label:"🌍 Apprentissage continu",to:"learning"},
+        {label:"📝 Rapport terrain (supports)",to:"fieldreport"},
+        {label:"👤 Modifier votre profil",to:"profile"},
+        {label:"➕ Plus (planning · suivi · remédiation)",to:"more"},
+        {label:"🚪 Terminer la session",to:"endsession"}
+      ];
+      return o.map((x,i)=>Object.assign({k:String(i+1)},x));
+    }
+    if(id==='teaching'){
+      const exTo=teacherSubjects.length>1?'exercise_subject':'exercise';
+      const o=[
+        {label:"Préparer ma leçon",to:"prepare"},
+        {label:"Générer des exercices",to:exTo},
+        {label:"Évaluation rapide",to:"assess"},
+        {label:"Changer de leçon",to:"lessonswitch"}
+      ];
+      if(teacherClasses.length>1) o.push({label:"Changer de classe ("+activeClass+")",to:"classswitch"});
+      if(teacherSubjects.length>1) o.push({label:"Changer de matière ("+subjMeta(activeSubject).icon+")",to:"subjectswitch"});
+      const list=o.map((x,i)=>Object.assign({k:String(i+1)},x));
+      list.push({k:"0",label:"Retour à l'accueil",to:"home"});
+      return list;
     }
     if(id==='classswitch')
       return teacherClasses.map((c,i)=>({k:String(i+1),label:(c===activeClass?'✓ ':'')+c,to:"__setclass:"+c}))
@@ -1129,7 +1190,14 @@ function render(flowName){
     s.classList.toggle('current',s.dataset.id===cur);
   });
   const curEl=document.querySelector('#steps-'+flowName+' .step[data-id="'+cur+'"]');
-  if(curEl) curEl.scrollIntoView({block:'nearest',behavior:'smooth'});
+  const stepsBox=document.getElementById('steps-'+flowName);
+  // Surligne l'étape courante SANS faire défiler la page : on n'ajuste que le
+  // défilement interne du conteneur de la carte s'il est lui-même scrollable.
+  if(curEl && stepsBox && stepsBox.scrollHeight>stepsBox.clientHeight+1){
+    const cr=stepsBox.getBoundingClientRect();
+    const er=curEl.getBoundingClientRect();
+    stepsBox.scrollTo({top:stepsBox.scrollTop+(er.top-cr.top)-cr.height/2+er.height/2,behavior:'smooth'});
+  }
 }
 
 function buildSteps(flowName){
@@ -1246,6 +1314,10 @@ function wireTeacherInput(){
       askTeacher(samples[vi++%samples.length],true);
     },1100);
   };
+  const homeBtn=document.getElementById('home-teacher');
+  const endBtn=document.getElementById('end-teacher');
+  if(homeBtn) homeBtn.onclick=()=>{state.teacher='home';render('teacher');};
+  if(endBtn) endBtn.onclick=()=>{state.teacher='endsession';render('teacher');};
 }
 
 /* ============================================================
@@ -1282,14 +1354,34 @@ function renderKG(){
   }));
   let nodes='';
   g.nodes.forEach(n=>{
-    const p=pos[n.id],c=COL[n.status];
+    const p=pos[n.id],c=COL[n.status],m=n.mastery||0,bx=p.x-p.w/2+6,bw=p.w-12,by=p.y+nodeH/2-9;
     nodes+='<g><rect x="'+(p.x-p.w/2)+'" y="'+(p.y-nodeH/2)+'" width="'+p.w+'" height="'+nodeH+'" rx="9" fill="#fff" stroke="'+c+'" stroke-width="2"/>'
-      +'<circle cx="'+(p.x-p.w/2+13)+'" cy="'+p.y+'" r="4.5" fill="'+c+'"/>'
-      +'<text x="'+(p.x-p.w/2+24)+'" y="'+(p.y+4)+'" font-size="11" font-family="sans-serif" fill="#0f172a">'+n.label+'</text></g>';
+      +'<circle cx="'+(p.x-p.w/2+13)+'" cy="'+(p.y-5)+'" r="4.5" fill="'+c+'"/>'
+      +'<text x="'+(p.x-p.w/2+24)+'" y="'+(p.y-1)+'" font-size="10.5" font-family="sans-serif" fill="#0f172a">'+n.label+'</text>'
+      +'<rect x="'+bx+'" y="'+by+'" width="'+bw+'" height="5" rx="2.5" fill="#eef2f7"/>'
+      +'<rect x="'+bx+'" y="'+by+'" width="'+(bw*m/100)+'" height="5" rx="2.5" fill="'+c+'"/></g>';
   });
-  host.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:330px">'
+  const svg='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:330px">'
     +'<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#cbd5e1"/></marker></defs>'
     +edges+nodes+'</svg>';
+  const STL={done:"Maîtrisé",current:"En cours",next:"À venir",weak:"À renforcer"};
+  const dstars=d=>'●'.repeat(d)+'○'.repeat(3-d);
+  let det='<div class="kgdetails"><div class="kgd-title">Détail des concepts ('+g.nodes.length+')</div>';
+  g.nodes.forEach(n=>{
+    const c=COL[n.status],m=n.mastery||0,pre=prereqLabels(kgViewSubject,n.id);
+    det+='<div class="kgd">'
+      +'<div class="kgd-h"><span class="kgd-dot" style="background:'+c+'"></span>'
+        +'<b>'+n.label+'</b>'
+        +'<span class="kgd-tag" style="color:'+c+';border-color:'+c+'">'+STL[n.status]+'</span>'
+        +'<span class="kgd-diff" title="Difficulté '+n.diff+'/3">'+dstars(n.diff)+'</span></div>'
+      +'<div class="kgd-obj">🎯 '+n.obj+'</div>'
+      +(pre.length?'<div class="kgd-pre">📚 Prérequis : '+pre.join(' · ')+'</div>':'')
+      +'<div class="kgd-bar"><i style="width:'+m+'%;background:'+c+'"></i></div>'
+      +'<div class="kgd-m">Maîtrise de la classe : <b style="color:'+c+'">'+m+'%</b></div>'
+      +'</div>';
+  });
+  det+='</div>';
+  host.innerHTML=svg+det;
 }
 
 /* init */
