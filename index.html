@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ARED Edu — UX Prototype (Enseignant · Élève · Système)</title>
+<style>
+  :root{
+    --wa-green:#075E54;
+    --wa-teal:#128C7E;
+    --wa-light:#25D366;
+    --wa-bg:#0b141a;
+    --chat-bg:#0b141a;
+    --bubble-bot:#202c33;
+    --bubble-user:#005c4b;
+    --ink:#0f172a;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --card:#ffffff;
+    --page:#f1f5f9;
+    --accent:#6d28d9;
+    --accent2:#0ea5e9;
+    --teacher:#0ea5e9;
+    --student:#f59e0b;
+    --overall:#8b5cf6;
+    --req:#0d9488;
+    --qa:#e11d48;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--page);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  /* ---------- Header ---------- */
+  header.top{
+    background:linear-gradient(120deg,#0f172a,#1e293b);
+    color:#fff;
+    padding:28px 24px 26px;
+    text-align:center;
+  }
+  header.top .logo{
+    display:inline-flex;align-items:center;gap:10px;
+    font-weight:800;font-size:13px;letter-spacing:.18em;
+    background:rgba(255,255,255,.1);padding:6px 14px;border-radius:999px;
+    text-transform:uppercase;
+  }
+  header.top h1{font-size:26px;margin:14px 0 6px;font-weight:800}
+  header.top p{color:#cbd5e1;max-width:680px;margin:0 auto;font-size:14px}
+
+  /* ---------- Tabs ---------- */
+  .tabs{
+    display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+    padding:18px 16px;position:sticky;top:0;z-index:30;
+    background:rgba(241,245,249,.85);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .tab{
+    border:1px solid var(--line);background:#fff;color:var(--ink);
+    padding:10px 18px;border-radius:999px;font-weight:700;font-size:14px;
+    cursor:pointer;transition:.15s;display:flex;align-items:center;gap:8px;
+  }
+  .tab .dot{width:9px;height:9px;border-radius:50%}
+  .tab[data-flow="teacher"] .dot{background:var(--teacher)}
+  .tab[data-flow="student"] .dot{background:var(--student)}
+  .tab[data-flow="overall"] .dot{background:var(--overall)}
+  .tab[data-flow="req"] .dot{background:var(--req)}
+  .tab[data-flow="qa"] .dot{background:var(--qa)}
+  .tab:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+  .tab.active{color:#fff;border-color:transparent}
+  .tab.active[data-flow="teacher"]{background:var(--teacher)}
+  .tab.active[data-flow="student"]{background:var(--student)}
+  .tab.active[data-flow="overall"]{background:var(--overall)}
+  .tab.active[data-flow="req"]{background:var(--req)}
+  .tab.active[data-flow="qa"]{background:var(--qa)}
+
+  /* ---------- Layout ---------- */
+  .wrap{max-width:1180px;margin:0 auto;padding:26px 18px 60px}
+  .view{display:none}
+  .view.active{display:block;animation:fade .35s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .view-head{margin-bottom:18px}
+  .view-head h2{font-size:22px;display:flex;align-items:center;gap:10px}
+  .badge{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    padding:4px 10px;border-radius:6px;color:#fff}
+  .badge.teacher{background:var(--teacher)}
+  .badge.student{background:var(--student)}
+  .badge.overall{background:var(--overall)}
+  .badge.req{background:var(--req)}
+  .badge.qa{background:var(--qa)}
+  .qagroup{margin-bottom:20px}
+  .qagroup h3{font-size:15px;margin:4px 0 10px;display:flex;align-items:center;gap:8px}
+  .qa{border:1px solid var(--line);border-radius:11px;background:#fff;margin-bottom:8px;overflow:hidden}
+  .qa summary{cursor:pointer;padding:12px 14px;font-weight:700;font-size:14px;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;color:#0f172a}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary::after{content:"+";color:var(--qa);font-weight:800;font-size:18px;line-height:1}
+  .qa[open] summary::after{content:"\2013"}
+  .qa[open] summary{border-bottom:1px solid var(--line)}
+  .qa .a{padding:11px 14px 13px;font-size:13.5px;color:#475569;line-height:1.55}
+  .qa .a b{color:#0f172a}
+  .qasearch{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;margin-bottom:16px;outline:none}
+  .qasearch:focus{border-color:var(--qa)}
+  .reqgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:760px){.reqgrid{grid-template-columns:1fr}}
+  .panel.ok{border-color:#bbf7d0;background:linear-gradient(120deg,#f0fdf4,#fff)}
+  .panel.warn{border-color:#fde68a;background:linear-gradient(120deg,#fffbeb,#fff)}
+  .reqlist{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:8px}
+  .reqlist li{font-size:13.5px;color:#334155;padding-left:18px;position:relative}
+  .reqlist li::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:2px}
+  .panel.ok .reqlist li::before{background:#16a34a}
+  .panel.warn .reqlist li::before{background:#d97706}
+  .reqlist sup a{color:var(--req);font-weight:800;text-decoration:none}
+  .reqbanner{margin:18px 0;background:linear-gradient(120deg,#0f766e,#14b8a6);color:#fff;font-weight:800;
+    text-align:center;padding:15px;border-radius:12px;font-size:15px}
+  .refs{margin:10px 0 0 20px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:#475569}
+  .refs li{padding-left:4px}
+  .refs a{color:var(--req);font-weight:600;word-break:break-all}
+  .view-head p{color:var(--muted);max-width:760px;margin-top:6px;font-size:14px}
+
+  .grid{display:grid;grid-template-columns:340px 1fr;gap:26px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  /* ---------- Phone ---------- */
+  .phone-col{position:sticky;top:88px}
+  @media(max-width:860px){.phone-col{position:static}}
+  .phone{
+    width:340px;max-width:100%;margin:0 auto;
+    background:#000;border-radius:38px;padding:12px;
+    box-shadow:0 24px 60px rgba(15,23,42,.35);
+  }
+  .phone .notch{height:22px;display:flex;justify-content:center}
+  .phone .notch::after{content:"";width:120px;height:22px;background:#000;border-radius:0 0 16px 16px}
+  .screen{background:var(--chat-bg);border-radius:28px;overflow:hidden;height:560px;display:flex;flex-direction:column;
+    background-image:linear-gradient(rgba(11,20,26,.96),rgba(11,20,26,.96)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M0 39h40M39 0v40' stroke='%23ffffff10'/%3E%3C/svg%3E");}
+  .wa-head{background:var(--wa-green);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+  .wa-head .av{width:36px;height:36px;border-radius:50%;background:var(--wa-light);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .wa-head .nm{font-weight:700;font-size:14px;line-height:1.1}
+  .wa-head .st{font-size:11px;color:#cdeee2}
+  .chat{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+  .chat::-webkit-scrollbar{width:0}
+  .bubble{max-width:85%;padding:8px 11px;border-radius:10px;font-size:13.5px;color:#e9edef;white-space:pre-wrap;
+    box-shadow:0 1px 1px rgba(0,0,0,.2);animation:pop .25s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px) scale(.98)}to{opacity:1;transform:none}}
+  .bubble.imgmsg{padding:4px}
+  .bubble.imgmsg .pic{border-radius:9px;overflow:hidden;background:#fff;display:block;line-height:0}
+  .bubble.imgmsg .pic svg{display:block;width:200px;max-width:100%}
+  .bubble.imgmsg .cap{font-size:13px;color:#e9edef;padding:6px 6px 2px}
+  .bubble.bot{background:var(--bubble-bot);align-self:flex-start;border-top-left-radius:2px}
+  .bubble.user{background:var(--bubble-user);align-self:flex-end;border-top-right-radius:2px;color:#e9ffe9}
+  .bubble .ttl{font-weight:700;color:#fff;display:block;margin-bottom:2px}
+  .voice{display:flex;align-items:center;gap:8px;font-size:13px}
+  .voice .play{width:26px;height:26px;border-radius:50%;background:var(--wa-light);display:flex;align-items:center;justify-content:center;color:#063}
+  .voice .wavef{flex:1;height:18px;background:repeating-linear-gradient(90deg,#5b7280 0 2px,transparent 2px 5px);border-radius:4px;opacity:.7}
+
+  .replies{padding:10px 12px;display:flex;flex-direction:column;gap:7px;background:#0b141a;border-top:1px solid #1f2c33}
+  .reply{
+    background:#1f2c33;border:1px solid #2a3942;color:#d1f4e6;border-radius:9px;
+    padding:9px 11px;font-size:13px;text-align:left;cursor:pointer;transition:.12s;display:flex;gap:8px;align-items:center}
+  .reply:hover{background:#2a3942;transform:translateX(2px)}
+  .reply .k{font-weight:800;color:var(--wa-light)}
+  .reply.muted{justify-content:center;color:#8aa;background:transparent;border-style:dashed}
+  .reply.suggest{background:#10322b;border-color:#1f5e4f;color:#bdf0dd}
+  .reply.suggest .k{color:#34d399}
+
+  /* input bar (free question + voice) */
+  .inputbar{display:flex;align-items:center;gap:7px;padding:9px 10px;background:#0b141a;border-top:1px solid #1f2c33}
+  .inputbar .tinput{flex:1;background:#1f2c33;border:1px solid #2a3942;border-radius:18px;
+    padding:9px 13px;color:#e9edef;font-size:13px;outline:none}
+  .inputbar .tinput::placeholder{color:#7b8b93}
+  .inputbar .tinput:focus{border-color:var(--wa-light)}
+  .inputbar .mic,.inputbar .sendbtn{
+    width:36px;height:36px;flex:0 0 36px;border:none;border-radius:50%;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;font-size:15px;transition:.15s}
+  .inputbar .mic{background:#1f2c33;color:#cdeee2}
+  .inputbar .mic:hover{background:#2a3942}
+  .inputbar .mic.rec{background:#ef4444;color:#fff;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}50%{box-shadow:0 0 0 7px rgba(239,68,68,0)}}
+  .inputbar .sendbtn{background:var(--wa-light);color:#063}
+  .inputbar .sendbtn:hover{filter:brightness(1.08)}
+
+  /* ---------- Flow map ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+  .panel h3{font-size:15px;margin-bottom:4px}
+  .panel .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+
+  .steps{display:flex;flex-direction:column;gap:0}
+  .step{position:relative;padding:0 0 0 34px;cursor:pointer}
+  .step .node{
+    position:absolute;left:0;top:2px;width:24px;height:24px;border-radius:50%;
+    background:#fff;border:2px solid var(--line);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;z-index:2}
+  .step::before{content:"";position:absolute;left:11px;top:24px;bottom:-6px;width:2px;background:var(--line)}
+  .step:last-child::before{display:none}
+  .step .box{
+    border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:12px;
+    background:#fff;transition:.15s}
+  .step .box .t{font-weight:700;font-size:14px}
+  .step .box .d{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .step .box .links{margin-top:7px;display:flex;flex-wrap:wrap;gap:5px}
+  .lnk{font-size:11px;background:#f1f5f9;border:1px solid var(--line);border-radius:999px;padding:2px 9px;color:#475569}
+  .lnk::before{content:"→ ";color:#94a3b8}
+  .step:hover .box{border-color:#cbd5e1;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .step.current .node{color:#fff}
+  .step.current .box{box-shadow:0 8px 24px rgba(0,0,0,.10)}
+  .view[data-color="teacher"] .step.current .node{background:var(--teacher);border-color:var(--teacher)}
+  .view[data-color="teacher"] .step.current .box{border-color:var(--teacher)}
+  .view[data-color="student"] .step.current .node{background:var(--student);border-color:var(--student)}
+  .view[data-color="student"] .step.current .box{border-color:var(--student)}
+  .view[data-color="overall"] .step.current .node{background:var(--overall);border-color:var(--overall)}
+  .view[data-color="overall"] .step.current .box{border-color:var(--overall)}
+
+  .hint{display:flex;align-items:center;gap:8px;background:#fffbeb;border:1px solid #fde68a;
+    color:#92400e;font-size:12.5px;padding:9px 12px;border-radius:10px;margin-bottom:14px}
+  .caps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  @media(max-width:680px){.caps{grid-template-columns:1fr}}
+  .cap{border:1px solid #e0f2fe;background:#fff;border-radius:10px;padding:9px 10px;display:flex;flex-direction:column;gap:3px}
+  .cap b{font-size:12.5px}
+  .cap span{font-size:11.5px;color:var(--muted)}
+  .kgtabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .kgtab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;color:#475569}
+  .kgtab.on{background:var(--overall);color:#fff;border-color:transparent}
+  #kgview{display:flex;justify-content:center}
+  .kglegend{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px;font-size:11.5px;color:var(--muted)}
+  .kglegend span{display:flex;align-items:center;gap:5px}
+  .kglegend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  /* ---------- Overall diagram ---------- */
+  .diagram{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:8px}
+  .diagram h3{margin-bottom:16px}
+  .sysmap{display:grid;grid-template-columns:1fr;gap:16px;align-items:center;text-align:center}
+  .graph-core{background:linear-gradient(120deg,#ede9fe,#dbeafe);border:1px solid #ddd6fe;border-radius:14px;padding:16px;max-width:420px;margin:0 auto}
+  .graph-core .gt{font-weight:800;color:#5b21b6}
+  .graph-core .gd{font-size:12.5px;color:#6d28d9;margin-top:3px}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  @media(max-width:680px){.three{grid-template-columns:1fr}}
+  .node-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;text-align:left}
+  .node-card .h{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px}
+  .node-card .h .ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+  .node-card ul{margin:10px 0 0 0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  .node-card li{font-size:12.5px;color:#475569;padding-left:16px;position:relative}
+  .node-card li::before{content:"•";position:absolute;left:2px;color:#cbd5e1}
+  .arrows{display:flex;justify-content:center;color:#94a3b8;font-size:13px;gap:30px;flex-wrap:wrap;margin:4px 0}
+  .loopnote{text-align:center;font-size:12.5px;color:var(--muted);margin-top:10px}
+
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:30px 16px 50px}
+  .principles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
+  @media(max-width:680px){.principles{grid-template-columns:1fr}}
+  .pri{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:#fff}
+  .pri .pt{font-weight:700;font-size:13.5px;margin-bottom:3px}
+  .pri .pd{font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="top">
+  <span class="logo">🤖 ARED Edu · UX Prototype</span>
+  <h1>Parcours UX : Enseignant · Élève · Système</h1>
+  <p>Prototype WhatsApp interactif. Touchez les réponses dans le téléphone pour suivre les étapes — la carte de droite montre où vous êtes et les liens entre chaque étape.</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab active" data-flow="teacher"><span class="dot"></span> 👩‍🏫 Enseignant</button>
+  <button class="tab" data-flow="student"><span class="dot"></span> 🧒 Élève</button>
+  <button class="tab" data-flow="overall"><span class="dot"></span> 🕸️ Système global</button>
+  <button class="tab" data-flow="req"><span class="dot"></span> 📋 Exigences</button>
+  <button class="tab" data-flow="qa"><span class="dot"></span> ❓ Q&A</button>
+</nav>
+
+<div class="wrap">
+
+  <!-- ============ TEACHER ============ -->
+  <section class="view active" id="view-teacher" data-color="teacher">
+    <div class="view-head">
+      <h2><span class="badge teacher">Enseignant</span> Assistant pédagogique au quotidien</h2>
+      <p>Le parcours suit la journée de l'enseignant et un <b>graphe de connaissances</b> par matière (🔢 Maths · 📖 Français) : leçon, exercices, planning et remédiation sont dérivés des prérequis du graphe.</p>
+    </div>
+    <div class="grid">
+      <div class="phone-col">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="wa-head">
+              <div class="av">🤖</div>
+              <div><div class="nm">ARED Edu</div><div class="st">en ligne</div></div>
+            </div>
+            <div class="chat" id="chat-teacher"></div>
+            <div class="replies" id="replies-teacher"></div>
+            <div class="inputbar">
+              <button class="mic" id="mic-teacher" title="Envoyer une note vocale">🎤</button>
+              <input class="tinput" id="tinput-teacher" placeholder="Posez votre question…" autocomplete="off" />
+              <button class="sendbtn" id="send-teacher" title="Envoyer">➤</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="hint">👆 Touchez les boutons — <b>ou écrivez / dictez 🎤 une question</b> dans la barre du bas, à tout moment.</div>
+        <div class="panel" style="border-color:#bae6fd;background:linear-gradient(120deg,#f0f9ff,#fff);margin-bottom:18px">
+          <h3>💬🎤 Question libre &amp; voix <span style="font-size:11px;font-weight:700;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:999px;vertical-align:middle">disponible partout</span></h3>
+          <div class="sub" style="margin-bottom:10px">L'enseignant n'est jamais bloqué dans les menus. Modèle hybride : menus guidés + conversation naturelle.</div>
+          <div class="caps">
+            <div class="cap"><b>⌨️ Texte libre</b><span>« Donne-moi un problème sur l'addition » → réponse + actions.</span></div>
+            <div class="cap"><b>🎤 Note vocale</b><span>Dicter la question ; ARED Edu la transcrit puis répond.</span></div>
+            <div class="cap"><b>🧭 Contextuel</b><span>Après chaque réponse, des suggestions relient au bon écran.</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:12px;color:#0369a1">Essayez : « matériel pour le nombre 6 », « génère un exercice difficile », « mes élèves n'ont pas compris », « progrès de la classe ».</div>
+        </div>
+        <div class="panel" style="margin-bottom:18px;border-color:#ddd6fe;background:linear-gradient(120deg,#faf5ff,#fff)">
+          <h3>🧠 Graphe de connaissances <span style="font-size:11px;font-weight:700;color:#7c3aed;background:#ede9fe;padding:2px 8px;border-radius:999px;vertical-align:middle">moteur du système</span></h3>
+          <div class="sub" style="margin-bottom:10px">Tout est dérivé de ce graphe : la prochaine leçon, les exercices, le planning et la remédiation suivent l'ordre des prérequis.</div>
+          <div class="kgtabs" id="kgtabs"></div>
+          <div id="kgview"></div>
+          <div class="kglegend">
+            <span><i style="background:#10b981"></i>Maîtrisé</span>
+            <span><i style="background:#0ea5e9"></i>En cours</span>
+            <span><i style="background:#f59e0b"></i>À renforcer</span>
+            <span><i style="background:#94a3b8"></i>À venir</span>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>Carte du parcours enseignant</h3>
+          <div class="sub">Étapes et liens entre elles</div>
+          <div class="steps" id="steps-teacher"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STUDENT ============ -->
+  <section class="view" id="view-student" data-color="student">
+    <div class="view-head">
+      <h2><span class="badge student">Élève</span> Exercices guidés (assisté par le parent)</h2>
+      <p>Pensé pour des enfants 6–11 ans (CI–CM2) sur le téléphone d'un parent : audio d'abord, images, une question à la fois, récompense immédiate, sessions de 5 min. L'enseignant pousse les exercices.</p>
+    </div>
+    <div class="grid">
+      <div class="phone-col">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="wa-head">
+              <div class="av">🤖</div>
+              <div><div class="nm">ARED Edu · Awa</div><div class="st">exercice du jour</div></div>
+            </div>
+            <div class="chat" id="chat-student"></div>
+            <div class="replies" id="replies-student"></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="hint">👆 Touchez les réponses de l'élève pour avancer dans la session.</div>
+        <div class="panel">
+          <h3>Carte du parcours élève</h3>
+          <div class="sub">Étapes et liens entre elles</div>
+          <div class="steps" id="steps-student"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OVERALL ============ -->
+  <section class="view" id="view-overall" data-color="overall">
+    <div class="view-head">
+      <h2><span class="badge overall">Système</span> Une seule boucle, un graphe de programme</h2>
+      <p>Les trois rôles alimentent un même graphe de curriculum. Les réponses des élèves remontent automatiquement dans les analyses de l'enseignant, qui déclenchent une remédiation ciblée.</p>
+    </div>
+
+    <div class="diagram">
+      <h3>🕸️ Architecture de la boucle pédagogique</h3>
+      <div class="sysmap">
+        <div class="graph-core">
+          <div class="gt">🧠 GRAPHE DE CONNAISSANCES</div>
+          <div class="gd">2 matières : 🔢 Mathématiques · 📖 Français<br>Concepts + prérequis + progression — source unique de vérité</div>
+        </div>
+        <div class="arrows">↓ alimente &nbsp;&nbsp; ↓ alimente &nbsp;&nbsp; ↓ alimente</div>
+        <div class="three">
+          <div class="node-card">
+            <div class="h"><span class="ic" style="background:var(--teacher)">👩‍🏫</span> Enseignant</div>
+            <ul>
+              <li>Pose des questions (texte / voix 🎤)</li>
+              <li>Prépare la leçon</li>
+              <li>Génère exercices</li>
+              <li>Lance l'évaluation</li>
+              <li>Voit les analyses</li>
+            </ul>
+          </div>
+          <div class="node-card">
+            <div class="h"><span class="ic" style="background:var(--student)">🧒</span> Élève</div>
+            <ul>
+              <li>Reçoit l'exercice poussé</li>
+              <li>Répond (audio/image)</li>
+              <li>Récompense immédiate</li>
+              <li>Scores remontés auto</li>
+            </ul>
+          </div>
+          <div class="node-card">
+            <div class="h"><span class="ic" style="background:var(--overall)">📊</span> Analyses</div>
+            <ul>
+              <li>Détecte les lacunes</li>
+              <li>Maîtrisé / À renforcer</li>
+              <li>Recommande remédiation</li>
+              <li>Planifie la semaine</li>
+            </ul>
+          </div>
+        </div>
+        <div class="arrows">⟲ &nbsp; La remédiation ciblée renvoie de nouveaux exercices à l'élève &nbsp; ⟲</div>
+        <div class="loopnote">L'élève ferme la boucle de l'enseignant : plus besoin de saisir les scores à la main → les analyses (Stage 10) deviennent vivantes.</div>
+      </div>
+
+      <div class="principles">
+        <div class="pri"><div class="pt">Source unique de vérité</div><div class="pd">Leçons, difficulté, planning et remédiation sont dérivés du graphe — jamais écrits à la main.</div></div>
+        <div class="pri"><div class="pt">Un seul numéro, plusieurs rôles</div><div class="pd">Le rôle stocké (teacher / parent-élève) change le comportement du bot. Pas d'app séparée.</div></div>
+        <div class="pri"><div class="pt">🖼️ Image d'abord</div><div class="pd">Cartes visuelles, flashcards et badges (SVG légers) remplacent le texte pour les jeunes élèves et le faible débit.</div></div>
+        <div class="pri"><div class="pt">Hors-ligne & faible débit</div><div class="pd">Texte + notes vocales + petites images. Aucun lien web nécessitant data/login.</div></div>
+        <div class="pri"><div class="pt">Français d'abord, voix locale</div><div class="pd">Texte en français (curriculum) ; instructions vocales possibles en langue locale pour les petits.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REQUIREMENTS ============ -->
+  <section class="view" id="view-req" data-color="req">
+    <div class="view-head">
+      <h2><span class="badge req">Exigences</span> Faisabilité — Intégration WhatsApp</h2>
+      <p>Tout le système ARED Edu est intégrable à ≈ 95 % dans un chatbot WhatsApp via la <b>WhatsApp Cloud / Business API</b> (Meta). Détail des capacités natives et des adaptations nécessaires, avec références officielles.</p>
+    </div>
+
+    <div class="reqgrid">
+      <div class="panel ok">
+        <h3>✅ Intégrable directement</h3>
+        <ul class="reqlist">
+          <li><b>Menus & navigation</b> — messages interactifs : listes jusqu'à <b>10 options</b> et boutons de réponse <b>(max 3)</b>.<sup><a href="#refs">[1]</a></sup></li>
+          <li><b>Sélection classes / matières</b> — via listes interactives (sections).<sup><a href="#refs">[1]</a></sup></li>
+          <li><b>Question libre (texte)</b> — message texte routé vers l'IA.<sup><a href="#refs">[4]</a></sup></li>
+          <li><b>Notes vocales</b> — envoi & réception de messages audio.<sup><a href="#refs">[2]</a></sup></li>
+          <li><b>Images</b> — flashcards, cartes à compter, badges (JPEG / PNG).<sup><a href="#refs">[2]</a></sup></li>
+          <li><b>Graphe de connaissances, analyses, planning, remédiation</b> — logique côté serveur, aucune limite WhatsApp.</li>
+        </ul>
+      </div>
+      <div class="panel warn">
+        <h3>⚠️ À adapter (3 points)</h3>
+        <ul class="reqlist">
+          <li><b>SVG non supporté</b> — convertir les visuels en <b>PNG / JPG</b> côté serveur.<sup><a href="#refs">[2]</a></sup></li>
+          <li><b>Push proactif</b> (envoyer un exercice aux élèves hors fenêtre de 24 h) — nécessite des <b>templates approuvés</b> par Meta ; les messages interactifs ne s'envoient que dans la fenêtre de 24 h.<sup><a href="#refs">[3]</a><a href="#refs">[4]</a></sup></li>
+          <li><b>Graphe visuel</b> (nœuds / flèches) — non interactif dans le chat → envoyé en <b>image</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="reqbanner">≈ 95 % intégrable tel quel — le reste = ajustements techniques, pas des blocages.</div>
+
+    <div class="panel" id="refs">
+      <h3>📚 Références (documentation officielle Meta · WhatsApp Cloud API)</h3>
+      <ol class="refs">
+        <li>[1] Interactive messages — listes (≤ 10) & boutons (≤ 3) : <a href="https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/guides/interactive-messages</a></li>
+        <li>[2] Médias supportés (image JPEG/PNG, audio) — SVG non listé : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/reference/media</a></li>
+        <li>[3] Message templates (envoi proactif hors fenêtre) : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates</a></li>
+        <li>[4] Service messages & fenêtre de service client de 24 h : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages</a></li>
+        <li>[5] Tarification & conversations (WhatsApp Business Platform) : <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing" target="_blank" rel="noopener">developers.facebook.com/documentation/business-messaging/whatsapp/pricing</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ Q&A ============ -->
+  <section class="view" id="view-qa" data-color="qa">
+    <div class="view-head">
+      <h2><span class="badge qa">Q&amp;A</span> Que fait chaque fonctionnalité ?</h2>
+      <p>Référentiel des fonctionnalités d'ARED Edu : à quelle question chacune répond, en bref. Cliquez pour déplier.</p>
+    </div>
+
+    <input class="qasearch" id="qasearch" placeholder="🔎 Rechercher une fonctionnalité…" autocomplete="off" />
+
+    <div class="qagroup">
+      <h3>👩‍🏫 Enseignant</h3>
+      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> « Qui êtes-vous et que gérez-vous ? » L'enseignant sélectionne une ou plusieurs <b>classes</b> (CI→CM2) et ses <b>matières</b> (Maths, Français). Stocké une fois, jamais redemandé.</div></details>
+      <details class="qa"><summary>Accueil</summary><div class="a"><b>Répond à :</b> « Que dois-je faire aujourd'hui ? » Affiche classe active, matière, <b>leçon active</b> et 3 actions principales. Tableau de bord quotidien.</div></details>
+      <details class="qa"><summary>Préparer ma leçon</summary><div class="a"><b>Répond à :</b> « Comment préparer ma leçon ? » Objectif, prérequis (issus du graphe) et déroulé. En Maths : format <b>semaine · jour · n° de leçon</b>.</div></details>
+      <details class="qa"><summary>Mode assistant en classe</summary><div class="a"><b>Répond à :</b> « Comment mener le cours, étape par étape ? » Guide pas-à-pas (Étape 1/5…) avec SUIVANT / RETOUR — un « GPS » du cours, avec images de support.</div></details>
+      <details class="qa"><summary>Générer des exercices</summary><div class="a"><b>Répond à :</b> « Donne-moi un exercice. » Si 2 matières, demande d'abord <b>la matière</b>, puis le <b>niveau</b> (facile/moyen/difficile), et génère un exercice adapté (avec image si utile).</div></details>
+      <details class="qa"><summary>Évaluation rapide</summary><div class="a"><b>Répond à :</b> « Comment évaluer en fin de cours ? » Mini-test de 5 questions / 5 min, prêt à l'emploi.</div></details>
+      <details class="qa"><summary>Correction des résultats</summary><div class="a"><b>Répond à :</b> « Qu'est-ce que les élèves n'ont pas compris ? » À partir des scores, détecte le <b>concept faible</b> via le graphe et recommande une action.</div></details>
+      <details class="qa"><summary>Remédiation</summary><div class="a"><b>Répond à :</b> « Comment aider les élèves en difficulté ? » Propose nouvelle explication, jeu ou exercices ciblés, et les <b>pousse aux élèves</b>.</div></details>
+      <details class="qa"><summary>Planning hebdo</summary><div class="a"><b>Répond à :</b> « Quoi enseigner cette semaine ? » Semaine dérivée du graphe (Maths : par n° de leçon ; Français : séquence libre).</div></details>
+      <details class="qa"><summary>Analyses de classe</summary><div class="a"><b>Répond à :</b> « Où en est ma classe ? » Concepts maîtrisés vs à renforcer, alimentés par les réponses des élèves.</div></details>
+      <details class="qa"><summary>Changer de classe / matière / leçon</summary><div class="a"><b>Répond à :</b> « Je veux basculer de contexte. » Commute la classe active (multigrade), la matière (le graphe suivi change) ou la leçon active.</div></details>
+      <details class="qa"><summary>Question libre & voix 🎤</summary><div class="a"><b>Répond à :</b> « Je veux demander autre chose. » À tout moment, l'enseignant écrit ou <b>dicte</b> une question ; ARED Edu répond et propose des actions contextuelles. Menus + conversation.</div></details>
+    </div>
+
+    <div class="qagroup">
+      <h3>🧒 Élève</h3>
+      <details class="qa"><summary>Réception d'exercice</summary><div class="a"><b>Répond à :</b> « Qu'est-ce que je dois faire ? » L'exercice est <b>poussé par l'enseignant</b> ; le parent ouvre, l'enfant participe (session ~5 min).</div></details>
+      <details class="qa"><summary>Questions audio + image</summary><div class="a"><b>Répond à :</b> « Comment répondre quand je ne lis pas encore ? » Consigne en <b>voix</b>, support en <b>image</b>, réponse par chiffre/emoji. Une question à la fois.</div></details>
+      <details class="qa"><summary>Réessai bienveillant</summary><div class="a"><b>Répond à :</b> « Et si je me trompe ? » Jamais de sanction : indice visuel et nouvelle tentative.</div></details>
+      <details class="qa"><summary>Récompense & série</summary><div class="a"><b>Répond à :</b> « Pourquoi revenir ? » Badge image + série (streak) pour la motivation.</div></details>
+      <details class="qa"><summary>Remontée des scores</summary><div class="a"><b>Répond à :</b> « Que deviennent mes réponses ? » Les scores remontent <b>automatiquement</b> vers les analyses de l'enseignant.</div></details>
+    </div>
+
+    <div class="qagroup">
+      <h3>🕸️ Système</h3>
+      <details class="qa"><summary>Graphe de connaissances</summary><div class="a"><b>Répond à :</b> « Sur quoi se base le contenu ? » Concepts + prérequis par matière. <b>Source unique</b> dont dérivent leçon, exercices, planning et remédiation.</div></details>
+      <details class="qa"><summary>Image d'abord 🖼️</summary><div class="a"><b>Répond à :</b> « Comment limiter le texte ? » Flashcards, cartes à compter et badges (SVG/PNG légers) pour les jeunes élèves et le faible débit.</div></details>
+      <details class="qa"><summary>Boucle pédagogique</summary><div class="a"><b>Répond à :</b> « Comment tout se connecte ? » Enseignant → élève → analyses → remédiation → élève. L'élève ferme la boucle de l'enseignant.</div></details>
+      <details class="qa"><summary>Un numéro, plusieurs rôles</summary><div class="a"><b>Répond à :</b> « Faut-il plusieurs apps ? » Non : le rôle stocké (enseignant / parent-élève) change le comportement du bot. Tout sur WhatsApp.</div></details>
+    </div>
+
+    <div class="qagroup">
+      <h3>📋 Intégration WhatsApp</h3>
+      <details class="qa"><summary>Faisabilité WhatsApp</summary><div class="a"><b>Répond à :</b> « Est-ce intégrable ? » ≈ 95 % via la WhatsApp Cloud API (menus, voix, images, IA). Adaptations : PNG au lieu de SVG, templates pour le push, graphe envoyé en image. Détails dans l'onglet <b>Exigences</b>.</div></details>
+    </div>
+
+    <div class="panel" id="qaempty" style="display:none;text-align:center;color:var(--muted)">Aucune fonctionnalité ne correspond à votre recherche.</div>
+  </section>
+
+</div>
+
+<footer>Prototype généré à partir de votre PDF ARED Edu · ouvrez et touchez les écrans pour explorer les parcours.</footer>
+
+<script>
+/* ============================================================
+   FLOW DATA — each screen is a step (node) with links (to)
+   ============================================================ */
+const FLOWS = {
+  teacher:{
+    start:"onboarding",
+    screens:{
+      onboarding:{
+        step:"Onboarding — classes", desc:"Sélection d'une OU plusieurs classes. Stocké une fois, jamais redemandé.",
+        type:"multiselect", kind:"class", to:"subjectpick",
+        msgs:[{f:"bot",t:"👋 Bonjour, je suis ARED Edu",x:"Je vous accompagne à partir d'un graphe de connaissances officiel.\n\nSélectionnez votre/vos classe(s), puis validez :"}],
+        opts:[{k:"✅",label:"Valider → Matières",to:"subjectpick"}]
+      },
+      subjectpick:{
+        step:"Onboarding — matières", desc:"Choix des 2 matières (Maths, Français). Le contenu suit le graphe de connaissances de la matière active.",
+        type:"multiselect", kind:"subject", to:"home",
+        msgs:[{f:"bot",t:"📚 Vos matières",x:"ARED Edu suit un graphe de connaissances par matière (concepts + prérequis).\n\nSélectionnez votre/vos matière(s) :"}],
+        opts:[{k:"✅",label:"Valider → Accueil",to:"home"}]
+      },
+      classswitch:{
+        step:"Changer de classe active", desc:"Bascule entre les classes sélectionnées (mode multigrade).",
+        msgs:[],
+        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
+      },
+      subjectswitch:{
+        step:"Changer de matière", desc:"Bascule entre Maths et Français : le graphe de connaissances suivi change.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
+      },
+      lessonswitch:{
+        step:"Changer de leçon", desc:"Choisir la leçon active (maths : semaine·jour·n° · français : libre).",
+        msgs:[],
+        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
+      },
+      home:{
+        step:"Accueil enseignant", desc:"Chaque matin. 3 actions principales + menu « Plus ».",
+        msgs:[{f:"bot",t:"Bonjour Mme Diallo 👋",x:"Aujourd'hui :\n📖 Prochaine leçon : Nombre 6\n🎯 Objectif : Découvrir le nombre 6"}],
+        opts:[
+          {k:"1",label:"Préparer ma leçon",to:"prepare"},
+          {k:"2",label:"Générer des exercices",to:"exercise"},
+          {k:"3",label:"Évaluation rapide",to:"assess"},
+          {k:"9",label:"Plus (planning · suivi · remédiation)",to:"more"}
+        ]
+      },
+      prepare:{
+        step:"Préparation de leçon", desc:"La fonction la plus utilisée. Divulgation progressive.",
+        msgs:[{f:"bot",t:"📖 Leçon 16 : Nombre 6",x:"🎯 Objectif : Découvrir le nombre 6\n📚 Prérequis :\n✓ Nombres 0 à 5\n✓ Comparaison\n\nChoisissez :"}],
+        opts:[
+          {k:"1",label:"Déroulé complet → Démarrer la leçon",to:"teach1"},
+          {k:"2",label:"Activité d'introduction",to:"teach1"},
+          {k:"0",label:"Retour à l'accueil",to:"home"}
+        ]
+      },
+      teach1:{
+        step:"Mode assistant — Étape 1/5", desc:"Assistant en direct pendant la classe (« Google Maps du cours »).",
+        msgs:[
+          {f:"bot",t:"🟢 Étape 1/5",x:"Montrez ces 6 objets à la classe :"},
+          {f:"bot",img:"count6",cap:"« Combien voyez-vous d'objets ? »"},
+          {f:"bot",x:"Écrivez SUIVANT quand prêt."}
+        ],
+        opts:[{k:"➡️",label:"SUIVANT",to:"teach2"},{k:"0",label:"Quitter vers l'accueil",to:"home"}]
+      },
+      teach2:{
+        step:"Mode assistant — Étape 2/5", desc:"Navigation avant / arrière entre les étapes.",
+        msgs:[
+          {f:"bot",t:"🟢 Étape 2/5",x:"Écrire le chiffre et faire répéter « SIX » :"},
+          {f:"bot",img:"num6",cap:"Le nombre 6"}
+        ],
+        opts:[{k:"➡️",label:"SUIVANT",to:"teach3"},{k:"⬅️",label:"RETOUR",to:"teach1"}]
+      },
+      teach3:{
+        step:"Mode assistant — Étape 3/5", desc:"Fin du déroulé → générer un exercice en direct.",
+        msgs:[{f:"bot",t:"🟢 Étape 3/5",x:"Demandez : « 6 est-il plus grand que 5 ? »\n\nLeçon terminée ✅"}],
+        opts:[{k:"2",label:"Générer un exercice",to:"exercise"},{k:"3",label:"Évaluation rapide",to:"assess"},{k:"0",label:"Accueil",to:"home"}]
+      },
+      exercise_subject:{
+        step:"Exercices — choix de la matière", desc:"Si 2 matières sont sélectionnées : on demande la matière avant de générer.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
+      },
+      exercise:{
+        step:"Générateur d'exercices", desc:"Choix du niveau, puis exercice adapté à la matière.",
+        msgs:[{f:"bot",t:"📝 Exercice",x:"Choisissez le niveau :"}],
+        opts:[
+          {k:"1",label:"Facile",to:"exercise_out"},
+          {k:"2",label:"Moyen",to:"exercise_out"},
+          {k:"3",label:"Difficile",to:"exercise_out"}
+        ]
+      },
+      exercise_out:{
+        step:"Exercice généré", desc:"Problème contextualisé, prêt à dicter.",
+        msgs:[{f:"bot",t:"Exercice",x:"Awa a 4 mangues.\nSa mère lui donne 2 mangues.\nCombien a-t-elle au total ? 🥭"}],
+        opts:[{k:"🔄",label:"Un autre exercice",to:"exercise"},{k:"3",label:"Passer à l'évaluation",to:"assess"},{k:"0",label:"Accueil",to:"home"}]
+      },
+      assess:{
+        step:"Évaluation rapide", desc:"En fin de cours. 5 questions / 5 min.",
+        msgs:[{f:"bot",t:"✅ Évaluation rapide",x:"5 questions\nDurée : 5 min\nCommencer ?"}],
+        opts:[{k:"▶️",label:"Commencer → puis saisir résultats",to:"correct"},{k:"0",label:"Accueil",to:"home"}]
+      },
+      correct:{
+        step:"Assistant de correction", desc:"Le graphe détecte les difficultés à partir des scores.",
+        msgs:[
+          {f:"user",x:"Résultats :\nQ1 : 90%\nQ2 : 80%\nQ3 : 30%\nQ4 : 20%"},
+          {f:"bot",t:"⚠️ Difficulté détectée",x:"Décomposition du nombre 6\nRecommandation : refaire les activités de manipulation."}
+        ],
+        opts:[{k:"➡️",label:"Lancer une remédiation",to:"remediation"},{k:"4",label:"Voir analyses classe",to:"analytics"}]
+      },
+      remediation:{
+        step:"Remédiation", desc:"Pousse une activité ciblée — lien direct vers l'élève.",
+        msgs:[{f:"bot",t:"🔍 Concept : Décomposition du nombre 6",x:"Choisissez :"}],
+        opts:[
+          {k:"1",label:"Nouvelle explication",to:"remediation_sent"},
+          {k:"2",label:"Jeu pédagogique → envoyer aux élèves",to:"remediation_sent"},
+          {k:"3",label:"Exercices supplémentaires",to:"remediation_sent"}
+        ]
+      },
+      remediation_sent:{
+        step:"Remédiation envoyée → Élève", desc:"Le système pousse l'exercice vers le parcours Élève.",
+        msgs:[{f:"bot",t:"📤 Envoyé à 24 élèves",x:"Les élèves recevront l'exercice sur WhatsApp.\n(Voir l'onglet « Élève » 🧒)"}],
+        opts:[{k:"4",label:"Voir analyses classe",to:"analytics"},{k:"0",label:"Accueil",to:"home"}]
+      },
+      more:{
+        step:"Menu « Plus »", desc:"Fonctions secondaires et nouveaux modules.",
+        msgs:[{f:"bot",t:"➕ Plus",x:"Choisissez :"}],
+        opts:[
+          {k:"1",label:"Planifier la semaine",to:"planning"},
+          {k:"2",label:"Suivi / Analyses classe",to:"analytics"},
+          {k:"3",label:"Remédiation",to:"remediation"},
+          {k:"4",label:"📚 Accéder aux guides",to:"guides"},
+          {k:"5",label:"🌍 Apprentissage continu (langues locales)",to:"learning"},
+          {k:"6",label:"📝 Rapport terrain (supports pédagogiques)",to:"fieldreport"},
+          {k:"7",label:"👤 Modifier votre profil",to:"profile"},
+          {k:"8",label:"🚪 Terminer la session",to:"endsession"},
+          {k:"0",label:"Accueil",to:"home"}
+        ]
+      },
+      guides:{ step:"📚 Accéder aux guides", desc:"Guides des différentes matières par niveaux + interaction.", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
+      guides_level:{ step:"Guides — niveau", desc:"Choix du niveau (CI → CM2).", msgs:[], opts:[{k:"0",label:"Retour",to:"guides"}] },
+      guide_view:{ step:"Lecture & interaction guide", desc:"Sommaire du guide ; interaction via question libre/voix.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
+      learning:{ step:"🌍 Apprentissage continu", desc:"L'enseignant apprend une langue locale (Pulaar, Wolof, Sérère, Mandinka, Soninké).", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
+      lang_lesson:{ step:"Leçon de langue locale", desc:"Expression du jour dans la langue choisie.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
+      fieldreport:{ step:"📝 Rapport terrain", desc:"Remontée sur l'état des supports pédagogiques.", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
+      fieldreport_state:{ step:"Rapport — état du support", desc:"Disponible / Manquant / Abîmé / Insuffisant.", msgs:[], opts:[{k:"0",label:"Annuler",to:"more"}] },
+      fieldreport_done:{ step:"Rapport enregistré", desc:"Confirmation de la remontée terrain.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
+      profile:{ step:"👤 Modifier votre profil", desc:"Voir/modifier classes, matières, langue d'apprentissage.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
+      endsession:{ step:"🚪 Terminer la session", desc:"Confirmation de déconnexion.", msgs:[], opts:[{k:"0",label:"Revenir",to:"home"}] },
+      session_end:{ step:"Session terminée", desc:"Déconnecté — reconnexion possible.", msgs:[], opts:[{k:"1",label:"Se reconnecter",to:"onboarding"}] },
+      planning:{
+        step:"Planification hebdo", desc:"Dérivée automatiquement du graphe de curriculum.",
+        msgs:[{f:"bot",t:"🗓️ Semaine 4",x:"Lun : Nombre 6\nMar : Composition du 6\nMer : Décomposition du 6\nJeu : Addition\nVen : Révision"}],
+        opts:[{k:"2",label:"Voir analyses classe",to:"analytics"},{k:"0",label:"Accueil",to:"home"}]
+      },
+      analytics:{
+        step:"Analyses de classe", desc:"Là où le système devient puissant — alimenté par les élèves.",
+        msgs:[{f:"bot",t:"📊 Classe CI-A · 24 élèves",x:"Maîtrisé :\n✅ Nombres 1-5\n✅ Comparaison\n\nÀ renforcer :\n⚠️ Décomposition\n⚠️ Addition\n\nRecommandation : séance de remédiation."}],
+        opts:[{k:"3",label:"Lancer remédiation",to:"remediation"},{k:"0",label:"Accueil",to:"home"}]
+      }
+    }
+  },
+
+  student:{
+    start:"received",
+    screens:{
+      received:{
+        step:"Exercice reçu", desc:"Poussé par l'enseignant. Le parent ouvre, l'enfant participe.",
+        msgs:[{f:"bot",t:"Bonjour Awa ! 🌟",x:"Ta maîtresse t'a envoyé un petit jeu.\nDurée : 5 minutes. On commence ?"}],
+        opts:[{k:"▶️",label:"Commencer",to:"q1"}]
+      },
+      q1:{
+        step:"Question 1 — audio + image", desc:"Audio + image à la place du texte. Réponse par chiffre.",
+        msgs:[
+          {f:"bot",voice:"« Combien de mangues vois-tu ? »"},
+          {f:"bot",img:"count4",cap:"Compte les mangues 🥭"},
+          {f:"bot",x:"Réponds :"}
+        ],
+        opts:[{k:"3️⃣",label:"3",to:"wrong1"},{k:"4️⃣",label:"4",to:"good1"},{k:"5️⃣",label:"5",to:"wrong1"}]
+      },
+      good1:{
+        step:"Bonne réponse 🎉", desc:"Feedback positif immédiat → motivation.",
+        msgs:[{f:"bot",t:"✅ Bravo Awa ! 🎉",x:"4 mangues, c'est juste !\n👉 Question suivante"}],
+        opts:[{k:"➡️",label:"Continuer",to:"q2"}]
+      },
+      wrong1:{
+        step:"Réessayer (bienveillant)", desc:"Jamais de sanction — on réessaie avec un indice.",
+        msgs:[{f:"bot",t:"Presque ! 💛",x:"Compte encore : 🥭🥭🥭🥭\nEssaie encore."}],
+        opts:[{k:"4️⃣",label:"4",to:"good1"},{k:"3️⃣",label:"3",to:"wrong1"}]
+      },
+      q2:{
+        step:"Question 2 — addition visuelle", desc:"L'image porte le sens : 4 + 2. Très peu de texte.",
+        msgs:[
+          {f:"bot",voice:"« Awa a 4 mangues. Maman donne 2. Combien en tout ? »"},
+          {f:"bot",img:"add42",cap:"Combien en tout ?"},
+          {f:"bot",x:"Réponds :"}
+        ],
+        opts:[{k:"5️⃣",label:"5",to:"wrong2"},{k:"6️⃣",label:"6",to:"good2"},{k:"7️⃣",label:"7",to:"wrong2"}]
+      },
+      wrong2:{
+        step:"Réessayer", desc:"Indice visuel puis nouvelle tentative.",
+        msgs:[{f:"bot",t:"Essaie encore 💛",x:"4 puis 2 de plus… compte tout : 🥭🥭🥭🥭🥭🥭"}],
+        opts:[{k:"6️⃣",label:"6",to:"good2"},{k:"5️⃣",label:"5",to:"wrong2"}]
+      },
+      good2:{
+        step:"Bonne réponse 🎉", desc:"Fin de la mini-session (≈5 min).",
+        msgs:[{f:"bot",t:"✅ Excellent ! 🎉",x:"6 mangues, parfait !\nTu as fini le jeu du jour."}],
+        opts:[{k:"🏁",label:"Voir mon résultat",to:"reward"}]
+      },
+      reward:{
+        step:"Récompense + série", desc:"Badge image + série pour donner envie de revenir.",
+        msgs:[
+          {f:"bot",img:"badge",cap:"2 bonnes réponses 🎉"},
+          {f:"bot",x:"Série : 3 jours 🔥\nÀ demain pour un nouveau jeu !"}
+        ],
+        opts:[{k:"🔁",label:"Rejouer",to:"received"},{k:"📤",label:"Score envoyé à la maîtresse →",to:"sent"}]
+      },
+      sent:{
+        step:"Score remonté → Enseignant", desc:"Les scores alimentent automatiquement les analyses de classe.",
+        msgs:[{f:"bot",t:"📤 Résultats envoyés",x:"Le score d'Awa rejoint le tableau de la classe.\n(Voir l'onglet « Enseignant » → Analyses 📊)"}],
+        opts:[{k:"🔁",label:"Recommencer la démo",to:"received"}]
+      }
+    }
+  }
+};
+
+/* ============================================================
+   RENDERING
+   ============================================================ */
+/* ---- Illustrations SVG (légères, faible débit) ---- */
+function mango(cx,cy){
+  return '<g transform="translate('+cx+','+cy+')">'
+    +'<path d="M4 -13 q9 -7 16 -2 q-7 5 -16 2 z" fill="#22c55e"/>'
+    +'<ellipse cx="0" cy="2" rx="20" ry="15" fill="#f59e0b"/>'
+    +'<ellipse cx="-6" cy="-3" rx="6" ry="4" fill="#fcd34d" opacity=".85"/></g>';
+}
+function fruits(n){const xs=[55,120,185],ys=[60,115];let s='';for(let i=0;i<n;i++)s+=mango(xs[i%3],ys[(i/3)|0]);return s;}
+function dotsGrid(n,ox,oy){const xs=[ox,ox+28],ys=[oy,oy+28,oy+56];let s='';for(let i=0;i<n;i++)s+='<circle cx="'+xs[i%2]+'" cy="'+ys[(i/2)|0]+'" r="9" fill="#06b6d4"/>';return s;}
+const IMG_W='<svg viewBox="0 0 240 160" width="100%">';
+const IMAGES={
+  count4:IMG_W+'<rect width="240" height="160" rx="14" fill="#fff7ed" stroke="#fed7aa"/>'+fruits(4)+'</svg>',
+  count6:IMG_W+'<rect width="240" height="160" rx="14" fill="#fff7ed" stroke="#fed7aa"/>'+fruits(6)+'</svg>',
+  add42:IMG_W+'<rect width="240" height="160" rx="14" fill="#eff6ff" stroke="#bfdbfe"/>'
+    +mango(45,62)+mango(92,62)+mango(45,112)+mango(92,112)
+    +'<text x="128" y="98" font-size="36" font-weight="800" fill="#1d4ed8" font-family="sans-serif">+</text>'
+    +mango(185,62)+mango(185,112)+'</svg>',
+  num6:IMG_W+'<rect width="240" height="160" rx="14" fill="#ecfeff" stroke="#a5f3fc"/>'
+    +'<text x="35" y="120" font-size="120" font-weight="800" fill="#0891b2" font-family="sans-serif">6</text>'
+    +dotsGrid(6,150,38)+'</svg>',
+  badge:IMG_W+'<rect width="240" height="160" rx="14" fill="#fffbeb" stroke="#fde68a"/>'
+    +'<path d="M120 30 L133 62 L168 64 L141 86 L150 120 L120 100 L90 120 L99 86 L72 64 L107 62 Z" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>'
+    +'<text x="120" y="82" font-size="26" font-weight="800" text-anchor="middle" fill="#fff" font-family="sans-serif">★</text>'
+    +'<text x="120" y="148" font-size="20" font-weight="800" text-anchor="middle" fill="#b45309" font-family="sans-serif">BRAVO !</text></svg>'
+};
+
+function makeBubble(m){
+  const b=document.createElement('div');
+  b.className='bubble '+(m.f==='user'?'user':'bot');
+  if(m.voice){
+    b.innerHTML='<div class="voice"><div class="play">▶</div><div class="wavef"></div><span>🔊</span></div>'+
+      '<div style="font-size:12px;color:#9fb0b8;margin-top:6px">'+m.voice+'</div>';
+    return b;
+  }
+  if(m.img){
+    b.classList.add('imgmsg');
+    b.innerHTML='<div class="pic">'+(IMAGES[m.img]||m.img)+'</div>'+(m.cap?'<div class="cap">'+m.cap+'</div>':'');
+    return b;
+  }
+  let html='';
+  if(m.t) html+='<span class="ttl">'+m.t+'</span>';
+  if(m.x) html+=m.x;
+  b.innerHTML=html;
+  return b;
+}
+
+const state={teacher:null,student:null};
+
+/* ---- Classes (multi-sélection) ---- */
+const CLASSES=[
+  {id:"CI", sub:"Cours d'Initiation"},
+  {id:"CP", sub:"Cours Préparatoire"},
+  {id:"CE1",sub:"Cours Élémentaire 1"},
+  {id:"CE2",sub:"Cours Élémentaire 2"},
+  {id:"CM1",sub:"Cours Moyen 1"},
+  {id:"CM2",sub:"Cours Moyen 2"}
+];
+let teacherClasses=[];   // ex. ["CI","CP"]
+let activeClass=null;    // classe en cours d'utilisation
+
+function fmtClasses(){return teacherClasses.length?teacherClasses.join(' · '):'—';}
+
+/* ---- Matières (2) ---- */
+const SUBJECTS=[
+  {id:"math", icon:"🔢", label:"Mathématiques"},
+  {id:"fr",   icon:"📖", label:"Français (Lecture-Écriture)"}
+];
+let teacherSubjects=[];          // ex. ["math","fr"]
+let activeSubject="math";
+function subjMeta(id){return SUBJECTS.find(s=>s.id===id)||SUBJECTS[0];}
+function fmtSubjects(){return teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon).join(' '):'—';}
+
+/* ---- KNOWLEDGE GRAPH (concepts + prérequis + statut) ---- */
+const KG={
+  math:{ title:"Mathématiques · CI", nodes:[
+    {id:"n05",   label:"Nombres 0–5",        status:"done",    prereq:[]},
+    {id:"comp",  label:"Comparaison",        status:"done",    prereq:["n05"]},
+    {id:"n6",    label:"Nombre 6",           status:"current", prereq:["n05","comp"]},
+    {id:"compo6",label:"Composition du 6",   status:"next",    prereq:["n6"]},
+    {id:"deco6", label:"Décomposition du 6", status:"weak",    prereq:["compo6"]},
+    {id:"add",   label:"Addition",           status:"next",    prereq:["deco6"]}
+  ]},
+  fr:{ title:"Français · CI", nodes:[
+    {id:"sa",   label:"Son [a]",           status:"done",    prereq:[]},
+    {id:"si",   label:"Son [i]",           status:"done",    prereq:[]},
+    {id:"syl",  label:"Syllabes simples",  status:"current", prereq:["sa","si"]},
+    {id:"mot",  label:"Mots simples",      status:"next",    prereq:["syl"]},
+    {id:"phr",  label:"Phrase courte",     status:"weak",    prereq:["mot"]},
+    {id:"lec",  label:"Lecture autonome",  status:"next",    prereq:["phr"]}
+  ]}
+};
+let kgViewSubject="math";
+function kg(){return KG[activeSubject]||KG.math;}
+function kgFind(s){return kg().nodes.find(n=>n.status===s);}
+function kgLabels(s){return kg().nodes.filter(n=>n.status===s).map(n=>n.label);}
+function prereqLabels(sub,nodeId){const g=KG[sub];if(!g)return[];const n=g.nodes.find(x=>x.id===nodeId);if(!n)return[];return n.prereq.map(p=>{const q=g.nodes.find(x=>x.id===p);return q?q.label:p;});}
+
+/* ---- MOCK DATA · Mathématiques (format : semaine · jour · n° leçon) ---- */
+const MATH_COURSES=[
+  {semaine:3, jour:"Lundi",    lecon:14, titre:"Nombres 0–5",        objectif:"Reconnaître les nombres de 0 à 5", node:"n05",    statut:"done"},
+  {semaine:3, jour:"Mardi",    lecon:15, titre:"Comparaison",        objectif:"Comparer deux quantités (plus/moins)", node:"comp",  statut:"done"},
+  {semaine:4, jour:"Lundi",    lecon:16, titre:"Nombre 6",           objectif:"Découvrir le nombre 6",            node:"n6",     statut:"current"},
+  {semaine:4, jour:"Mardi",    lecon:17, titre:"Composition du 6",   objectif:"Composer le nombre 6",             node:"compo6", statut:"next"},
+  {semaine:4, jour:"Mercredi", lecon:18, titre:"Décomposition du 6", objectif:"Décomposer le nombre 6",           node:"deco6",  statut:"weak"},
+  {semaine:4, jour:"Jeudi",    lecon:19, titre:"Addition",           objectif:"Additionner jusqu'à 10",           node:"add",    statut:"next"}
+];
+function mathCurrent(){return MATH_COURSES.find(c=>c.statut==='current')||MATH_COURSES[0];}
+
+/* ---- Leçon active (commutable par l'enseignant) ---- */
+let activeMathLecon=mathCurrent().lecon;
+let activeFrNode=(KG.fr.nodes.find(n=>n.status==='current')||KG.fr.nodes[0]).id;
+function curMathLesson(){return MATH_COURSES.find(c=>c.lecon===activeMathLecon)||mathCurrent();}
+function curFrNode(){return KG.fr.nodes.find(n=>n.id===activeFrNode)||KG.fr.nodes[0];}
+
+/* ---- Génération d'exercices (matière demandée si 2 matières) ---- */
+let exoSubject=null;     // matière choisie pour les exercices
+let exoLevel="moyen";
+function exoSubj(){return exoSubject||activeSubject||teacherSubjects[0]||"math";}
+function buildExercise(){
+  const s=exoSubj(),lvl=exoLevel;
+  if(s==='math'){
+    const m={
+      facile:{x:"🍋 Awa a 3 mangues. On lui donne 1.\nCombien en tout ?"},
+      moyen:{x:"🥭 Awa a 4 mangues. Sa mère lui donne 2.\nCombien a-t-elle au total ?",img:"add42"},
+      difficile:{x:"🧮 Awa a 6 mangues. Elle en donne 2, puis reçoit 3.\nCombien lui en reste-t-il ?"}
+    }[lvl];
+    const out=[{f:"bot",t:"📝 Exercice — 🔢 Maths ("+lvl+")"}];
+    if(m.img) out.push({f:"bot",img:m.img,cap:"Compte 🥭"});
+    out.push({f:"bot",x:m.x});
+    return out;
+  }
+  const frx={
+    facile:"🔤 Lis les syllabes :\nMA · MI · MO",
+    moyen:"🔤 Lis le mot :\nMAMAN",
+    difficile:"🔤 Lis la phrase :\n« Awa va à l'école. »"
+  }[lvl];
+  return [{f:"bot",t:"📝 Exercice — 📖 Français ("+lvl+")"},{f:"bot",x:frx}];
+}
+
+/* ---- Apprentissage continu : langues locales du Sénégal ---- */
+const LANGS=[
+  {id:"pulaar",  label:"Pulaar",   phrase:"« Tana alaa ? » → « Ça va ? »"},
+  {id:"wolof",   label:"Wolof",    phrase:"« Na nga def ? » → « Comment vas-tu ? »"},
+  {id:"serere",  label:"Sérère",   phrase:"« Nam fi'o ? » → « Comment vas-tu ? »"},
+  {id:"mandinka",label:"Mandinka", phrase:"« I be ñaadi ? » → « Comment vas-tu ? »"},
+  {id:"soninke", label:"Soninké",  phrase:"« An mooxo ? » → « Comment vas-tu ? »"}
+];
+let learnLang="wolof";
+function langMeta(id){return LANGS.find(l=>l.id===id)||LANGS[0];}
+
+/* ---- Rapport terrain : supports pédagogiques ---- */
+const SUPPORTS=["Manuels scolaires","Ardoises","Affiches murales","Matériel de manipulation","Cahiers"];
+let reportSupport="", reportState="";
+
+/* ---- Guides par matière & niveau ---- */
+let guideSubject="math", guideLevel="CI";
+
+/* dynamic messages depending on class / subject / knowledge graph */
+function getMsgs(flowName,id,scr){
+  if(flowName==='teacher'){
+    const sm=subjMeta(activeSubject);
+    if(id==='home'){
+      let lessonLine;
+      if(activeSubject==='math'){const c=curMathLesson();lessonLine="📖 Leçon active : S"+c.semaine+" · "+c.jour+" · Leçon "+c.lecon+" — "+c.titre;}
+      else {const cur=curFrNode();lessonLine="📖 Leçon active : "+cur.label+" (format libre)";}
+      return [{f:"bot",t:"Bonjour Mme Diallo 👋",
+        x:"📚 Classes : "+fmtClasses()+"\n📕 Matière : "+sm.icon+" "+sm.label+"\n🎯 Classe active : "+(activeClass||'—')+
+          "\n\n"+lessonLine+"\n🧩 Suivie depuis le graphe de connaissances"}];
+    }
+    if(id==='prepare'){
+      if(activeSubject==='math'){
+        const c=curMathLesson(),pre=prereqLabels('math',c.node);
+        return [{f:"bot",t:"📖 Leçon "+c.lecon+" : "+c.titre,
+          x:"🗓️ Semaine "+c.semaine+" · "+c.jour+"\n🎯 Objectif : "+c.objectif+
+            "\n📚 Prérequis :\n"+(pre.length?pre.map(p=>"✓ "+p).join("\n"):"—")+"\n\nChoisissez :"}];
+      }
+      const cur=curFrNode(),pre=prereqLabels(activeSubject,cur&&cur.id);
+      return [{f:"bot",t:"📖 Leçon (libre) : "+cur.label,
+        x:"🎯 Objectif : maîtriser « "+cur.label+" »\n📚 Prérequis :\n"+(pre.length?pre.map(p=>"✓ "+p).join("\n"):"—")+"\n\nChoisissez :"}];
+    }
+    if(id==='lessonswitch'){
+      if(activeSubject==='math'){const c=curMathLesson();
+        return [{f:"bot",t:"🔄 Changer de leçon — "+sm.icon+" Maths",x:"Leçon active : Leçon "+c.lecon+" — "+c.titre+"\n(format semaine · jour · n°)\n\nChoisissez :"}];}
+      const c=curFrNode();
+      return [{f:"bot",t:"🔄 Changer de leçon — "+sm.icon+" Français",x:"Leçon active : "+c.label+"\n(format libre)\n\nChoisissez :"}];
+    }
+    if(id==='exercise_subject') return [{f:"bot",t:"📝 Générer des exercices",x:"Pour quelle matière générer les exercices ?"}];
+    if(id==='exercise'){const s=subjMeta(exoSubj());return [{f:"bot",t:"📝 Exercices — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
+    if(id==='exercise_out') return buildExercise();
+    if(id==='guides') return [{f:"bot",t:"📚 Accéder aux guides",x:"Guides pédagogiques par matière et par niveau.\nPour quelle matière ?"}];
+    if(id==='guides_level'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📚 Guides — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
+    if(id==='guide_view'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📘 Guide "+s.icon+" "+s.label+" · "+guideLevel,
+      x:"Sommaire du guide :\n• 🎯 Objectifs du niveau\n• 🪜 Progression conseillée\n• 🧩 Activités types\n• ✅ Modalités d'évaluation\n\n💬 Pour interagir : posez votre question via la barre du bas (ex. « Comment introduire ce chapitre ? »)."}];}
+    if(id==='learning') return [{f:"bot",t:"🌍 Apprentissage continu",x:"Apprenez une langue locale du Sénégal (contenu à valider par des linguistes).\nChoisissez la langue :"}];
+    if(id==='lang_lesson'){const l=langMeta(learnLang);return [{f:"bot",t:"🗣️ "+l.label+" — leçon du jour",x:"Expression du jour :\n"+l.phrase+"\n\n🔊 (audio disponible dans le bot réel)"}];}
+    if(id==='fieldreport') return [{f:"bot",t:"📝 Rapport terrain — supports pédagogiques",x:"De quel support souhaitez-vous faire un rapport ?"}];
+    if(id==='fieldreport_state') return [{f:"bot",t:"📝 "+reportSupport,x:"Quel est l'état constaté ?"}];
+    if(id==='fieldreport_done') return [{f:"bot",t:"✅ Rapport enregistré",x:"Support : "+reportSupport+"\nÉtat : "+reportState+"\n\nMerci ! Ces remontées améliorent la distribution des supports."}];
+    if(id==='profile'){const subs=teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', '):'—';
+      return [{f:"bot",t:"👤 Votre profil",x:"Nom : Mme Diallo\nRôle : Enseignant\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue en cours : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
+    if(id==='endsession') return [{f:"bot",t:"🚪 Terminer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}];
+    if(id==='session_end') return [{f:"bot",t:"👋 Session terminée",x:"À bientôt Mme Diallo !\nReconnectez-vous quand vous voulez."}];
+    if(id==='analytics'){
+      const done=kgLabels('done'), weak=kg().nodes.filter(n=>n.status==='weak'||n.status==='current').map(n=>n.label);
+      return [{f:"bot",t:"📊 Classe "+(activeClass||'CI')+"-A · "+sm.icon+" "+sm.label+" · 24 élèves",
+        x:"Maîtrisé (graphe) :\n"+done.map(d=>"✅ "+d).join("\n")+
+          "\n\nÀ renforcer :\n"+weak.map(d=>"⚠️ "+d).join("\n")+
+          "\n\nRecommandation : remédiation sur le nœud faible."}];
+    }
+    if(id==='planning'){
+      const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
+      if(activeSubject==='math'){
+        const c=curMathLesson(),wk=MATH_COURSES.filter(x=>x.semaine===c.semaine);
+        return [{f:"bot",t:"🗓️ Semaine "+c.semaine+" — "+sm.icon+" "+sm.label,
+          x:days.map(d=>{const l=wk.find(x=>x.jour===d);return d+" : "+(l?("Leçon "+l.lecon+" — "+l.titre):"Révision");}).join("\n")+
+            "\n\n🧩 Format : semaine · jour · n° de leçon (mock data)."}];
+      }
+      const order=kg().nodes,start=Math.max(0,order.findIndex(n=>n.id===activeFrNode)),week=order.slice(start,start+5);
+      return [{f:"bot",t:"🗓️ Semaine — "+sm.icon+" "+sm.label,
+        x:days.map((d,i)=>d+" : "+(week[i]?week[i].label:'Révision')).join("\n")+
+          "\n\n🧩 Séquence libre dérivée du graphe."}];
+    }
+    if(id==='classswitch') return [{f:"bot",t:"🔄 Changer de classe active",
+      x:"Classe active : "+(activeClass||'—')+"\nVos classes : "+fmtClasses()+"\n\nChoisissez :"}];
+    if(id==='subjectswitch') return [{f:"bot",t:"🔄 Changer de matière",
+      x:"Matière active : "+sm.icon+" "+sm.label+"\n\nLe graphe de connaissances suivi changera.\nChoisissez :"}];
+  }
+  return scr.msgs;
+}
+
+/* dynamic options (extra menu entries depending on class/subject count) */
+function getOpts(flowName,id,scr){
+  if(flowName==='teacher'){
+    if(id==='home'){
+      let base=scr.opts.slice();
+      if(teacherSubjects.length>1)
+        base=base.map(o=>o.to==='exercise'?Object.assign({},o,{to:'exercise_subject'}):o);
+      let at=3;
+      base.splice(at++,0,{k:"5",label:"Changer de leçon",to:"lessonswitch"});
+      if(teacherClasses.length>1) base.splice(at++,0,{k:"6",label:"Changer de classe ("+activeClass+")",to:"classswitch"});
+      if(teacherSubjects.length>1) base.splice(at++,0,{k:"7",label:"Changer de matière ("+subjMeta(activeSubject).icon+")",to:"subjectswitch"});
+      return base;
+    }
+    if(id==='classswitch')
+      return teacherClasses.map((c,i)=>({k:String(i+1),label:(c===activeClass?'✓ ':'')+c,to:"__setclass:"+c}))
+        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
+    if(id==='subjectswitch')
+      return teacherSubjects.map((s,i)=>({k:String(i+1),label:(s===activeSubject?'✓ ':'')+subjMeta(s).icon+" "+subjMeta(s).label,to:"__setsubject:"+s}))
+        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
+    if(id==='lessonswitch'){
+      if(activeSubject==='math')
+        return MATH_COURSES.map((c,i)=>({k:String(i+1),label:(c.lecon===activeMathLecon?'✓ ':'')+"S"+c.semaine+" "+c.jour+" · L"+c.lecon+" — "+c.titre,to:"__setlesson:"+c.lecon}))
+          .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
+      return KG.fr.nodes.map((n,i)=>({k:String(i+1),label:(n.id===activeFrNode?'✓ ':'')+n.label,to:"__setlesson:"+n.id}))
+        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
+    }
+    if(id==='exercise_subject')
+      return teacherSubjects.map((s,i)=>({k:String(i+1),label:subjMeta(s).icon+" "+subjMeta(s).label,to:"__exosubject:"+s}))
+        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
+    if(id==='exercise')
+      return [{k:"1",label:"Facile",to:"__exolevel:facile"},{k:"2",label:"Moyen",to:"__exolevel:moyen"},
+              {k:"3",label:"Difficile",to:"__exolevel:difficile"},{k:"0",label:"Retour à l'accueil",to:"home"}];
+    if(id==='exercise_out'){
+      const base=[{k:"🔄",label:"Un autre exercice",to:"exercise"}];
+      if(teacherSubjects.length>1) base.push({k:"📚",label:"Autre matière",to:"exercise_subject"});
+      base.push({k:"3",label:"Passer à l'évaluation",to:"assess"});
+      base.push({k:"0",label:"Accueil",to:"home"});
+      return base;
+    }
+    if(id==='guides')
+      return SUBJECTS.map((s,i)=>({k:String(i+1),label:s.icon+" "+s.label,to:"__guidesub:"+s.id}))
+        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
+    if(id==='guides_level')
+      return CLASSES.map((c,i)=>({k:String(i+1),label:c.id+" — "+c.sub,to:"__guidelvl:"+c.id}))
+        .concat([{k:"0",label:"Retour",to:"guides"}]);
+    if(id==='guide_view')
+      return [{k:"1",label:"Autre guide",to:"guides"},{k:"0",label:"Menu Plus",to:"more"}];
+    if(id==='learning')
+      return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
+        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
+    if(id==='lang_lesson')
+      return [{k:"1",label:"Expression suivante",to:"lang_lesson"},{k:"2",label:"Autre langue",to:"learning"},{k:"0",label:"Menu Plus",to:"more"}];
+    if(id==='fieldreport')
+      return SUPPORTS.map((s,i)=>({k:String(i+1),label:s,to:"__support:"+i}))
+        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
+    if(id==='fieldreport_state')
+      return ["Disponible","Manquant","Abîmé","Insuffisant"].map((s,i)=>({k:String(i+1),label:s,to:"__reportstate:"+s}))
+        .concat([{k:"0",label:"Annuler",to:"more"}]);
+    if(id==='fieldreport_done')
+      return [{k:"1",label:"Nouveau rapport",to:"fieldreport"},{k:"0",label:"Menu Plus",to:"more"}];
+    if(id==='profile')
+      return [{k:"1",label:"Modifier mes classes",to:"onboarding"},{k:"2",label:"Modifier mes matières",to:"subjectpick"},
+              {k:"3",label:"Langue à apprendre",to:"learning"},{k:"0",label:"Menu Plus",to:"more"}];
+    if(id==='endsession')
+      return [{k:"1",label:"Oui, terminer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}];
+    if(id==='session_end')
+      return [{k:"1",label:"Se reconnecter",to:"onboarding"}];
+  }
+  return scr.opts;
+}
+
+function renderMultiselect(flowName,scr,rep){
+  const isSub=scr.kind==='subject';
+  const items=isSub
+    ? SUBJECTS.map(s=>({id:s.id,head:s.icon+" "+s.label,sub:""}))
+    : CLASSES.map(c=>({id:c.id,head:"<b>"+c.id+"</b>",sub:c.sub}));
+  items.forEach(it=>{
+    const arr=isSub?teacherSubjects:teacherClasses;
+    const sel=arr.includes(it.id);
+    const btn=document.createElement('button');
+    btn.className='reply'+(sel?' suggest':'');
+    btn.innerHTML='<span class="k">'+(sel?'☑️':'⬜')+'</span><span>'+it.head+(it.sub?' — <span style="opacity:.65">'+it.sub+'</span>':'')+'</span>';
+    btn.onclick=()=>{
+      if(isSub) teacherSubjects = sel?teacherSubjects.filter(x=>x!==it.id):[...teacherSubjects,it.id];
+      else      teacherClasses  = sel?teacherClasses.filter(x=>x!==it.id):[...teacherClasses,it.id];
+      render(flowName);
+    };
+    rep.appendChild(btn);
+  });
+  const arr=isSub?teacherSubjects:teacherClasses;
+  const word=isSub?'matière':'classe';
+  const v=document.createElement('button');
+  v.className='reply';
+  v.style.cssText='justify-content:center;font-weight:800;'+
+    (arr.length?'background:var(--wa-light);color:#063;border-color:transparent;':'opacity:.55;cursor:default;');
+  v.textContent=arr.length
+    ? '✅ Valider ('+arr.length+' '+word+(arr.length>1?'s':'')+')'
+    : 'Sélectionnez au moins une '+word;
+  if(arr.length) v.onclick=()=>{
+    if(isSub){activeSubject=teacherSubjects[0];kgViewSubject=activeSubject;buildKGtabs();renderKG();}
+    else activeClass=teacherClasses[0];
+    document.getElementById('chat-'+flowName)
+      .appendChild(makeBubble({f:'user',x:(isSub?'Mes matières : '+teacherSubjects.map(s=>subjMeta(s).label).join(' · '):'Mes classes : '+teacherClasses.join(' · '))}));
+    setTimeout(()=>{state[flowName]=scr.to;render(flowName);},260);
+  };
+  rep.appendChild(v);
+}
+
+function render(flowName){
+  const flow=FLOWS[flowName];
+  const cur=state[flowName];
+  const chat=document.getElementById('chat-'+flowName);
+  const rep=document.getElementById('replies-'+flowName);
+  const scr=flow.screens[cur];
+
+  // chat
+  chat.innerHTML='';
+  getMsgs(flowName,cur,scr).forEach(m=>chat.appendChild(makeBubble(m)));
+  chat.scrollTop=chat.scrollHeight;
+
+  // replies
+  rep.innerHTML='';
+  if(scr.type==='multiselect'){
+    renderMultiselect(flowName,scr,rep);
+  }else{
+    getOpts(flowName,cur,scr).forEach(o=>{
+      const btn=document.createElement('button');
+      btn.className='reply';
+      btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
+      btn.onclick=()=>{
+        const u=makeBubble({f:'user',x:o.label});
+        chat.appendChild(u);chat.scrollTop=chat.scrollHeight;
+        setTimeout(()=>{
+          if(o.to.indexOf('__setclass:')===0){activeClass=o.to.split(':')[1];state[flowName]='home';}
+          else if(o.to.indexOf('__setsubject:')===0){activeSubject=o.to.split(':')[1];kgViewSubject=activeSubject;buildKGtabs();renderKG();state[flowName]='home';}
+          else if(o.to.indexOf('__setlesson:')===0){const v=o.to.split(':')[1];if(activeSubject==='math')activeMathLecon=parseInt(v,10);else activeFrNode=v;state[flowName]='home';}
+          else if(o.to.indexOf('__exosubject:')===0){exoSubject=o.to.split(':')[1];state[flowName]='exercise';}
+          else if(o.to.indexOf('__exolevel:')===0){exoLevel=o.to.split(':')[1];state[flowName]='exercise_out';}
+          else if(o.to.indexOf('__guidesub:')===0){guideSubject=o.to.split(':')[1];state[flowName]='guides_level';}
+          else if(o.to.indexOf('__guidelvl:')===0){guideLevel=o.to.split(':')[1];state[flowName]='guide_view';}
+          else if(o.to.indexOf('__lang:')===0){learnLang=o.to.split(':')[1];state[flowName]='lang_lesson';}
+          else if(o.to.indexOf('__support:')===0){reportSupport=SUPPORTS[parseInt(o.to.split(':')[1],10)];state[flowName]='fieldreport_state';}
+          else if(o.to.indexOf('__reportstate:')===0){reportState=o.to.split(':')[1];state[flowName]='fieldreport_done';}
+          else state[flowName]=o.to;
+          render(flowName);
+        },260);
+      };
+      rep.appendChild(btn);
+    });
+  }
+
+  // steps map highlight
+  document.querySelectorAll('#steps-'+flowName+' .step').forEach(s=>{
+    s.classList.toggle('current',s.dataset.id===cur);
+  });
+  const curEl=document.querySelector('#steps-'+flowName+' .step[data-id="'+cur+'"]');
+  if(curEl) curEl.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
+
+function buildSteps(flowName){
+  const flow=FLOWS[flowName];
+  const cont=document.getElementById('steps-'+flowName);
+  cont.innerHTML='';
+  let i=1;
+  for(const id in flow.screens){
+    const s=flow.screens[id];
+    const links=[...new Set(s.opts.map(o=>flow.screens[o.to]?flow.screens[o.to].step:o.to))];
+    const el=document.createElement('div');
+    el.className='step';el.dataset.id=id;
+    el.innerHTML=
+      '<div class="node">'+i+'</div>'+
+      '<div class="box"><div class="t">'+s.step+'</div>'+
+      '<div class="d">'+s.desc+'</div>'+
+      '<div class="links">'+links.map(l=>'<span class="lnk">'+l+'</span>').join('')+'</div></div>';
+    el.onclick=()=>{state[flowName]=id;render(flowName);};
+    cont.appendChild(el);
+    i++;
+  }
+}
+
+/* tabs */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('view-'+t.dataset.flow).classList.add('active');
+  };
+});
+
+/* ============================================================
+   FREE QUESTION + VOICE  (teacher conversational layer)
+   ============================================================ */
+function showSuggestions(flowName,suggestions){
+  const rep=document.getElementById('replies-'+flowName);
+  rep.innerHTML='';
+  suggestions.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='reply suggest';
+    btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
+    btn.onclick=()=>{state[flowName]=o.to;render(flowName);};
+    rep.appendChild(btn);
+  });
+  const back=document.createElement('button');
+  back.className='reply muted';
+  back.textContent='↩︎ Revenir au menu';
+  back.onclick=()=>render(flowName);
+  rep.appendChild(back);
+}
+
+function answerTeacher(q){
+  const s=q.toLowerCase();
+  const A=(t,sug)=>({t,sug});
+  if(/(matériel|materiel|objet|bâton|baton|caillou)/.test(s))
+    return A("📦 Matériel pour « Nombre 6 » :\n• 6 bâtonnets / cailloux\n• Ardoise + craie\n• Image de 6 objets",[{k:"1",label:"Préparer la leçon",to:"prepare"}]);
+  if(/(exercice|exo|problème|probleme|addition|calcul)/.test(s))
+    return A("📝 Voici un exercice :\nAwa a 4 mangues, sa mère lui donne 2.\nCombien en a-t-elle au total ? 🥭",[{k:"2",label:"Générer un autre (choisir le niveau)",to:"exercise"},{k:"3",label:"Évaluation rapide",to:"assess"}]);
+  if(/(éval|eval|test|contrôle|controle|quiz)/.test(s))
+    return A("✅ Évaluation rapide : 5 questions, 5 minutes.",[{k:"3",label:"Lancer l'évaluation",to:"assess"}]);
+  if(/(résultat|resultat|progrès|progres|analyse|classe|suivi|où en sont|ou en sont)/.test(s))
+    return A("📊 Classe CI-A : Nombres 1-5 ✅, Comparaison ✅.\nÀ renforcer : Décomposition ⚠️, Addition ⚠️.",[{k:"4",label:"Voir analyses détaillées",to:"analytics"},{k:"3",label:"Remédiation",to:"remediation"}]);
+  if(/(compris|comprennent|remédiation|remediation|difficile|en difficulté|aider|expli)/.test(s))
+    return A("🔍 Concept à retravailler : Décomposition du nombre 6.\nJe peux générer une explication, un jeu ou des exercices ciblés.",[{k:"1",label:"Ouvrir la remédiation",to:"remediation"}]);
+  if(/(planning|semaine|planifi|programme)/.test(s))
+    return A("🗓️ Semaine 4 : Nombre 6 → Composition → Décomposition → Addition → Révision.",[{k:"1",label:"Voir le planning",to:"planning"}]);
+  if(/(leçon|lecon|prépar|prepar|nombre 6|déroul|deroul|cours)/.test(s))
+    return A("📖 Leçon 16 — Nombre 6.\n🎯 Objectif : découvrir le 6.\n📚 Prérequis : nombres 0-5, comparaison.",[{k:"1",label:"Préparer / démarrer la leçon",to:"prepare"}]);
+  return A("Je peux vous aider sur : préparer une leçon, générer des exercices, l'évaluation, la remédiation et le suivi de classe. Que souhaitez-vous ?",
+    [{k:"1",label:"Préparer une leçon",to:"prepare"},{k:"2",label:"Générer un exercice",to:"exercise"},{k:"4",label:"Suivi de classe",to:"analytics"}]);
+}
+
+function askTeacher(text,viaVoice){
+  if(!text||!text.trim()) return;
+  const chat=document.getElementById('chat-teacher');
+  if(viaVoice){
+    chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
+  }else{
+    chat.appendChild(makeBubble({f:'user',x:text}));
+  }
+  chat.scrollTop=chat.scrollHeight;
+  const ans=answerTeacher(text);
+  // typing indicator then answer
+  const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+  setTimeout(()=>{
+    typing.remove();
+    chat.appendChild(makeBubble({f:'bot',x:ans.t}));
+    chat.scrollTop=chat.scrollHeight;
+    showSuggestions('teacher',ans.sug);
+  },450);
+}
+
+function wireTeacherInput(){
+  const tin=document.getElementById('tinput-teacher');
+  const send=document.getElementById('send-teacher');
+  const mic=document.getElementById('mic-teacher');
+  const fire=()=>{askTeacher(tin.value);tin.value='';};
+  send.onclick=fire;
+  tin.addEventListener('keydown',e=>{if(e.key==='Enter')fire();});
+  const samples=[
+    "Comment expliquer la décomposition du nombre 6 ?",
+    "Donne-moi un exercice difficile sur l'addition",
+    "Quels élèves sont en difficulté ?",
+    "De quel matériel ai-je besoin pour la leçon ?"
+  ];
+  let vi=0;
+  mic.onclick=()=>{
+    if(mic.classList.contains('rec')) return;
+    mic.classList.add('rec');
+    setTimeout(()=>{
+      mic.classList.remove('rec');
+      askTeacher(samples[vi++%samples.length],true);
+    },1100);
+  };
+}
+
+/* ============================================================
+   KNOWLEDGE GRAPH visual (SVG: concepts + prerequisite edges)
+   ============================================================ */
+function buildKGtabs(){
+  const c=document.getElementById('kgtabs');if(!c)return;
+  c.innerHTML='';
+  SUBJECTS.forEach(s=>{
+    const b=document.createElement('button');
+    b.className='kgtab'+(s.id===kgViewSubject?' on':'');
+    b.textContent=s.icon+' '+s.label;
+    b.onclick=()=>{kgViewSubject=s.id;buildKGtabs();renderKG();};
+    c.appendChild(b);
+  });
+}
+function renderKG(){
+  const host=document.getElementById('kgview');if(!host)return;
+  const g=KG[kgViewSubject];
+  const W=300,nodeH=42,gapY=30,pad=12;
+  const lvl={};
+  const L=id=>{if(lvl[id]!=null)return lvl[id];const n=g.nodes.find(x=>x.id===id);let m=0;n.prereq.forEach(p=>m=Math.max(m,L(p)+1));return lvl[id]=m;};
+  g.nodes.forEach(n=>L(n.id));
+  const byLvl={};g.nodes.forEach(n=>{(byLvl[lvl[n.id]]=byLvl[lvl[n.id]]||[]).push(n);});
+  const levels=Object.keys(byLvl).map(Number).sort((a,b)=>a-b);
+  const pos={};let H=pad;
+  levels.forEach(l=>{const row=byLvl[l],cw=W/row.length;row.forEach((n,i)=>pos[n.id]={x:cw*i+cw/2,y:H+nodeH/2,w:Math.min(168,cw-10)});H+=nodeH+gapY;});
+  H=H-gapY+pad;
+  const COL={done:'#10b981',current:'#0ea5e9',next:'#94a3b8',weak:'#f59e0b'};
+  let edges='';
+  g.nodes.forEach(n=>n.prereq.forEach(p=>{
+    const a=pos[p],b=pos[n.id];
+    edges+='<path d="M'+a.x+' '+(a.y+nodeH/2)+' C '+a.x+' '+((a.y+b.y)/2)+', '+b.x+' '+((a.y+b.y)/2)+', '+b.x+' '+(b.y-nodeH/2-6)+'" stroke="#cbd5e1" fill="none" stroke-width="2" marker-end="url(#arr)"/>';
+  }));
+  let nodes='';
+  g.nodes.forEach(n=>{
+    const p=pos[n.id],c=COL[n.status];
+    nodes+='<g><rect x="'+(p.x-p.w/2)+'" y="'+(p.y-nodeH/2)+'" width="'+p.w+'" height="'+nodeH+'" rx="9" fill="#fff" stroke="'+c+'" stroke-width="2"/>'
+      +'<circle cx="'+(p.x-p.w/2+13)+'" cy="'+p.y+'" r="4.5" fill="'+c+'"/>'
+      +'<text x="'+(p.x-p.w/2+24)+'" y="'+(p.y+4)+'" font-size="11" font-family="sans-serif" fill="#0f172a">'+n.label+'</text></g>';
+  });
+  host.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" width="100%" style="max-width:330px">'
+    +'<defs><marker id="arr" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 z" fill="#cbd5e1"/></marker></defs>'
+    +edges+nodes+'</svg>';
+}
+
+/* init */
+['teacher','student'].forEach(f=>{
+  state[f]=FLOWS[f].start;
+  buildSteps(f);
+  render(f);
+});
+wireTeacherInput();
+buildKGtabs();
+renderKG();
+
+/* Q&A search filter */
+(function(){
+  const inp=document.getElementById('qasearch');if(!inp)return;
+  inp.addEventListener('input',()=>{
+    const q=inp.value.trim().toLowerCase();
+    let shown=0;
+    document.querySelectorAll('#view-qa .qa').forEach(d=>{
+      const hit=d.textContent.toLowerCase().includes(q);
+      d.style.display=hit?'':'none';if(hit)shown++;
+      if(q&&hit)d.open=true; else if(!q)d.open=false;
+    });
+    document.querySelectorAll('#view-qa .qagroup').forEach(g=>{
+      g.style.display=[...g.querySelectorAll('.qa')].some(d=>d.style.display!=='none')?'':'none';
+    });
+    document.getElementById('qaempty').style.display=shown?'none':'block';
+  });
+})();
+</script>
+</body>
+</html>
