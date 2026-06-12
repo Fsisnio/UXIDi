@@ -544,7 +544,7 @@
     <div class="qagroup">
       <h3>👩‍🏫 Enseignant</h3>
       <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> Configuration initiale après connexion par code. Sélection des classes (CI→CM2) et matières (Maths, Français).</div></details>
-      <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub central avec 5 options : Guides/enseignement, Apprentissage continu, Retours d'information, Profil, Fermer la session.</div></details>
+      <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub central avec 5 options : Guide et enseignement, Apprentissage continu, Retours d'information, Profil, Fermer la session.</div></details>
       <details class="qa"><summary>Sub Menu 1 — Exercices / Guides</summary><div class="a"><b>Répond à :</b> Choix entre le module <b>Exercices</b> (saisie n° de leçon → résultat → boucle ou catégories) et le module <b>Guides/Leçon</b> (unité → niveau → Q&A).</div></details>
       <details class="qa"><summary>Module Exercices</summary><div class="a"><b>Répond à :</b> Entrée du numéro de leçon, affichage de l'exercice, option « autre exercice même thème » ou liste des catégories.</div></details>
       <details class="qa"><summary>Module Guides/Leçon</summary><div class="a"><b>Répond à :</b> Unité de terrain (Maths/Français) → niveau → question libre/voix → réponse du guide → nouvelle recherche ou MENU.</div></details>
@@ -617,7 +617,7 @@ const FLOWS = {
         step:"MENU principal", desc:"Hub central — 5 options selon le nouveau flow.",
         msgs:[],
         opts:[
-          {k:"1",label:"📚 Accéder aux Guides / Remonter un enseignement",to:"submenu1"},
+          {k:"1",label:"📚 Guide et enseignement",to:"submenu1"},
           {k:"2",label:"🌍 Apprentissage continu",to:"learning_groups"},
           {k:"3",label:"📝 Retours d'information",to:"feedback_topic"},
           {k:"4",label:"👤 Modifier votre profil",to:"profile"},
@@ -627,7 +627,7 @@ const FLOWS = {
       /* ---- Sub Menu 1 : Exercices OU Guides/Leçon ---- */
       submenu1:{
         step:"Sub Menu 1", desc:"Choix entre module Exercices et module Guides/Leçon.",
-        msgs:[{f:"bot",t:"📚 Guides & enseignement",x:"Que souhaitez-vous faire ?"}],
+        msgs:[{f:"bot",t:"📚 Guide et enseignement",x:"Que souhaitez-vous faire ?"}],
         opts:[
           {k:"1",label:"✏️ Exercices",to:"exercise_lesson"},
           {k:"2",label:"📖 Guides / Leçon",to:"guide_units"},
@@ -1318,7 +1318,7 @@ function answerTeacher(q){
   if(/(leçon|lecon|prépar|prepar|nombre 6|déroul|deroul|cours)/.test(s))
     return A("📖 Leçon 16 — Nombre 6.\n🎯 Objectif : découvrir le 6.\n📚 Prérequis : nombres 0-5, comparaison.",[{k:"1",label:"Préparer / démarrer la leçon",to:"prepare"}]);
   return A("Je peux vous aider via le MENU : exercices, guides/leçon, traduction, retours d'information.\nQue souhaitez-vous ?",
-    [{k:"1",label:"📚 Guides / Exercices",to:"submenu1"},{k:"2",label:"🌍 Traduction",to:"learning_groups"},{k:"3",label:"📝 Retours",to:"feedback_topic"}]);
+    [{k:"1",label:"📚 Guide et enseignement",to:"submenu1"},{k:"2",label:"🌍 Traduction",to:"learning_groups"},{k:"3",label:"📝 Retours",to:"feedback_topic"}]);
 }
 
 function loginTeacher(code){
@@ -1532,8 +1532,8 @@ renderKG();
    ============================================================ */
 const TEACHER_JOURNEYS=[
   {t:"🔑 Connexion & configuration", s:["Connexion (code)","Choix classes","Choix matières","Bienvenue","MENU"]},
-  {t:"✏️ Module Exercices", s:["MENU","Sub Menu 1","N° de leçon","Résultat","Autre exercice ?","Catégories"]},
-  {t:"📖 Module Guides/Leçon", s:["MENU","Sub Menu 1","Unité (Maths/Français)","Niveau","Question 💬","Résultat","Nouvelle recherche"]},
+  {t:"✏️ Module Exercices", s:["MENU","Guide et enseignement","N° de leçon","Résultat","Autre exercice ?","Catégories"]},
+  {t:"📖 Module Guides/Leçon", s:["MENU","Guide et enseignement","Unité (Maths/Français)","Niveau","Question 💬","Résultat","Nouvelle recherche"]},
   {t:"🌍 Module Traduction", s:["MENU","Groupes langues","Bienvenue","Traduire un mot ?","Mode FR↔Local","Langue","Saisie mot","Traduction"]},
   {t:"📝 Module Retours", s:["MENU","Sujet du retour","Saisie incident","Importance","Ajouter info ?","Nom","Confirmation"]},
   {t:"👤 Profil & session", s:["MENU","Modifier profil","Classes / matières","Fermer session"]},
@@ -1549,7 +1549,7 @@ function renderJourneys(){
 
 const TZONE={
   auth:{c:'#0284c7',l:'Connexion'}, cfg:{c:'#6366f1',l:'Configuration'},
-  hub:{c:'#7c3aed',l:'MENU (hub)'}, sub:{c:'#db2777',l:'Sub Menu 1'},
+  hub:{c:'#7c3aed',l:'MENU (hub)'}, sub:{c:'#db2777',l:'Guide et enseignement'},
   exo:{c:'#ec4899',l:'Exercices'}, guide:{c:'#ea580c',l:'Guides/Leçon'},
   learn:{c:'#2563eb',l:'Traduction'}, feed:{c:'#16a34a',l:'Retours'},
   prof:{c:'#0d9488',l:'Profil'}, session:{c:'#dc2626',l:'Session'}
@@ -1560,7 +1560,7 @@ const TNODES=[
   {id:'subjectpick',l:'📕 Matières',lay:2,z:'cfg'},
   {id:'welcome',l:'👋 Bienvenue',lay:3,z:'cfg'},
   {id:'home',l:'📋 MENU',lay:4,z:'hub'},
-  {id:'submenu1',l:'📚 Sub Menu 1',lay:5,z:'sub'},
+  {id:'submenu1',l:'📚 Guide et enseignement',lay:5,z:'sub'},
   {id:'profile',l:'👤 Profil',lay:5,z:'prof'},
   {id:'endsession',l:'🚪 Fermer session',lay:5,z:'session'},
   {id:'exercise_lesson',l:'✏️ N° leçon',lay:6,z:'exo'},
