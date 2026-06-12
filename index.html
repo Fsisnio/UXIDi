@@ -315,7 +315,7 @@
   <section class="view active" id="view-teacher" data-color="teacher">
     <div class="view-head">
       <h2><span class="badge teacher">Enseignant</span> Assistant pédagogique au quotidien</h2>
-      <p>Le parcours suit la journée de l'enseignant et un <b>graphe de connaissances</b> par matière (🔢 Maths · 📖 Français) : leçon, exercices, planning et remédiation sont dérivés des prérequis du graphe.</p>
+      <p>Le parcours suit le <b>nouveau flow</b> : connexion → MENU central → 4 modules (Exercices, Guides/Leçon, Traduction, Retours d'information). Le graphe de connaissances reste visible en référence.</p>
     </div>
     <div class="grid">
       <div class="phone-col">
@@ -543,18 +543,15 @@
 
     <div class="qagroup">
       <h3>👩‍🏫 Enseignant</h3>
-      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> « Qui êtes-vous et que gérez-vous ? » L'enseignant sélectionne une ou plusieurs <b>classes</b> (CI→CM2) et ses <b>matières</b> (Maths, Français). Stocké une fois, jamais redemandé.</div></details>
-      <details class="qa"><summary>Accueil</summary><div class="a"><b>Répond à :</b> « Que dois-je faire aujourd'hui ? » Affiche classe active, matière, <b>leçon active</b> et 3 actions principales. Tableau de bord quotidien.</div></details>
-      <details class="qa"><summary>Préparer ma leçon</summary><div class="a"><b>Répond à :</b> « Comment préparer ma leçon ? » Objectif, prérequis (issus du graphe) et déroulé. En Maths : format <b>semaine · jour · n° de leçon</b>.</div></details>
-      <details class="qa"><summary>Mode assistant en classe</summary><div class="a"><b>Répond à :</b> « Comment mener le cours, étape par étape ? » Guide pas-à-pas (Étape 1/5…) avec SUIVANT / RETOUR — un « GPS » du cours, avec images de support.</div></details>
-      <details class="qa"><summary>Générer des exercices</summary><div class="a"><b>Répond à :</b> « Donne-moi un exercice. » Si 2 matières, demande d'abord <b>la matière</b>, puis le <b>niveau</b> (facile/moyen/difficile), et génère un exercice adapté (avec image si utile).</div></details>
-      <details class="qa"><summary>Évaluation rapide</summary><div class="a"><b>Répond à :</b> « Comment évaluer en fin de cours ? » Mini-test de 5 questions / 5 min, prêt à l'emploi.</div></details>
-      <details class="qa"><summary>Correction des résultats</summary><div class="a"><b>Répond à :</b> « Qu'est-ce que les élèves n'ont pas compris ? » À partir des scores, détecte le <b>concept faible</b> via le graphe et recommande une action.</div></details>
-      <details class="qa"><summary>Remédiation</summary><div class="a"><b>Répond à :</b> « Comment aider les élèves en difficulté ? » Propose nouvelle explication, jeu ou exercices ciblés, et les <b>pousse aux élèves</b>.</div></details>
-      <details class="qa"><summary>Planning hebdo</summary><div class="a"><b>Répond à :</b> « Quoi enseigner cette semaine ? » Semaine dérivée du graphe (Maths : par n° de leçon ; Français : séquence libre).</div></details>
-      <details class="qa"><summary>Analyses de classe</summary><div class="a"><b>Répond à :</b> « Où en est ma classe ? » Concepts maîtrisés vs à renforcer, alimentés par les réponses des élèves.</div></details>
-      <details class="qa"><summary>Changer de classe / matière / leçon</summary><div class="a"><b>Répond à :</b> « Je veux basculer de contexte. » Commute la classe active (multigrade), la matière (le graphe suivi change) ou la leçon active.</div></details>
-      <details class="qa"><summary>Question libre & voix 🎤</summary><div class="a"><b>Répond à :</b> « Je veux demander autre chose. » À tout moment, l'enseignant écrit ou <b>dicte</b> une question ; ARED Edu répond et propose des actions contextuelles. Menus + conversation.</div></details>
+      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> Configuration initiale après connexion par code. Sélection des classes (CI→CM2) et matières (Maths, Français).</div></details>
+      <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub central avec 5 options : Guides/enseignement, Apprentissage continu, Retours d'information, Profil, Fermer la session.</div></details>
+      <details class="qa"><summary>Sub Menu 1 — Exercices / Guides</summary><div class="a"><b>Répond à :</b> Choix entre le module <b>Exercices</b> (saisie n° de leçon → résultat → boucle ou catégories) et le module <b>Guides/Leçon</b> (unité → niveau → Q&A).</div></details>
+      <details class="qa"><summary>Module Exercices</summary><div class="a"><b>Répond à :</b> Entrée du numéro de leçon, affichage de l'exercice, option « autre exercice même thème » ou liste des catégories.</div></details>
+      <details class="qa"><summary>Module Guides/Leçon</summary><div class="a"><b>Répond à :</b> Unité de terrain (Maths/Français) → niveau → question libre/voix → réponse du guide → nouvelle recherche ou MENU.</div></details>
+      <details class="qa"><summary>Module Traduction (Apprentissage continu)</summary><div class="a"><b>Répond à :</b> Groupes de langues locales → bienvenue → traduire un mot (FR↔Local) → saisie → traduction → boucle.</div></details>
+      <details class="qa"><summary>Module Retours d'information</summary><div class="a"><b>Répond à :</b> Sujet (guides, apprentissage, autre) → saisie incident → importance → info supplémentaire → confirmation → MENU.</div></details>
+      <details class="qa"><summary>Profil & fermer session</summary><div class="a"><b>Répond à :</b> Modifier classes/matières/langue. Fermer la session déconnecte et renvoie vers la connexion par code.</div></details>
+      <details class="qa"><summary>Question libre & voix 🎤</summary><div class="a"><b>Répond à :</b> Saisie contextuelle selon l'écran (n° leçon, question guide, mot à traduire, incident…) ou question générale avec réponse IA.</div></details>
     </div>
 
     <div class="qagroup">
@@ -606,160 +603,175 @@ const FLOWS = {
         opts:[{k:"✅",label:"Valider → Matières",to:"subjectpick"}]
       },
       subjectpick:{
-        step:"Onboarding — matières", desc:"Choix des 2 matières (Maths, Français). Le contenu suit le graphe de connaissances de la matière active.",
-        type:"multiselect", kind:"subject", to:"home",
-        msgs:[{f:"bot",t:"📚 Vos matières",x:"ARED Edu suit un graphe de connaissances par matière (concepts + prérequis).\n\nSélectionnez votre/vos matière(s) :"}],
-        opts:[{k:"✅",label:"Valider → Accueil",to:"home"}]
+        step:"Onboarding — matières", desc:"Choix des matières. Puis message de bienvenue.",
+        type:"multiselect", kind:"subject", to:"welcome",
+        msgs:[{f:"bot",t:"📚 Vos matières",x:"Sélectionnez votre/vos matière(s) :"}],
+        opts:[{k:"✅",label:"Valider → Bienvenue",to:"welcome"}]
       },
-      classswitch:{
-        step:"Changer de classe active", desc:"Bascule entre les classes sélectionnées (mode multigrade).",
-        msgs:[],
-        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
-      },
-      subjectswitch:{
-        step:"Changer de matière", desc:"Bascule entre Maths et Français : le graphe de connaissances suivi change.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
-      },
-      lessonswitch:{
-        step:"Changer de leçon", desc:"Choisir la leçon active (maths : semaine·jour·n° · français : libre).",
-        msgs:[],
-        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
+      welcome:{
+        step:"Message de bienvenue", desc:"Accueil personnalisé avant le MENU principal.",
+        msgs:[{f:"bot",t:"👋 Bienvenue sur ARED Edu",x:"Bonjour ! Je suis votre assistant pédagogique.\nTouchez le MENU pour commencer."}],
+        opts:[{k:"▶️",label:"Accéder au MENU",to:"home"}]
       },
       home:{
-        step:"Accueil enseignant", desc:"Menu principal : Enseignement + grands modules.",
-        msgs:[{f:"bot",t:"Bonjour Mme Diallo 👋",x:"Aujourd'hui :\n📖 Prochaine leçon : Nombre 6\n🎯 Objectif : Découvrir le nombre 6"}],
-        opts:[
-          {k:"1",label:"📘 Enseignement",to:"teaching"},
-          {k:"2",label:"📚 Accéder aux guides",to:"guides"},
-          {k:"3",label:"🌍 Apprentissage continu",to:"learning"},
-          {k:"4",label:"📝 Rapport terrain (supports)",to:"fieldreport"},
-          {k:"5",label:"👤 Modifier votre profil",to:"profile"},
-          {k:"6",label:"➕ Plus (planning · suivi · remédiation)",to:"more"},
-          {k:"7",label:"🚪 Terminer la session",to:"endsession"}
-        ]
-      },
-      teaching:{
-        step:"📘 Enseignement", desc:"Regroupe : préparation, exercices, évaluation, changement de leçon/classe/matière.",
-        msgs:[{f:"bot",t:"📘 Enseignement",x:"Préparer, enseigner et évaluer.\nChoisissez :"}],
-        opts:[
-          {k:"1",label:"Préparer ma leçon",to:"prepare"},
-          {k:"2",label:"Générer des exercices",to:"exercise"},
-          {k:"3",label:"Évaluation rapide",to:"assess"},
-          {k:"4",label:"Changer de leçon",to:"lessonswitch"},
-          {k:"5",label:"Changer de classe",to:"classswitch"},
-          {k:"6",label:"Changer de matière",to:"subjectswitch"},
-          {k:"0",label:"Retour à l'accueil",to:"home"}
-        ]
-      },
-      prepare:{
-        step:"Préparation de leçon", desc:"La fonction la plus utilisée. Divulgation progressive.",
-        msgs:[{f:"bot",t:"📖 Leçon 16 : Nombre 6",x:"🎯 Objectif : Découvrir le nombre 6\n📚 Prérequis :\n✓ Nombres 0 à 5\n✓ Comparaison\n\nChoisissez :"}],
-        opts:[
-          {k:"1",label:"Déroulé complet → Démarrer la leçon",to:"teach1"},
-          {k:"2",label:"Activité d'introduction",to:"teach1"},
-          {k:"0",label:"Retour à l'accueil",to:"home"}
-        ]
-      },
-      teach1:{
-        step:"Mode assistant — Étape 1/5", desc:"Assistant en direct pendant la classe (« Google Maps du cours »).",
-        msgs:[
-          {f:"bot",t:"🟢 Étape 1/5",x:"Montrez ces 6 objets à la classe :"},
-          {f:"bot",img:"count6",cap:"« Combien voyez-vous d'objets ? »"},
-          {f:"bot",x:"Écrivez SUIVANT quand prêt."}
-        ],
-        opts:[{k:"➡️",label:"SUIVANT",to:"teach2"},{k:"0",label:"Quitter vers l'accueil",to:"home"}]
-      },
-      teach2:{
-        step:"Mode assistant — Étape 2/5", desc:"Navigation avant / arrière entre les étapes.",
-        msgs:[
-          {f:"bot",t:"🟢 Étape 2/5",x:"Écrire le chiffre et faire répéter « SIX » :"},
-          {f:"bot",img:"num6",cap:"Le nombre 6"}
-        ],
-        opts:[{k:"➡️",label:"SUIVANT",to:"teach3"},{k:"⬅️",label:"RETOUR",to:"teach1"}]
-      },
-      teach3:{
-        step:"Mode assistant — Étape 3/5", desc:"Fin du déroulé → générer un exercice en direct.",
-        msgs:[{f:"bot",t:"🟢 Étape 3/5",x:"Demandez : « 6 est-il plus grand que 5 ? »\n\nLeçon terminée ✅"}],
-        opts:[{k:"2",label:"Générer un exercice",to:"exercise"},{k:"3",label:"Évaluation rapide",to:"assess"},{k:"0",label:"Accueil",to:"home"}]
-      },
-      exercise_subject:{
-        step:"Exercices — choix de la matière", desc:"Si 2 matières sont sélectionnées : on demande la matière avant de générer.",
+        step:"MENU principal", desc:"Hub central — 5 options selon le nouveau flow.",
         msgs:[],
-        opts:[{k:"0",label:"Retour à l'accueil",to:"home"}]
-      },
-      exercise:{
-        step:"Générateur d'exercices", desc:"Choix du niveau, puis exercice adapté à la matière.",
-        msgs:[{f:"bot",t:"📝 Exercice",x:"Choisissez le niveau :"}],
         opts:[
-          {k:"1",label:"Facile",to:"exercise_out"},
-          {k:"2",label:"Moyen",to:"exercise_out"},
-          {k:"3",label:"Difficile",to:"exercise_out"}
+          {k:"1",label:"📚 Accéder aux Guides / Remonter un enseignement",to:"submenu1"},
+          {k:"2",label:"🌍 Apprentissage continu",to:"learning_groups"},
+          {k:"3",label:"📝 Retours d'information",to:"feedback_topic"},
+          {k:"4",label:"👤 Modifier votre profil",to:"profile"},
+          {k:"5",label:"🚪 Fermer la session",to:"endsession"}
         ]
       },
-      exercise_out:{
-        step:"Exercice généré", desc:"Problème contextualisé, prêt à dicter.",
-        msgs:[{f:"bot",t:"Exercice",x:"Awa a 4 mangues.\nSa mère lui donne 2 mangues.\nCombien a-t-elle au total ? 🥭"}],
-        opts:[{k:"🔄",label:"Un autre exercice",to:"exercise"},{k:"3",label:"Passer à l'évaluation",to:"assess"},{k:"0",label:"Accueil",to:"home"}]
-      },
-      assess:{
-        step:"Évaluation rapide", desc:"En fin de cours. 5 questions / 5 min.",
-        msgs:[{f:"bot",t:"✅ Évaluation rapide",x:"5 questions\nDurée : 5 min\nCommencer ?"}],
-        opts:[{k:"▶️",label:"Commencer → puis saisir résultats",to:"correct"},{k:"0",label:"Accueil",to:"home"}]
-      },
-      correct:{
-        step:"Assistant de correction", desc:"Le graphe détecte les difficultés à partir des scores.",
-        msgs:[
-          {f:"user",x:"Résultats :\nQ1 : 90%\nQ2 : 80%\nQ3 : 30%\nQ4 : 20%"},
-          {f:"bot",t:"⚠️ Difficulté détectée",x:"Décomposition du nombre 6\nRecommandation : refaire les activités de manipulation."}
-        ],
-        opts:[{k:"➡️",label:"Lancer une remédiation",to:"remediation"},{k:"4",label:"Voir analyses classe",to:"analytics"}]
-      },
-      remediation:{
-        step:"Remédiation", desc:"Pousse une activité ciblée — lien direct vers l'élève.",
-        msgs:[{f:"bot",t:"🔍 Concept : Décomposition du nombre 6",x:"Choisissez :"}],
+      /* ---- Sub Menu 1 : Exercices OU Guides/Leçon ---- */
+      submenu1:{
+        step:"Sub Menu 1", desc:"Choix entre module Exercices et module Guides/Leçon.",
+        msgs:[{f:"bot",t:"📚 Guides & enseignement",x:"Que souhaitez-vous faire ?"}],
         opts:[
-          {k:"1",label:"Nouvelle explication",to:"remediation_sent"},
-          {k:"2",label:"Jeu pédagogique → envoyer aux élèves",to:"remediation_sent"},
-          {k:"3",label:"Exercices supplémentaires",to:"remediation_sent"}
+          {k:"1",label:"✏️ Exercices",to:"exercise_lesson"},
+          {k:"2",label:"📖 Guides / Leçon",to:"guide_units"},
+          {k:"0",label:"Retour au MENU",to:"home"}
         ]
       },
-      remediation_sent:{
-        step:"Remédiation envoyée → Élève", desc:"Le système pousse l'exercice vers le parcours Élève.",
-        msgs:[{f:"bot",t:"📤 Envoyé à 24 élèves",x:"Les élèves recevront l'exercice sur WhatsApp.\n(Voir l'onglet « Élève » 🧒)"}],
-        opts:[{k:"4",label:"Voir analyses classe",to:"analytics"},{k:"0",label:"Accueil",to:"home"}]
+      /* ---- Module Exercices (rose) ---- */
+      exercise_lesson:{
+        step:"Entrée n° de leçon", desc:"L'enseignant saisit le numéro de leçon.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
       },
-      more:{
-        step:"Menu « Plus »", desc:"Fonctions secondaires : planning, suivi, remédiation.",
-        msgs:[{f:"bot",t:"➕ Plus",x:"Choisissez :"}],
+      exercise_result:{
+        step:"Résultat exercice", desc:"Affichage de l'exercice généré pour la leçon.",
+        msgs:[],
         opts:[
-          {k:"1",label:"Planifier la semaine",to:"planning"},
-          {k:"2",label:"Suivi / Analyses classe",to:"analytics"},
-          {k:"3",label:"Remédiation",to:"remediation"},
-          {k:"0",label:"Accueil",to:"home"}
+          {k:"1",label:"Oui — autre exercice (même thème)",to:"exercise_lesson"},
+          {k:"2",label:"Non — liste des catégories",to:"exercise_cats"},
+          {k:"0",label:"MENU",to:"home"}
         ]
       },
-      guides:{ step:"📚 Accéder aux guides", desc:"Guides des différentes matières par niveaux + interaction.", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
-      guides_level:{ step:"Guides — niveau", desc:"Choix du niveau (CI → CM2).", msgs:[], opts:[{k:"0",label:"Retour",to:"guides"}] },
-      guide_view:{ step:"Lecture & interaction guide", desc:"Sommaire du guide ; interaction via question libre/voix.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
-      learning:{ step:"🌍 Apprentissage continu", desc:"L'enseignant apprend une langue locale (Pulaar, Wolof, Sérère, Mandinka, Soninké).", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
-      lang_lesson:{ step:"Leçon de langue locale", desc:"Expression du jour dans la langue choisie.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
-      fieldreport:{ step:"📝 Rapport terrain", desc:"Remontée sur l'état des supports pédagogiques.", msgs:[], opts:[{k:"0",label:"Retour au menu Plus",to:"more"}] },
-      fieldreport_state:{ step:"Rapport — état du support", desc:"Disponible / Manquant / Abîmé / Insuffisant.", msgs:[], opts:[{k:"0",label:"Annuler",to:"more"}] },
-      fieldreport_done:{ step:"Rapport enregistré", desc:"Confirmation de la remontée terrain.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
-      profile:{ step:"👤 Modifier votre profil", desc:"Voir/modifier classes, matières, langue d'apprentissage.", msgs:[], opts:[{k:"0",label:"Menu Plus",to:"more"}] },
-      endsession:{ step:"🚪 Terminer la session", desc:"Confirmation de déconnexion.", msgs:[], opts:[{k:"0",label:"Revenir",to:"home"}] },
-      session_end:{ step:"Session terminée", desc:"Déconnecté — reconnexion par code.", msgs:[], opts:[{k:"1",label:"Se reconnecter",to:"login"}] },
-      planning:{
-        step:"Planification hebdo", desc:"Dérivée automatiquement du graphe de curriculum.",
-        msgs:[{f:"bot",t:"🗓️ Semaine 4",x:"Lun : Nombre 6\nMar : Composition du 6\nMer : Décomposition du 6\nJeu : Addition\nVen : Révision"}],
-        opts:[{k:"2",label:"Voir analyses classe",to:"analytics"},{k:"0",label:"Accueil",to:"home"}]
+      exercise_cats:{
+        step:"Liste des catégories", desc:"Catégories d'exercices disponibles.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
       },
-      analytics:{
-        step:"Analyses de classe", desc:"Là où le système devient puissant — alimenté par les élèves.",
-        msgs:[{f:"bot",t:"📊 Classe CI-A · 24 élèves",x:"Maîtrisé :\n✅ Nombres 1-5\n✅ Comparaison\n\nÀ renforcer :\n⚠️ Décomposition\n⚠️ Addition\n\nRecommandation : séance de remédiation."}],
-        opts:[{k:"3",label:"Lancer remédiation",to:"remediation"},{k:"0",label:"Accueil",to:"home"}]
-      }
+      /* ---- Module Guides/Leçon (rouge/orange) ---- */
+      guide_units:{
+        step:"Unités de terrain", desc:"Mathématiques ou Lecture-Écriture.",
+        msgs:[{f:"bot",t:"📖 Guides / Leçon",x:"Choisissez l'unité de terrain :"}],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+      },
+      guide_level:{
+        step:"Liste des niveaux", desc:"Niveaux CI → CM2.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour",to:"guide_units"}]
+      },
+      guide_prompt:{
+        step:"Message de saisie", desc:"Invite à poser une question sur le guide.",
+        msgs:[{f:"bot",t:"💬 Posez votre question",x:"Écrivez ou dictez 🎤 votre question sur ce guide dans la barre du bas."}],
+        opts:[{k:"0",label:"Retour",to:"guide_level"}]
+      },
+      guide_result:{
+        step:"Résultat de recherche", desc:"Réponse du guide à la question posée.",
+        msgs:[],
+        opts:[
+          {k:"1",label:"Nouvelle recherche",to:"guide_prompt"},
+          {k:"0",label:"MENU",to:"home"}
+        ]
+      },
+      /* ---- Module Traduction / Apprentissage continu (bleu) ---- */
+      learning_groups:{
+        step:"Groupes de langues", desc:"Liste des groupes de langues de traduction.",
+        msgs:[{f:"bot",t:"🌍 Apprentissage continu",x:"Choisissez un groupe de langues locales :"}],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+      },
+      learning_welcome:{
+        step:"Message de bienvenue court", desc:"Accueil dans le module de traduction.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour",to:"learning_groups"}]
+      },
+      learning_ask:{
+        step:"Traduire un mot ?", desc:"L'enseignant choisit de traduire ou non.",
+        msgs:[],
+        opts:[
+          {k:"1",label:"Oui — traduire un mot",to:"learning_mode"},
+          {k:"2",label:"Non — revenir",to:"learning_welcome"},
+          {k:"0",label:"MENU",to:"home"}
+        ]
+      },
+      learning_mode:{
+        step:"Mode de traduction", desc:"Français→Local, Local→Français, ou sous-menu.",
+        msgs:[{f:"bot",t:"🔄 Mode de traduction",x:"Dans quel sens traduire ?"}],
+        opts:[{k:"0",label:"Retour",to:"learning_ask"}]
+      },
+      learning_lang:{
+        step:"Liste des langues locales", desc:"Pulaar, Wolof, Sérère, Mandinka, Soninké.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour",to:"learning_mode"}]
+      },
+      learning_word:{
+        step:"Saisie du mot", desc:"L'enseignant entre le mot à traduire.",
+        msgs:[{f:"bot",t:"⌨️ Entrez le mot",x:"Écrivez le mot à traduire dans la barre du bas."}],
+        opts:[{k:"0",label:"Retour",to:"learning_lang"}]
+      },
+      learning_translate:{
+        step:"Traduction du mot", desc:"Résultat : mot traduit ou mot le plus proche.",
+        msgs:[],
+        opts:[
+          {k:"1",label:"Traduire un autre mot",to:"learning_ask"},
+          {k:"0",label:"MENU",to:"home"}
+        ]
+      },
+      /* ---- Module Retours d'information (vert) ---- */
+      feedback_topic:{
+        step:"Sujet du retour", desc:"Par rapport aux guides, apprentissage, ou autre.",
+        msgs:[{f:"bot",t:"📝 Retours d'information",x:"Votre retour concerne :"}],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+      },
+      feedback_incident:{
+        step:"Saisie de l'incident", desc:"Description libre de l'incident.",
+        msgs:[{f:"bot",t:"✍️ Décrivez l'incident",x:"Écrivez ou dictez 🎤 votre retour dans la barre du bas."}],
+        opts:[{k:"0",label:"Annuler",to:"feedback_topic"}]
+      },
+      feedback_importance:{
+        step:"Importance de l'incident", desc:"Niveau d'importance selon l'utilisateur.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour",to:"feedback_incident"}]
+      },
+      feedback_more:{
+        step:"Ajouter une info ?", desc:"L'utilisateur peut ajouter un nom ou autre info.",
+        msgs:[],
+        opts:[
+          {k:"1",label:"Oui — ajouter une information",to:"feedback_name"},
+          {k:"2",label:"Non — envoyer le retour",to:"feedback_done"},
+          {k:"0",label:"MENU",to:"home"}
+        ]
+      },
+      feedback_name:{
+        step:"Nom / info supplémentaire", desc:"Saisie du nom ou complément.",
+        msgs:[{f:"bot",t:"👤 Votre nom",x:"Entrez votre nom ou une information complémentaire."}],
+        opts:[{k:"0",label:"Retour",to:"feedback_more"}]
+      },
+      feedback_done:{
+        step:"Retour enregistré", desc:"Confirmation puis retour au MENU.",
+        msgs:[],
+        opts:[{k:"0",label:"MENU",to:"home"}]
+      },
+      /* ---- Profil & session ---- */
+      profile:{
+        step:"Modifier votre profil", desc:"Classes, matières, langue.",
+        msgs:[],
+        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+      },
+      endsession:{
+        step:"Fermer la session", desc:"Confirmation de déconnexion.",
+        msgs:[{f:"bot",t:"🚪 Fermer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}],
+        opts:[{k:"1",label:"Oui, fermer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}]
+      },
+      session_end:{
+        step:"Session fermée", desc:"Déconnecté — reconnexion par code.",
+        msgs:[],
+        opts:[{k:"1",label:"Se reconnecter",to:"login"}]
+      },
     }
   },
 
@@ -991,12 +1003,20 @@ const LANGS=[
 let learnLang="wolof";
 function langMeta(id){return LANGS.find(l=>l.id===id)||LANGS[0];}
 
-/* ---- Rapport terrain : supports pédagogiques ---- */
-const SUPPORTS=["Manuels scolaires","Ardoises","Affiches murales","Matériel de manipulation","Cahiers"];
-let reportSupport="", reportState="";
-
 /* ---- Guides par matière & niveau ---- */
-let guideSubject="math", guideLevel="CI";
+let guideSubject="math", guideLevel="CI", guideQuery="";
+
+/* ---- Exercices ---- */
+let exerciseLessonNum=16, exerciseTheme="Nombre 6";
+
+/* ---- Traduction / apprentissage continu ---- */
+let learnMode="fr2loc", learnWord="";
+
+/* ---- Retours d'information ---- */
+let feedbackTopic="", feedbackText="", feedbackImportance="", feedbackName="";
+
+/* ---- Catégories d'exercices ---- */
+const EXO_CATS=["Nombres & dénombrement","Opérations","Géométrie","Mesures","Lecture de syllabes","Compréhension"];
 
 /* ---- Connexion : code enseignant ---- */
 const TEACHER_ACCOUNTS={
@@ -1016,77 +1036,38 @@ function checkTeacherCode(c){
 /* dynamic messages depending on class / subject / knowledge graph */
 function getMsgs(flowName,id,scr){
   if(flowName==='teacher'){
-    const sm=subjMeta(activeSubject);
-    if(id==='home'){
-      let lessonLine;
-      if(activeSubject==='math'){const c=curMathLesson();lessonLine="📖 Leçon active : S"+c.semaine+" · "+c.jour+" · Leçon "+c.lecon+" — "+c.titre;}
-      else {const cur=curFrNode();lessonLine="📖 Leçon active : "+cur.label+" (format libre)";}
-      return [{f:"bot",t:"Bonjour "+teacherName+" 👋",
-        x:"📚 Classes : "+fmtClasses()+"\n📕 Matière : "+sm.icon+" "+sm.label+"\n🎯 Classe active : "+(activeClass||'—')+
-          "\n\n"+lessonLine+"\n🧩 Suivie depuis le graphe de connaissances"}];
+    if(id==='welcome') return [{f:"bot",t:"👋 Bienvenue "+teacherName+" !",x:"Votre espace ARED Edu est prêt.\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+(teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', ')||'—')+"\n\nTouchez le MENU pour commencer."}];
+    if(id==='home') return [{f:"bot",t:"📋 MENU",x:"Bonjour "+teacherName+" 👋\nQue souhaitez-vous faire ?"}];
+    if(id==='exercise_lesson') return [{f:"bot",t:"✏️ Exercices",x:"Entrez le numéro de la leçon (ex. 16).\nOu choisissez une leçon ci-dessous :"}];
+    if(id==='exercise_result'){
+      const c=MATH_COURSES.find(x=>x.lecon===exerciseLessonNum)||curMathLesson();
+      return [{f:"bot",t:"📝 Exercice — Leçon "+exerciseLessonNum,x:"Thème : "+c.titre+"\n\nAwa a 4 mangues. Sa mère lui donne 2.\nCombien a-t-elle au total ? 🥭"},
+        {f:"bot",t:"Voulez-vous un autre exercice sur le même thème ?",x:""}];
     }
-    if(id==='prepare'){
-      if(activeSubject==='math'){
-        const c=curMathLesson(),pre=prereqLabels('math',c.node);
-        return [{f:"bot",t:"📖 Leçon "+c.lecon+" : "+c.titre,
-          x:"🗓️ Semaine "+c.semaine+" · "+c.jour+"\n🎯 Objectif : "+c.objectif+
-            "\n📚 Prérequis :\n"+(pre.length?pre.map(p=>"✓ "+p).join("\n"):"—")+"\n\nChoisissez :"}];
-      }
-      const cur=curFrNode(),pre=prereqLabels(activeSubject,cur&&cur.id);
-      return [{f:"bot",t:"📖 Leçon (libre) : "+cur.label,
-        x:"🎯 Objectif : maîtriser « "+cur.label+" »\n📚 Prérequis :\n"+(pre.length?pre.map(p=>"✓ "+p).join("\n"):"—")+"\n\nChoisissez :"}];
+    if(id==='exercise_cats') return [{f:"bot",t:"📂 Liste des catégories",x:"Choisissez une catégorie pour un nouvel exercice, ou retournez au MENU."}];
+    if(id==='guide_level'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📖 "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
+    if(id==='guide_result'){const s=subjMeta(guideSubject);
+      return [{f:"bot",t:"📘 Guide "+s.icon+" "+s.label+" · "+guideLevel,x:guideAnswer(guideQuery||"Comment introduire ce chapitre ?").t.replace(/^📘[^\n]+\n/,'')}];}
+    if(id==='learning_welcome'){const l=langMeta(learnLang);
+      return [{f:"bot",t:"🌍 "+l.label,x:"Bienvenue dans l'apprentissage continu !\nExpression du jour : "+l.phrase}];}
+    if(id==='learning_ask') return [{f:"bot",t:"🔄 Traduction",x:"Où souhaitez-vous traduire un nouveau mot ?"}];
+    if(id==='learning_translate'){
+      const l=langMeta(learnLang);
+      const tr=learnMode==='loc2fr'?(learnWord+" → français (approx.)"):(learnWord+" → "+l.label+" : « … »");
+      return [{f:"bot",t:"🗣️ Traduction",x:tr+"\n\n(Mot le plus proche si traduction exacte indisponible)"}];
     }
-    if(id==='lessonswitch'){
-      if(activeSubject==='math'){const c=curMathLesson();
-        return [{f:"bot",t:"🔄 Changer de leçon — "+sm.icon+" Maths",x:"Leçon active : Leçon "+c.lecon+" — "+c.titre+"\n(format semaine · jour · n°)\n\nChoisissez :"}];}
-      const c=curFrNode();
-      return [{f:"bot",t:"🔄 Changer de leçon — "+sm.icon+" Français",x:"Leçon active : "+c.label+"\n(format libre)\n\nChoisissez :"}];
-    }
-    if(id==='exercise_subject') return [{f:"bot",t:"📝 Générer des exercices",x:"Pour quelle matière générer les exercices ?"}];
-    if(id==='exercise'){const s=subjMeta(exoSubj());return [{f:"bot",t:"📝 Exercices — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
-    if(id==='exercise_out') return buildExercise();
+    if(id==='feedback_incident') return [{f:"bot",t:"📝 Retour : "+feedbackTopic,x:"Décrivez l'incident ou votre remarque."}];
+    if(id==='feedback_importance') return [{f:"bot",t:"⚖️ Importance",x:"Quelle est l'importance de cet incident pour vous ?"}];
+    if(id==='feedback_more') return [{f:"bot",t:"📋 Récapitulatif",x:"Sujet : "+feedbackTopic+"\nImportance : "+feedbackImportance+"\n\nVoulez-vous ajouter une autre information ?"}];
+    if(id==='feedback_done') return [{f:"bot",t:"✅ Retour enregistré",x:"Merci ! Votre retour (« "+feedbackTopic+" ») a bien été transmis.\n"+(feedbackName?"Nom : "+feedbackName+"\n":"")+"Il sera pris en compte par l'équipe ARED."}];
     if(id==='login') return [
       {f:"bot",t:"🔐 Connexion enseignant",x:"Bienvenue sur ARED Edu.\nEntrez votre code enseignant pour vous connecter."},
       {f:"bot",t:"🔑 Codes de démonstration",x:Object.keys(TEACHER_ACCOUNTS).map(c=>"• "+c+" — "+TEACHER_ACCOUNTS[c]).join("\n")+"\n\n⌨️ Saisissez un code (format ENS-XXXX) dans la barre du bas, ou touchez-en un ci-dessous."}
     ];
-    if(id==='guides') return [{f:"bot",t:"📚 Accéder aux guides",x:"Guides pédagogiques par matière et par niveau.\nPour quelle matière ?"}];
-    if(id==='guides_level'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📚 Guides — "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
-    if(id==='guide_view'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📘 Guide "+s.icon+" "+s.label+" · "+guideLevel,
-      x:"Sommaire du guide :\n• 🎯 Objectifs du niveau\n• 🪜 Progression conseillée\n• 🧩 Activités types\n• ✅ Modalités d'évaluation"},
-      {f:"bot",t:"💬 Posez-moi vos questions sur ce guide",x:"Touchez une question ci-dessous, ou écrivez / dictez 🎤 librement dans la barre du bas."}];}
-    if(id==='learning') return [{f:"bot",t:"🌍 Apprentissage continu",x:"Apprenez une langue locale du Sénégal (contenu à valider par des linguistes).\nChoisissez la langue :"}];
-    if(id==='lang_lesson'){const l=langMeta(learnLang);return [{f:"bot",t:"🗣️ "+l.label+" — leçon du jour",x:"Expression du jour :\n"+l.phrase+"\n\n🔊 (audio disponible dans le bot réel)"}];}
-    if(id==='fieldreport') return [{f:"bot",t:"📝 Rapport terrain — supports pédagogiques",x:"De quel support souhaitez-vous faire un rapport ?"}];
-    if(id==='fieldreport_state') return [{f:"bot",t:"📝 "+reportSupport,x:"Quel est l'état constaté ?"}];
-    if(id==='fieldreport_done') return [{f:"bot",t:"✅ Rapport enregistré",x:"Support : "+reportSupport+"\nÉtat : "+reportState+"\n\nMerci ! Ces remontées améliorent la distribution des supports."}];
     if(id==='profile'){const subs=teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', '):'—';
-      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n🔑 Code : "+(teacherCode||'—')+"\nRôle : Enseignant\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue en cours : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
-    if(id==='endsession') return [{f:"bot",t:"🚪 Terminer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}];
-    if(id==='session_end') return [{f:"bot",t:"👋 Session terminée",x:"À bientôt "+teacherName+" !\nReconnectez-vous avec votre code quand vous voulez."}];
-    if(id==='analytics'){
-      const done=kgLabels('done'), weak=kg().nodes.filter(n=>n.status==='weak'||n.status==='current').map(n=>n.label);
-      return [{f:"bot",t:"📊 Classe "+(activeClass||'CI')+"-A · "+sm.icon+" "+sm.label+" · 24 élèves",
-        x:"Maîtrisé (graphe) :\n"+done.map(d=>"✅ "+d).join("\n")+
-          "\n\nÀ renforcer :\n"+weak.map(d=>"⚠️ "+d).join("\n")+
-          "\n\nRecommandation : remédiation sur le nœud faible."}];
-    }
-    if(id==='planning'){
-      const days=["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
-      if(activeSubject==='math'){
-        const c=curMathLesson(),wk=MATH_COURSES.filter(x=>x.semaine===c.semaine);
-        return [{f:"bot",t:"🗓️ Semaine "+c.semaine+" — "+sm.icon+" "+sm.label,
-          x:days.map(d=>{const l=wk.find(x=>x.jour===d);return d+" : "+(l?("Leçon "+l.lecon+" — "+l.titre):"Révision");}).join("\n")+
-            "\n\n🧩 Format : semaine · jour · n° de leçon (mock data)."}];
-      }
-      const order=kg().nodes,start=Math.max(0,order.findIndex(n=>n.id===activeFrNode)),week=order.slice(start,start+5);
-      return [{f:"bot",t:"🗓️ Semaine — "+sm.icon+" "+sm.label,
-        x:days.map((d,i)=>d+" : "+(week[i]?week[i].label:'Révision')).join("\n")+
-          "\n\n🧩 Séquence libre dérivée du graphe."}];
-    }
-    if(id==='classswitch') return [{f:"bot",t:"🔄 Changer de classe active",
-      x:"Classe active : "+(activeClass||'—')+"\nVos classes : "+fmtClasses()+"\n\nChoisissez :"}];
-    if(id==='subjectswitch') return [{f:"bot",t:"🔄 Changer de matière",
-      x:"Matière active : "+sm.icon+" "+sm.label+"\n\nLe graphe de connaissances suivi changera.\nChoisissez :"}];
+      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n🔑 Code : "+(teacherCode||'—')+"\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
+    if(id==='endsession') return [{f:"bot",t:"🚪 Fermer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}];
+    if(id==='session_end') return [{f:"bot",t:"👋 Session fermée",x:"À bientôt "+teacherName+" !\nReconnectez-vous avec votre code quand vous voulez."}];
   }
   return scr.msgs;
 }
@@ -1098,93 +1079,68 @@ function getOpts(flowName,id,scr){
       return Object.keys(TEACHER_ACCOUNTS).map(code=>(
         {k:"🔑",label:code+" — "+TEACHER_ACCOUNTS[code],to:"__login:"+code}
       )).concat([{k:"❓",label:"Je n'ai pas de code",to:"__nocode"}]);
-    if(id==='home'){
-      const o=[
-        {label:"📘 Enseignement",to:"teaching"},
-        {label:"📚 Accéder aux guides",to:"guides"},
-        {label:"🌍 Apprentissage continu",to:"learning"},
-        {label:"📝 Rapport terrain (supports)",to:"fieldreport"},
-        {label:"👤 Modifier votre profil",to:"profile"},
-        {label:"➕ Plus (planning · suivi · remédiation)",to:"more"},
-        {label:"🚪 Terminer la session",to:"endsession"}
-      ];
-      return o.map((x,i)=>Object.assign({k:String(i+1)},x));
-    }
-    if(id==='teaching'){
-      const exTo=teacherSubjects.length>1?'exercise_subject':'exercise';
-      const o=[
-        {label:"Préparer ma leçon",to:"prepare"},
-        {label:"Générer des exercices",to:exTo},
-        {label:"Évaluation rapide",to:"assess"},
-        {label:"Changer de leçon",to:"lessonswitch"}
-      ];
-      if(teacherClasses.length>1) o.push({label:"Changer de classe ("+activeClass+")",to:"classswitch"});
-      if(teacherSubjects.length>1) o.push({label:"Changer de matière ("+subjMeta(activeSubject).icon+")",to:"subjectswitch"});
-      const list=o.map((x,i)=>Object.assign({k:String(i+1)},x));
-      list.push({k:"0",label:"Retour à l'accueil",to:"home"});
-      return list;
-    }
-    if(id==='classswitch')
-      return teacherClasses.map((c,i)=>({k:String(i+1),label:(c===activeClass?'✓ ':'')+c,to:"__setclass:"+c}))
-        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
-    if(id==='subjectswitch')
-      return teacherSubjects.map((s,i)=>({k:String(i+1),label:(s===activeSubject?'✓ ':'')+subjMeta(s).icon+" "+subjMeta(s).label,to:"__setsubject:"+s}))
-        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
-    if(id==='lessonswitch'){
-      if(activeSubject==='math')
-        return MATH_COURSES.map((c,i)=>({k:String(i+1),label:(c.lecon===activeMathLecon?'✓ ':'')+"S"+c.semaine+" "+c.jour+" · L"+c.lecon+" — "+c.titre,to:"__setlesson:"+c.lecon}))
-          .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
-      return KG.fr.nodes.map((n,i)=>({k:String(i+1),label:(n.id===activeFrNode?'✓ ':'')+n.label,to:"__setlesson:"+n.id}))
-        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
-    }
-    if(id==='exercise_subject')
-      return teacherSubjects.map((s,i)=>({k:String(i+1),label:subjMeta(s).icon+" "+subjMeta(s).label,to:"__exosubject:"+s}))
-        .concat([{k:"0",label:"Retour à l'accueil",to:"home"}]);
-    if(id==='exercise')
-      return [{k:"1",label:"Facile",to:"__exolevel:facile"},{k:"2",label:"Moyen",to:"__exolevel:moyen"},
-              {k:"3",label:"Difficile",to:"__exolevel:difficile"},{k:"0",label:"Retour à l'accueil",to:"home"}];
-    if(id==='exercise_out'){
-      const base=[{k:"🔄",label:"Un autre exercice",to:"exercise"}];
-      if(teacherSubjects.length>1) base.push({k:"📚",label:"Autre matière",to:"exercise_subject"});
-      base.push({k:"3",label:"Passer à l'évaluation",to:"assess"});
-      base.push({k:"0",label:"Accueil",to:"home"});
-      return base;
-    }
-    if(id==='guides')
+    if(id==='exercise_lesson')
+      return MATH_COURSES.slice(-5).map((c,i)=>({k:String(i+1),label:"Leçon "+c.lecon+" — "+c.titre,to:"__lesson:"+c.lecon}))
+        .concat([{k:"0",label:"MENU",to:"home"}]);
+    if(id==='exercise_result')
+      return [{k:"1",label:"Oui — autre exercice (même thème)",to:"exercise_lesson"},
+              {k:"2",label:"Non — liste des catégories",to:"exercise_cats"},
+              {k:"0",label:"MENU",to:"home"}];
+    if(id==='exercise_cats')
+      return EXO_CATS.map((c,i)=>({k:String(i+1),label:c,to:"__exocat:"+i}))
+        .concat([{k:"🔄",label:"Nouvelle leçon",to:"exercise_lesson"},{k:"0",label:"MENU",to:"home"}]);
+    if(id==='guide_units')
       return SUBJECTS.map((s,i)=>({k:String(i+1),label:s.icon+" "+s.label,to:"__guidesub:"+s.id}))
-        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
-    if(id==='guides_level')
+        .concat([{k:"0",label:"MENU",to:"home"}]);
+    if(id==='guide_level')
       return CLASSES.map((c,i)=>({k:String(i+1),label:c.id+" — "+c.sub,to:"__guidelvl:"+c.id}))
-        .concat([{k:"0",label:"Retour",to:"guides"}]);
-    if(id==='guide_view'){
-      const qs = guideSubject==='math'
-        ? ["Comment introduire ce chapitre ?","Quelles activités pratiques proposer ?","Comment évaluer les élèves ?","Quel matériel utiliser ?"]
-        : ["Comment introduire ce chapitre ?","Quelles activités de lecture proposer ?","Comment évaluer les élèves ?","Que faire si un élève bloque ?"];
-      const o=qs.map(q=>({k:"💬",label:q,to:"__ask:"+q}));
-      o.push({k:"1",label:"📚 Autre guide",to:"guides"});
-      o.push({k:"0",label:"🏠 Menu principal",to:"home"});
-      return o;
+        .concat([{k:"0",label:"Retour",to:"guide_units"}]);
+    if(id==='guide_prompt'){
+      const qs=guideSubject==='math'
+        ?["Comment introduire ce chapitre ?","Quelles activités pratiques ?","Comment évaluer ?"]
+        :["Comment introduire ce chapitre ?","Activités de lecture ?","Que faire si un élève bloque ?"];
+      return qs.map(q=>({k:"💬",label:q,to:"__ask:"+q}))
+        .concat([{k:"0",label:"Retour",to:"guide_level"}]);
     }
-    if(id==='learning')
+    if(id==='guide_result')
+      return [{k:"1",label:"Nouvelle recherche",to:"guide_prompt"},{k:"0",label:"MENU",to:"home"}];
+    if(id==='learning_groups')
       return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
-        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
-    if(id==='lang_lesson')
-      return [{k:"1",label:"Expression suivante",to:"lang_lesson"},{k:"2",label:"Autre langue",to:"learning"},{k:"0",label:"Menu Plus",to:"more"}];
-    if(id==='fieldreport')
-      return SUPPORTS.map((s,i)=>({k:String(i+1),label:s,to:"__support:"+i}))
-        .concat([{k:"0",label:"Retour au menu Plus",to:"more"}]);
-    if(id==='fieldreport_state')
-      return ["Disponible","Manquant","Abîmé","Insuffisant"].map((s,i)=>({k:String(i+1),label:s,to:"__reportstate:"+s}))
-        .concat([{k:"0",label:"Annuler",to:"more"}]);
-    if(id==='fieldreport_done')
-      return [{k:"1",label:"Nouveau rapport",to:"fieldreport"},{k:"0",label:"Menu Plus",to:"more"}];
+        .concat([{k:"0",label:"MENU",to:"home"}]);
+    if(id==='learning_ask')
+      return [{k:"1",label:"Oui — traduire un mot",to:"learning_mode"},
+              {k:"2",label:"Non — revenir",to:"learning_welcome"},{k:"0",label:"MENU",to:"home"}];
+    if(id==='learning_mode')
+      return [{k:"1",label:"Français → Local",to:"__learnmode:fr2loc"},
+              {k:"2",label:"Local → Français",to:"__learnmode:loc2fr"},
+              {k:"3",label:"Choisir une autre langue",to:"learning_lang"},
+              {k:"0",label:"Retour",to:"learning_ask"}];
+    if(id==='learning_lang')
+      return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
+        .concat([{k:"0",label:"Retour",to:"learning_mode"}]);
+    if(id==='learning_translate')
+      return [{k:"1",label:"Traduire un autre mot",to:"learning_ask"},{k:"0",label:"MENU",to:"home"}];
+    if(id==='feedback_topic')
+      return [{k:"1",label:"Par rapport aux guides",to:"__feedback:guides"},
+              {k:"2",label:"Par rapport à l'apprentissage continu",to:"__feedback:learning"},
+              {k:"3",label:"Autres",to:"__feedback:autres"},
+              {k:"0",label:"MENU",to:"home"}];
+    if(id==='feedback_importance')
+      return ["Faible","Moyenne","Élevée","Critique"].map((s,i)=>({k:String(i+1),label:s,to:"__importance:"+s}))
+        .concat([{k:"0",label:"Retour",to:"feedback_incident"}]);
+    if(id==='feedback_more')
+      return [{k:"1",label:"Oui — ajouter une information",to:"feedback_name"},
+              {k:"2",label:"Non — envoyer le retour",to:"feedback_done"},
+              {k:"0",label:"MENU",to:"home"}];
     if(id==='profile')
-      return [{k:"1",label:"Modifier mes classes",to:"onboarding"},{k:"2",label:"Modifier mes matières",to:"subjectpick"},
-              {k:"3",label:"Langue à apprendre",to:"learning"},{k:"0",label:"Menu Plus",to:"more"}];
+      return [{k:"1",label:"Modifier mes classes",to:"onboarding"},
+              {k:"2",label:"Modifier mes matières",to:"subjectpick"},
+              {k:"3",label:"Langue à apprendre",to:"learning_groups"},
+              {k:"0",label:"MENU",to:"home"}];
     if(id==='endsession')
-      return [{k:"1",label:"Oui, terminer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}];
+      return [{k:"1",label:"Oui, fermer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}];
     if(id==='session_end')
-      return [{k:"1",label:"Se reconnecter",to:"onboarding"}];
+      return [{k:"1",label:"Se reconnecter",to:"login"}];
   }
   return scr.opts;
 }
@@ -1259,16 +1215,14 @@ function render(flowName){
         const u=makeBubble({f:'user',x:o.label});
         chat.appendChild(u);chat.scrollTop=chat.scrollHeight;
         setTimeout(()=>{
-          if(o.to.indexOf('__setclass:')===0){activeClass=o.to.split(':')[1];state[flowName]='home';}
-          else if(o.to.indexOf('__setsubject:')===0){activeSubject=o.to.split(':')[1];kgViewSubject=activeSubject;buildKGtabs();renderKG();state[flowName]='home';}
-          else if(o.to.indexOf('__setlesson:')===0){const v=o.to.split(':')[1];if(activeSubject==='math')activeMathLecon=parseInt(v,10);else activeFrNode=v;state[flowName]='home';}
-          else if(o.to.indexOf('__exosubject:')===0){exoSubject=o.to.split(':')[1];state[flowName]='exercise';}
-          else if(o.to.indexOf('__exolevel:')===0){exoLevel=o.to.split(':')[1];state[flowName]='exercise_out';}
-          else if(o.to.indexOf('__guidesub:')===0){guideSubject=o.to.split(':')[1];state[flowName]='guides_level';}
-          else if(o.to.indexOf('__guidelvl:')===0){guideLevel=o.to.split(':')[1];state[flowName]='guide_view';}
-          else if(o.to.indexOf('__lang:')===0){learnLang=o.to.split(':')[1];state[flowName]='lang_lesson';}
-          else if(o.to.indexOf('__support:')===0){reportSupport=SUPPORTS[parseInt(o.to.split(':')[1],10)];state[flowName]='fieldreport_state';}
-          else if(o.to.indexOf('__reportstate:')===0){reportState=o.to.split(':')[1];state[flowName]='fieldreport_done';}
+          if(o.to.indexOf('__lesson:')===0){exerciseLessonNum=parseInt(o.to.split(':')[1],10);const c=MATH_COURSES.find(x=>x.lecon===exerciseLessonNum);exerciseTheme=c?c.titre:"Leçon "+exerciseLessonNum;state[flowName]='exercise_result';}
+          else if(o.to.indexOf('__exocat:')===0){exerciseTheme=EXO_CATS[parseInt(o.to.split(':')[1],10)];state[flowName]='exercise_lesson';}
+          else if(o.to.indexOf('__guidesub:')===0){guideSubject=o.to.split(':')[1];state[flowName]='guide_level';}
+          else if(o.to.indexOf('__guidelvl:')===0){guideLevel=o.to.split(':')[1];state[flowName]='guide_prompt';}
+          else if(o.to.indexOf('__lang:')===0){learnLang=o.to.split(':')[1];state[flowName]=state[flowName]==='learning_mode'||state[flowName]==='learning_lang'?'learning_word':'learning_welcome';}
+          else if(o.to.indexOf('__learnmode:')===0){learnMode=o.to.split(':')[1];state[flowName]='learning_lang';}
+          else if(o.to.indexOf('__feedback:')===0){feedbackTopic=o.to.split(':')[1]==='guides'?'Par rapport aux guides':o.to.split(':')[1]==='learning'?'Par rapport à l\'apprentissage continu':'Autres';state[flowName]='feedback_incident';}
+          else if(o.to.indexOf('__importance:')===0){feedbackImportance=o.to.split(':')[1];state[flowName]='feedback_more';}
           else state[flowName]=o.to;
           render(flowName);
         },260);
@@ -1363,8 +1317,8 @@ function answerTeacher(q){
     return A("🗓️ Semaine 4 : Nombre 6 → Composition → Décomposition → Addition → Révision.",[{k:"1",label:"Voir le planning",to:"planning"}]);
   if(/(leçon|lecon|prépar|prepar|nombre 6|déroul|deroul|cours)/.test(s))
     return A("📖 Leçon 16 — Nombre 6.\n🎯 Objectif : découvrir le 6.\n📚 Prérequis : nombres 0-5, comparaison.",[{k:"1",label:"Préparer / démarrer la leçon",to:"prepare"}]);
-  return A("Je peux vous aider sur : préparer une leçon, générer des exercices, l'évaluation, la remédiation et le suivi de classe. Que souhaitez-vous ?",
-    [{k:"1",label:"Préparer une leçon",to:"prepare"},{k:"2",label:"Générer un exercice",to:"exercise"},{k:"4",label:"Suivi de classe",to:"analytics"}]);
+  return A("Je peux vous aider via le MENU : exercices, guides/leçon, traduction, retours d'information.\nQue souhaitez-vous ?",
+    [{k:"1",label:"📚 Guides / Exercices",to:"submenu1"},{k:"2",label:"🌍 Traduction",to:"learning_groups"},{k:"3",label:"📝 Retours",to:"feedback_topic"}]);
 }
 
 function loginTeacher(code){
@@ -1391,7 +1345,7 @@ function guideAnswer(q){
   const s=q.toLowerCase();
   const sm=subjMeta(guideSubject);
   const head="📘 Guide "+sm.icon+" "+sm.label+" · "+guideLevel+"\n";
-  const A=(t,sug)=>({t:head+t,sug:sug||[{k:"💬",label:"Poser une autre question",to:"guide_view"}]});
+  const A=(t,sug)=>({t:head+t,sug:sug||[{k:"💬",label:"Nouvelle recherche",to:"guide_prompt"}]});
   if(/(introdu|commenc|démarr|demarr|débuter|debuter|amorce|entrée|entree|lancer)/.test(s))
     return A("Pour introduire le chapitre :\n1️⃣ Partez du vécu de l'élève (objets de la classe).\n2️⃣ Posez une question ouverte.\n3️⃣ Faites manipuler avant d'écrire.\n4️⃣ Faites verbaliser en groupe.");
   if(/(activ|exercice|jeu|pratique|manipul)/.test(s))
@@ -1406,7 +1360,7 @@ function guideAnswer(q){
       : "Matériel : alphabet mural, cartes-syllabes, ardoise + craie, petits textes illustrés.");
   if(/(bloque|difficult|comprend pas|n'y arrive|aider|lent|faible|échou|echou)/.test(s))
     return A("Si un élève bloque :\n• Revenez au prérequis (voir le graphe).\n• Repassez par la manipulation concrète.\n• Donnez un exemple proche de son quotidien.\n• Valorisez chaque petit progrès.",
-      [{k:"1",label:"Ouvrir la remédiation",to:"remediation"},{k:"💬",label:"Autre question",to:"guide_view"}]);
+      [{k:"💬",label:"Autre question",to:"guide_prompt"}]);
   if(/(durée|duree|temps|combien de temps|minute)/.test(s))
     return A("Durée conseillée : 30 à 45 min en 3 temps — découverte 10' · pratique 20' · synthèse 10'.");
   if(/(objectif|but|compétence|competence|finalité|finalite)/.test(s))
@@ -1416,22 +1370,44 @@ function guideAnswer(q){
   return A("Je réponds sur ce guide : introduction, activités, évaluation, matériel, durée, progression et élèves en difficulté. Posez votre question 👇",
     [{k:"💬",label:"Comment introduire ?",to:"__ask:Comment introduire ce chapitre ?"},
      {k:"💬",label:"Comment évaluer ?",to:"__ask:Comment évaluer les élèves ?"},
-     {k:"📚",label:"Autre guide",to:"guides"}]);
+     {k:"0",label:"MENU",to:"home"}]);
 }
 
 function askTeacher(text,viaVoice){
   if(!text||!text.trim()) return;
   if(state.teacher==='login'){loginTeacher(text);return;}
   const chat=document.getElementById('chat-teacher');
-  if(viaVoice){
-    chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
-  }else{
-    chat.appendChild(makeBubble({f:'user',x:text}));
-  }
+  if(viaVoice) chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
+  else chat.appendChild(makeBubble({f:'user',x:text}));
   chat.scrollTop=chat.scrollHeight;
-  const inGuide = state.teacher==='guide_view';
-  const ans = inGuide ? guideAnswer(text) : answerTeacher(text);
-  // typing indicator then answer
+
+  /* ---- saisie contextuelle selon l'écran ---- */
+  if(state.teacher==='exercise_lesson'){
+    const n=parseInt(text.replace(/\D/g,''),10);
+    if(n){exerciseLessonNum=n;const c=MATH_COURSES.find(x=>x.lecon===n);exerciseTheme=c?c.titre:"Leçon "+n;}
+    else exerciseLessonNum=16;
+    setTimeout(()=>{state.teacher='exercise_result';render('teacher');},400);return;
+  }
+  if(state.teacher==='guide_prompt'||state.teacher==='guide_result'){
+    guideQuery=text;
+    const ans=guideAnswer(text);
+    const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
+    setTimeout(()=>{typing.remove();state.teacher='guide_result';render('teacher');},450);return;
+  }
+  if(state.teacher==='learning_word'){
+    learnWord=text;
+    setTimeout(()=>{state.teacher='learning_translate';render('teacher');},400);return;
+  }
+  if(state.teacher==='feedback_incident'){
+    feedbackText=text;
+    setTimeout(()=>{state.teacher='feedback_importance';render('teacher');},400);return;
+  }
+  if(state.teacher==='feedback_name'){
+    feedbackName=text;
+    setTimeout(()=>{state.teacher='feedback_done';render('teacher');},400);return;
+  }
+
+  const ans=answerTeacher(text);
   const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
   setTimeout(()=>{
     typing.remove();
@@ -1555,16 +1531,13 @@ renderKG();
    TEACHER JOURNEY MAP  (onglet « Parcours »)
    ============================================================ */
 const TEACHER_JOURNEYS=[
-  {t:"🔑 Connexion & configuration", s:["Connexion (code)","Choix des classes","Choix des matières","Accueil"]},
-  {t:"📘 Préparer & enseigner",      s:["Accueil","Enseignement","Préparer la leçon","Mode assistant (5 étapes)","Évaluation rapide"]},
-  {t:"✏️ Générer des exercices",     s:["Accueil","Enseignement","Générer exercices","Matière (si 2)","Niveau","Exercice généré"]},
-  {t:"📊 Suivi & remédiation",       s:["Accueil","Plus","Analyses de classe","Remédiation","Pousser à l'élève"]},
-  {t:"🗓️ Planifier la semaine",     s:["Accueil","Plus","Planifier la semaine"]},
-  {t:"📚 Guides interactifs",        s:["Accueil","Accéder aux guides","Matière","Niveau","Guide + Q&A 💬"]},
-  {t:"🌍 Apprentissage continu",     s:["Accueil","Apprentissage continu","Langue locale","Leçon du jour"]},
-  {t:"📝 Rapport terrain",           s:["Accueil","Rapport terrain","Support","État","Confirmation"]},
-  {t:"👤 Profil & session",          s:["Accueil","Modifier le profil","Classes / matières / langue","Terminer la session"]},
-  {t:"💬 Question libre (partout)",  s:["Tout écran","Question texte / voix 🎤","Réponse + suggestions","Écran ciblé"]}
+  {t:"🔑 Connexion & configuration", s:["Connexion (code)","Choix classes","Choix matières","Bienvenue","MENU"]},
+  {t:"✏️ Module Exercices", s:["MENU","Sub Menu 1","N° de leçon","Résultat","Autre exercice ?","Catégories"]},
+  {t:"📖 Module Guides/Leçon", s:["MENU","Sub Menu 1","Unité (Maths/Français)","Niveau","Question 💬","Résultat","Nouvelle recherche"]},
+  {t:"🌍 Module Traduction", s:["MENU","Groupes langues","Bienvenue","Traduire un mot ?","Mode FR↔Local","Langue","Saisie mot","Traduction"]},
+  {t:"📝 Module Retours", s:["MENU","Sujet du retour","Saisie incident","Importance","Ajouter info ?","Nom","Confirmation"]},
+  {t:"👤 Profil & session", s:["MENU","Modifier profil","Classes / matières","Fermer session"]},
+  {t:"💬 Question libre (partout)", s:["Tout écran","Texte / voix 🎤","Réponse contextuelle"]}
 ];
 function renderJourneys(){
   const box=document.getElementById('journeys');if(!box)return;
@@ -1576,49 +1549,56 @@ function renderJourneys(){
 
 const TZONE={
   auth:{c:'#0284c7',l:'Connexion'}, cfg:{c:'#6366f1',l:'Configuration'},
-  hub:{c:'#7c3aed',l:'Accueil (hub)'}, teach:{c:'#2563eb',l:'Enseignement'},
-  mod:{c:'#0d9488',l:'Modules'}, more:{c:'#d97706',l:'Plus (secondaire)'},
-  session:{c:'#dc2626',l:'Session'}
+  hub:{c:'#7c3aed',l:'MENU (hub)'}, sub:{c:'#db2777',l:'Sub Menu 1'},
+  exo:{c:'#ec4899',l:'Exercices'}, guide:{c:'#ea580c',l:'Guides/Leçon'},
+  learn:{c:'#2563eb',l:'Traduction'}, feed:{c:'#16a34a',l:'Retours'},
+  prof:{c:'#0d9488',l:'Profil'}, session:{c:'#dc2626',l:'Session'}
 };
 const TNODES=[
-  {id:'login',l:'🔑 Connexion (code)',lay:0,z:'auth'},
-  {id:'onboarding',l:'🏫 Choix classes',lay:1,z:'cfg'},
-  {id:'subjectpick',l:'📕 Choix matières',lay:2,z:'cfg'},
-  {id:'home',l:'🏠 Accueil',lay:3,z:'hub'},
-  {id:'teaching',l:'📘 Enseignement',lay:4,z:'teach'},
-  {id:'guides',l:'📚 Guides',lay:4,z:'mod'},
-  {id:'learning',l:'🌍 Apprentissage',lay:4,z:'mod'},
-  {id:'fieldreport',l:'📝 Rapport terrain',lay:4,z:'mod'},
-  {id:'profile',l:'👤 Profil',lay:4,z:'mod'},
-  {id:'more',l:'➕ Plus',lay:4,z:'more'},
-  {id:'endsession',l:'🚪 Fin de session',lay:4,z:'session'},
-  {id:'prepare',l:'📖 Préparer leçon',lay:5,z:'teach'},
-  {id:'exercise',l:'✏️ Exercices',lay:5,z:'teach'},
-  {id:'assess',l:'✅ Évaluation',lay:5,z:'teach'},
-  {id:'lessonswitch',l:'🔁 Changer leçon',lay:5,z:'teach'},
-  {id:'classswitch',l:'🔁 Changer classe',lay:5,z:'teach'},
-  {id:'subjectswitch',l:'🔁 Changer matière',lay:5,z:'teach'},
-  {id:'guide_view',l:'💬 Guide + Q&A',lay:5,z:'mod'},
-  {id:'lang_lesson',l:'🗣️ Langue locale',lay:5,z:'mod'},
-  {id:'planning',l:'🗓️ Planifier',lay:5,z:'more'},
-  {id:'analytics',l:'📊 Analyses',lay:5,z:'more'},
-  {id:'remediation',l:'🎯 Remédiation',lay:5,z:'more'},
-  {id:'assistant',l:'🧭 Mode assistant',lay:6,z:'teach'}
+  {id:'login',l:'🔑 Connexion',lay:0,z:'auth'},
+  {id:'onboarding',l:'🏫 Classes',lay:1,z:'cfg'},
+  {id:'subjectpick',l:'📕 Matières',lay:2,z:'cfg'},
+  {id:'welcome',l:'👋 Bienvenue',lay:3,z:'cfg'},
+  {id:'home',l:'📋 MENU',lay:4,z:'hub'},
+  {id:'submenu1',l:'📚 Sub Menu 1',lay:5,z:'sub'},
+  {id:'profile',l:'👤 Profil',lay:5,z:'prof'},
+  {id:'endsession',l:'🚪 Fermer session',lay:5,z:'session'},
+  {id:'exercise_lesson',l:'✏️ N° leçon',lay:6,z:'exo'},
+  {id:'exercise_result',l:'📝 Résultat exo',lay:7,z:'exo'},
+  {id:'exercise_cats',l:'📂 Catégories',lay:8,z:'exo'},
+  {id:'guide_units',l:'📖 Unité terrain',lay:6,z:'guide'},
+  {id:'guide_level',l:'📚 Niveau',lay:7,z:'guide'},
+  {id:'guide_prompt',l:'💬 Question',lay:8,z:'guide'},
+  {id:'guide_result',l:'📘 Résultat',lay:9,z:'guide'},
+  {id:'learning_groups',l:'🌍 Groupes langues',lay:6,z:'learn'},
+  {id:'learning_welcome',l:'👋 Bienvenue court',lay:7,z:'learn'},
+  {id:'learning_ask',l:'🔄 Traduire ?',lay:8,z:'learn'},
+  {id:'learning_mode',l:'↔️ Mode',lay:9,z:'learn'},
+  {id:'learning_lang',l:'🗣️ Langue',lay:10,z:'learn'},
+  {id:'learning_word',l:'⌨️ Saisie mot',lay:11,z:'learn'},
+  {id:'learning_translate',l:'🗣️ Traduction',lay:12,z:'learn'},
+  {id:'feedback_topic',l:'📝 Sujet retour',lay:6,z:'feed'},
+  {id:'feedback_incident',l:'✍️ Incident',lay:7,z:'feed'},
+  {id:'feedback_importance',l:'⚖️ Importance',lay:8,z:'feed'},
+  {id:'feedback_more',l:'➕ Plus d\'info ?',lay:9,z:'feed'},
+  {id:'feedback_name',l:'👤 Nom',lay:10,z:'feed'},
+  {id:'feedback_done',l:'✅ Enregistré',lay:11,z:'feed'}
 ];
 const TEDGES=[
-  ['login','onboarding'],['onboarding','subjectpick'],['subjectpick','home'],
-  ['home','teaching'],['home','guides'],['home','learning'],['home','fieldreport'],['home','profile'],['home','more'],['home','endsession'],
-  ['teaching','prepare'],['teaching','exercise'],['teaching','assess'],['teaching','lessonswitch'],['teaching','classswitch'],['teaching','subjectswitch'],
-  ['prepare','assistant'],['assistant','assess'],['exercise','assess'],['assess','analytics'],
-  ['more','planning'],['more','analytics'],['more','remediation'],['analytics','remediation'],
-  ['guides','guide_view'],['learning','lang_lesson'],
-  ['profile','onboarding'],['profile','subjectpick'],['profile','learning'],
+  ['login','onboarding'],['onboarding','subjectpick'],['subjectpick','welcome'],['welcome','home'],
+  ['home','submenu1'],['home','learning_groups'],['home','feedback_topic'],['home','profile'],['home','endsession'],
+  ['submenu1','exercise_lesson'],['submenu1','guide_units'],
+  ['exercise_lesson','exercise_result'],['exercise_result','exercise_lesson'],['exercise_result','exercise_cats'],['exercise_cats','exercise_lesson'],
+  ['guide_units','guide_level'],['guide_level','guide_prompt'],['guide_prompt','guide_result'],['guide_result','guide_prompt'],
+  ['learning_groups','learning_welcome'],['learning_welcome','learning_ask'],['learning_ask','learning_mode'],['learning_ask','learning_welcome'],
+  ['learning_mode','learning_lang'],['learning_lang','learning_word'],['learning_word','learning_translate'],['learning_translate','learning_ask'],
+  ['feedback_topic','feedback_incident'],['feedback_incident','feedback_importance'],['feedback_importance','feedback_more'],
+  ['feedback_more','feedback_name'],['feedback_more','feedback_done'],['feedback_name','feedback_done'],
   ['endsession','login'],
-  ['teaching','home','b'],['prepare','home','b'],['exercise','home','b'],['assess','home','b'],
-  ['lessonswitch','home','b'],['classswitch','home','b'],['subjectswitch','home','b'],
-  ['guide_view','home','b'],['lang_lesson','home','b'],['fieldreport','home','b'],
-  ['planning','home','b'],['analytics','home','b'],['remediation','home','b'],
-  ['more','home','b'],['endsession','home','b'],['profile','more','b']
+  ['submenu1','home','b'],['exercise_lesson','home','b'],['exercise_result','home','b'],['exercise_cats','home','b'],
+  ['guide_units','home','b'],['guide_level','home','b'],['guide_prompt','home','b'],['guide_result','home','b'],
+  ['learning_groups','home','b'],['learning_welcome','home','b'],['learning_ask','home','b'],['learning_translate','home','b'],
+  ['feedback_topic','home','b'],['feedback_done','home','b'],['profile','home','b'],['endsession','home','b']
 ];
 function renderTeacherMap(){
   const host=document.getElementById('teachermap');if(!host)return;
