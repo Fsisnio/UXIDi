@@ -26,6 +26,7 @@
     --req:#0d9488;
     --qa:#e11d48;
     --map:#7c3aed;
+    --tech:#0891b2;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{
@@ -69,6 +70,7 @@
   .tab[data-flow="req"] .dot{background:var(--req)}
   .tab[data-flow="qa"] .dot{background:var(--qa)}
   .tab[data-flow="map"] .dot{background:var(--map)}
+  .tab[data-flow="tech"] .dot{background:var(--tech)}
   .tab:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
   .tab.active{color:#fff;border-color:transparent}
   .tab.active[data-flow="teacher"]{background:var(--teacher)}
@@ -77,6 +79,7 @@
   .tab.active[data-flow="req"]{background:var(--req)}
   .tab.active[data-flow="qa"]{background:var(--qa)}
   .tab.active[data-flow="map"]{background:var(--map)}
+  .tab.active[data-flow="tech"]{background:var(--tech)}
   /* Parcours tab hidden for now */
   .tab[data-flow="map"],#view-map{display:none !important}
 
@@ -95,6 +98,7 @@
   .badge.overall{background:var(--overall)}
   .badge.req{background:var(--req)}
   .badge.qa{background:var(--qa)}
+  .badge.tech{background:var(--tech)}
   .qagroup{margin-bottom:20px}
   .qagroup h3{font-size:15px;margin:4px 0 10px;display:flex;align-items:center;gap:8px}
   .qa{border:1px solid var(--line);border-radius:11px;background:#fff;margin-bottom:8px;overflow:hidden}
@@ -117,6 +121,21 @@
   .reqlist li::before{content:"";position:absolute;left:0;top:6px;width:8px;height:8px;border-radius:2px}
   .panel.ok .reqlist li::before{background:#16a34a}
   .panel.warn .reqlist li::before{background:#d97706}
+  .panel.turn .reqlist li::before{background:#06b6d4}
+  .panel.ds .reqlist li::before{background:#6366f1}
+  .panel.ml .reqlist li::before{background:#a855f7}
+  .reqbanner.tech{background:linear-gradient(120deg,#ecfeff,#cffafe);border-color:#a5f3fc;color:#0e7490}
+  .techflow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:16px 0 8px}
+  .techbox{border:2px solid var(--line);border-radius:12px;padding:12px 16px;background:#fff;font-size:12.5px;font-weight:700;text-align:center;min-width:120px}
+  .techbox.turn{border-color:#22d3ee;background:linear-gradient(120deg,#ecfeff,#fff);color:#0e7490}
+  .techbox.ds{border-color:#818cf8;background:linear-gradient(120deg,#eef2ff,#fff);color:#4338ca}
+  .techbox.ml{border-color:#c084fc;background:linear-gradient(120deg,#faf5ff,#fff);color:#7e22ce}
+  .techbox.app{border-color:#34d399;background:linear-gradient(120deg,#ecfdf5,#fff);color:#047857}
+  .techarrow{color:#94a3b8;font-weight:800;font-size:16px}
+  .techstack{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+  .techstack .cap{background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .techstack .cap b{display:block;font-size:12.5px;margin-bottom:4px;color:#0f172a}
+  .techstack .cap span{font-size:12px;color:#64748b;line-height:1.45}
   .reqlist sup a{color:var(--req);font-weight:800;text-decoration:none}
   .reqbanner{margin:18px 0;background:linear-gradient(120deg,#0f766e,#14b8a6);color:#fff;font-weight:800;
     text-align:center;padding:15px;border-radius:12px;font-size:15px}
@@ -307,6 +326,7 @@
   <button class="tab" data-flow="student"><span class="dot"></span> 🧒 Élève</button>
   <button class="tab" data-flow="overall"><span class="dot"></span> 🕸️ Système global</button>
   <button class="tab" data-flow="map"><span class="dot"></span> 🗺️ Parcours</button>
+  <button class="tab" data-flow="tech"><span class="dot"></span> ⚙️ Implication technique</button>
   <button class="tab" data-flow="req"><span class="dot"></span> 📋 Exigences</button>
   <button class="tab" data-flow="qa"><span class="dot"></span> ❓ Q&A</button>
 </nav>
@@ -491,45 +511,211 @@
     </div>
   </section>
 
-  <!-- ============ REQUIREMENTS ============ -->
-  <section class="view" id="view-req" data-color="req">
+  <!-- ============ TECHNICAL IMPLICATIONS ============ -->
+  <section class="view" id="view-tech" data-color="tech">
     <div class="view-head">
-      <h2><span class="badge req">Exigences</span> Faisabilité — Intégration WhatsApp</h2>
-      <p>Tout le système ARED Edu est intégrable à ≈ 95 % dans un chatbot WhatsApp via la <b>WhatsApp Cloud / Business API</b> (Meta). Détail des capacités natives et des adaptations nécessaires, avec références officielles.</p>
+      <h2><span class="badge tech">Implication technique</span> Data Science · Machine Learning · Turn.io</h2>
+      <p>Architecture cible d'ARED Edu : la <b>couche messaging</b> (messages entrants et sortants WhatsApp) est assurée par <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b>. La logique pédagogique, l'analyse et l'IA reposent sur une couche <b>Data Science / ML</b> côté serveur.</p>
+    </div>
+
+    <div class="reqbanner tech">Inbound &amp; outbound WhatsApp → <b>Turn.io</b> · Intelligence pédagogique → <b>Data Science + ML</b></div>
+
+    <div class="panel" style="margin-bottom:18px;border-color:#a5f3fc;background:linear-gradient(120deg,#ecfeff,#fff)">
+      <h3>📡 Architecture — qui fait quoi ?</h3>
+      <div class="techflow">
+        <div class="techbox">👩‍🏫 Enseignant / 🧒 Élève<br><small style="font-weight:500">WhatsApp</small></div>
+        <span class="techarrow">⇄</span>
+        <div class="techbox turn">Turn.io<br><small style="font-weight:500">Inbound · Outbound</small></div>
+        <span class="techarrow">→</span>
+        <div class="techbox app">ARED Edu API<br><small style="font-weight:500">Orchestration</small></div>
+        <span class="techarrow">→</span>
+        <div class="techbox ds">Data Science<br><small style="font-weight:500">Graphe · Analytics</small></div>
+        <span class="techarrow">+</span>
+        <div class="techbox ml">Machine Learning<br><small style="font-weight:500">NLP · Génération</small></div>
+      </div>
+      <div class="sub" style="margin-top:8px">Turn.io reçoit les messages (<b>inbound</b> via webhooks) et envoie les réponses (<b>outbound</b> via <code>/v1/messages</code>). ARED Edu traite le contenu, consulte le graphe de connaissances et appelle les modèles ML si besoin.</div>
     </div>
 
     <div class="reqgrid">
-      <div class="panel ok">
-        <h3>✅ Intégrable directement</h3>
+      <div class="panel ok" style="border-color:#a5f3fc;background:linear-gradient(120deg,#ecfeff,#fff)">
+        <h3>📥📤 Turn.io — Messaging (Inbound / Outbound)</h3>
         <ul class="reqlist">
-          <li><b>Menus & navigation</b> — messages interactifs : listes jusqu'à <b>10 options</b> et boutons de réponse <b>(max 3)</b>.<sup><a href="#refs">[1]</a></sup></li>
-          <li><b>Sélection classes / matières</b> — via listes interactives (sections).<sup><a href="#refs">[1]</a></sup></li>
-          <li><b>Question libre (texte)</b> — message texte routé vers l'IA.<sup><a href="#refs">[4]</a></sup></li>
-          <li><b>Notes vocales</b> — envoi & réception de messages audio.<sup><a href="#refs">[2]</a></sup></li>
-          <li><b>Images</b> — flashcards, cartes à compter, badges (JPEG / PNG).<sup><a href="#refs">[2]</a></sup></li>
-          <li><b>Graphe de connaissances, analyses, planning, remédiation</b> — logique côté serveur, aucune limite WhatsApp.</li>
+          <li><b>Inbound</b> — messages entrants (texte, audio, image, boutons) reçus via <b>webhooks</b> WhatsApp (<code>whatsapp</code> subscription).<sup><a href="#techrefs">[T1]</a></sup></li>
+          <li><b>Outbound</b> — envoi synchrone via <code>POST /v1/messages</code> : texte, médias, templates, messages interactifs (listes, boutons).<sup><a href="#techrefs">[T2]</a></sup></li>
+          <li><b>Statuts de livraison</b> — notifications outbound (delivered, read, failed) pour le suivi des envois.<sup><a href="#techrefs">[T1]</a></sup></li>
+          <li><b>Lien inbound ↔ outbound</b> — header <code>X-Turn-In-Reply-To</code> pour tracer quelle réponse répond à quel message (audit, analytics, entraînement ML).<sup><a href="#techrefs">[T3]</a></sup></li>
+          <li><b>Aligné WhatsApp Business API</b> — Turn.io expose un sous-ensemble compatible Meta ; ARED Edu n'appelle pas Meta directement.</li>
         </ul>
       </div>
-      <div class="panel warn">
-        <h3>⚠️ À adapter (3 points)</h3>
+      <div class="panel ds" style="border-color:#c7d2fe;background:linear-gradient(120deg,#eef2ff,#fff)">
+        <h3>📊 Data Science — logique &amp; données</h3>
         <ul class="reqlist">
-          <li><b>SVG non supporté</b> — convertir les visuels en <b>PNG / JPG</b> côté serveur.<sup><a href="#refs">[2]</a></sup></li>
-          <li><b>Push proactif</b> (envoyer un exercice aux élèves hors fenêtre de 24 h) — nécessite des <b>templates approuvés</b> par Meta ; les messages interactifs ne s'envoient que dans la fenêtre de 24 h.<sup><a href="#refs">[3]</a><a href="#refs">[4]</a></sup></li>
-          <li><b>Graphe visuel</b> (nœuds / flèches) — non interactif dans le chat → envoyé en <b>image</b>.</li>
+          <li><b>Graphe de connaissances</b> — source unique : concepts, prérequis, statuts (maîtrisé / en cours / à renforcer) par matière et niveau.</li>
+          <li><b>Séquençage curriculum</b> — leçons Maths (semaine · jour · n°) et séquence Français dérivées du graphe.</li>
+          <li><b>Analytics classe</b> — agrégation des scores élèves → % de maîtrise par nœud, détection des lacunes.</li>
+          <li><b>Remontées terrain</b> — structuration des retours d'information (guides, apprentissage, incidents) pour amélioration continue.</li>
+          <li><b>Profils enseignants</b> — code ENS, classes, matières, historique d'usage (tables relationnelles / entrepôt).</li>
+          <li><b>Tableaux de bord</b> — indicateurs pédagogiques : progression, concepts faibles, usage des modules.</li>
         </ul>
       </div>
     </div>
 
-    <div class="reqbanner">≈ 95 % intégrable tel quel — le reste = ajustements techniques, pas des blocages.</div>
+    <div class="reqgrid" style="margin-top:18px">
+      <div class="panel ml" style="border-color:#e9d5ff;background:linear-gradient(120deg,#faf5ff,#fff)">
+        <h3>🤖 Machine Learning — intelligence conversationnelle</h3>
+        <ul class="reqlist">
+          <li><b>NLP / Question libre</b> — compréhension des questions enseignant (texte) → routage vers le bon module (guide, exercice, traduction…).</li>
+          <li><b>Speech-to-Text</b> — transcription des notes vocales 🎤 (audio WhatsApp → texte) avant traitement NLP.</li>
+          <li><b>RAG sur guides</b> — Retrieval-Augmented Generation : questions sur les guides pédagogiques → réponses ancrées dans le contenu officiel.</li>
+          <li><b>Génération d'exercices</b> — modèle conditionné par leçon, niveau, matière et graphe de prérequis.</li>
+          <li><b>Traduction FR ↔ langues locales</b> — modèles multilingues (Pulaar, Wolof, Sérère, Mandinka, Soninké) avec fallback « mot le plus proche ».</li>
+          <li><b>Recommandation / remédiation</b> — suggestion de concepts à retravailler à partir des scores agrégés (classification + règles graphe).</li>
+        </ul>
+      </div>
+      <div class="panel warn">
+        <h3>⚙️ Pipeline technique (résumé)</h3>
+        <ol class="refs" style="margin-top:8px">
+          <li><b>1.</b> Message WhatsApp entrant → webhook Turn.io → ARED Edu API</li>
+          <li><b>2.</b> Identification utilisateur (code ENS / rôle élève) + état de session</li>
+          <li><b>3.</b> Si menu structuré → machine à états (flow UX) ; si texte/voix libre → NLP + ML</li>
+          <li><b>4.</b> Consultation graphe de connaissances + données classe (Data Science)</li>
+          <li><b>5.</b> Génération réponse (règles + modèles ML si nécessaire)</li>
+          <li><b>6.</b> Réponse outbound via Turn.io <code>/v1/messages</code> (texte, image, liste interactive)</li>
+          <li><b>7.</b> Logging événements → entrepôt données → ré-entraînement / analytics</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:18px">
+      <h3>🧩 Stack Data Science &amp; ML (composants)</h3>
+      <div class="techstack">
+        <div class="cap"><b>Entrepôt / Base</b><span>PostgreSQL ou équivalent — profils, sessions, scores, retours, logs messages.</span></div>
+        <div class="cap"><b>Graphe de connaissances</b><span>Modèle nœuds/arêtes (JSON ou graphe DB) — prérequis, objectifs, maîtrise classe.</span></div>
+        <div class="cap"><b>ETL / Pipelines</b><span>Ingestion webhooks Turn.io, normalisation, agrégation scores, features pour ML.</span></div>
+        <div class="cap"><b>LLM + RAG</b><span>Questions guides, aide contextuelle — index vectoriel sur contenus pédagogiques.</span></div>
+        <div class="cap"><b>STT (Speech-to-Text)</b><span>Transcription audio WhatsApp (Whisper ou API cloud) avant NLP.</span></div>
+        <div class="cap"><b>Modèles génératifs</b><span>Exercices, reformulations, traductions — prompts conditionnés par leçon/niveau.</span></div>
+        <div class="cap"><b>MLOps</b><span>Versioning modèles, monitoring dérive, ré-entraînement sur retours terrain.</span></div>
+        <div class="cap"><b>API orchestration</b><span>Backend ARED Edu — relie Turn.io, DS, ML et machine à états UX.</span></div>
+      </div>
+    </div>
+
+    <div class="panel" id="techrefs" style="margin-top:18px">
+      <h3>📚 Références Turn.io</h3>
+      <ol class="refs">
+        <li>[T1] Webhooks (inbound messages, outbound status) : <a href="https://whatsapp.turn.io/docs/api/webhooks" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/webhooks</a></li>
+        <li>[T2] Messages API (outbound — text, media, templates, interactive) : <a href="https://whatsapp.turn.io/docs/api/messages" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/messages</a></li>
+        <li>[T3] API Extensions (X-Turn-In-Reply-To, liaison inbound/outbound) : <a href="https://whatsapp.turn.io/docs/api/extensions" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/extensions</a></li>
+        <li>[T4] Turn.io API overview : <a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">whatsapp.turn.io/docs/category/turn-api</a></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ REQUIREMENTS ============ -->
+  <section class="view" id="view-req" data-color="req">
+    <div class="view-head">
+      <h2><span class="badge req">Exigences</span> Faisabilité — Turn.io · WhatsApp · DS / ML</h2>
+      <p>ARED Edu passe par <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b> pour tout le messaging (<b>inbound</b> webhooks, <b>outbound</b> <code>/v1/messages</code>). La logique pédagogique, le graphe de connaissances et l'IA tournent côté serveur — hors limites WhatsApp. Ce qui est faisable tel quel, et ce qui demande un ajustement.</p>
+    </div>
+
+    <div class="reqbanner tech">WhatsApp ⇄ <b>Turn.io</b> (inbound / outbound) → <b>ARED Edu API</b> → Data Science + ML</div>
+
+    <div class="reqgrid">
+      <div class="panel turn" style="border-color:#a5f3fc;background:linear-gradient(120deg,#ecfeff,#fff)">
+        <h3>✅ Faisable via Turn.io (messaging)</h3>
+        <ul class="reqlist">
+          <li><b>Inbound</b> — texte, audio, image, boutons interactifs reçus par <b>webhook</b> (<code>whatsapp</code>).<sup><a href="#refs">[T1]</a></sup></li>
+          <li><b>Outbound synchrone</b> — réponses via <code>POST /v1/messages</code> : texte, médias, listes, boutons.<sup><a href="#refs">[T2]</a></sup></li>
+          <li><b>Menus & navigation</b> — listes interactives (≤ 10 lignes) et boutons de réponse (≤ 3) : MENU, classes, matières, modules.<sup><a href="#refs">[1]</a><a href="#refs">[T2]</a></sup></li>
+          <li><b>QCM / choix unique</b> — une réponse parmi N options : boutons (≤ 3) ou liste (≤ 10) ; idéal pour exercices élève et menus.<sup><a href="#refs">[1]</a></sup></li>
+          <li><b>Notes vocales</b> — réception inbound (<code>audio</code> / <code>voice</code>) et renvoi outbound.<sup><a href="#refs">[2]</a><a href="#refs">[T1]</a></sup></li>
+          <li><b>Images pédagogiques</b> — flashcards, badges, exercices visuels (JPEG / PNG uploadés puis envoyés).<sup><a href="#refs">[2]</a><a href="#refs">[T2]</a></sup></li>
+          <li><b>Statuts de livraison</b> — <code>sent</code>, <code>delivered</code>, <code>read</code>, <code>failed</code> pour tracer les envois élèves.<sup><a href="#refs">[T1]</a></sup></li>
+          <li><b>Traçabilité inbound ↔ outbound</b> — header <code>X-Turn-In-Reply-To</code> pour lier réponse et message d'origine.<sup><a href="#refs">[T3]</a></sup></li>
+        </ul>
+      </div>
+      <div class="panel ok">
+        <h3>✅ Faisable côté serveur (hors Turn.io)</h3>
+        <ul class="reqlist">
+          <li><b>Graphe de connaissances</b> — prérequis, maîtrise classe, séquençage leçons : logique Data Science, aucune limite messaging.</li>
+          <li><b>Question libre & voix → IA</b> — NLP + STT + RAG guides : traitement backend après réception du webhook.</li>
+          <li><b>Génération d'exercices</b> — modèles ML conditionnés par leçon, niveau et graphe.</li>
+          <li><b>Traduction FR ↔ langues locales</b> — modèles multilingues + fallback côté ML.</li>
+          <li><b>Analytics & remédiation</b> — agrégation scores, détection lacunes, recommandations.</li>
+          <li><b>Session & machine à états</b> — code ENS, classes, écran courant : état stocké en base, pas dans Turn.io.</li>
+          <li><b>Retours terrain</b> — structuration et stockage des incidents signalés par l'enseignant.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:18px;border-color:#c4b5fd;background:linear-gradient(120deg,#f5f3ff,#fff)">
+      <h3>🔘 QCM &amp; sélection multiple — ce que WhatsApp autorise</h3>
+      <div class="sub" style="margin-bottom:12px">Meta précise : <i>« Users cannot select more than one option at the same time from a list or button message »</i>.<sup><a href="#refs">[1]</a></sup> Le prototype web permet la multi-sélection (☑️ classes / matières) ; sur WhatsApp, il faut adapter.</div>
+      <div class="reqgrid" style="margin-top:0">
+        <div class="panel ok" style="margin:0">
+          <h3 style="font-size:14px">✅ QCM — une réponse parmi plusieurs</h3>
+          <ul class="reqlist">
+            <li><b>Autorisé nativement</b> — format standard des messages interactifs WhatsApp.</li>
+            <li><b>Boutons de réponse</b> — max <b>3</b> options par message (ex. « Oui / Non / MENU »).</li>
+            <li><b>Listes interactives</b> — max <b>10</b> lignes (ex. catégories d'exercices, modules du MENU).</li>
+            <li><b>Exercices élève</b> — réponse par chiffre, emoji ou bouton ; une question à la fois.</li>
+            <li><b>Navigation enseignant</b> — tous les choix « une option parmi N » du parcours.</li>
+          </ul>
+        </div>
+        <div class="panel warn" style="margin:0">
+          <h3 style="font-size:14px">⚠️ Sélection multiple — plusieurs cases en même temps</h3>
+          <ul class="reqlist">
+            <li><b>Non natif</b> — pas de cases à cocher simultanées dans une liste ou des boutons classiques.<sup><a href="#refs">[1]</a></sup></li>
+            <li><b>Onboarding classes (CI→CM2)</b> — le prototype ☑️ multi-classe doit être adapté.</li>
+            <li><b>Contournement recommandé</b> — boutons <b>toggle</b> + « ✅ Valider (N classes) » : chaque clic met à jour l'état serveur ; paginer par groupes de 3 (limite boutons).</li>
+            <li><b>Matières (Maths + Français)</b> — simple : 2 toggles + Valider (tenable en un message).</li>
+            <li><b>Alternative texte</b> — « Écrivez vos classes : CI, CE1, CM2 » → parsing NLP côté serveur.</li>
+            <li><b>Alternative avancée</b> — <b>WhatsApp Flows</b> avec CheckboxGroup pour vraie multi-sélection (plus lourd à mettre en place ; non supporté sur WhatsApp Web).<sup><a href="#refs">[6]</a></sup></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="reqgrid" style="margin-top:18px">
+      <div class="panel warn">
+        <h3>⚠️ À ajuster — contraintes WhatsApp (via Turn.io)</h3>
+        <ul class="reqlist">
+          <li><b>SVG non supporté</b> — convertir les visuels du prototype en <b>PNG / JPG</b> avant upload média Turn.io.<sup><a href="#refs">[2]</a></sup></li>
+          <li><b>Push proactif élève</b> (hors fenêtre 24 h) — obligatoire via <b>templates approuvés Meta</b> ; les listes/boutons interactifs ne marchent que dans la fenêtre de service.<sup><a href="#refs">[3]</a><a href="#refs">[4]</a></sup></li>
+          <li><b>Plafond templates</b> — nouveau numéro limité à <b>~1 000 destinataires/jour</b> ; montée en charge progressive selon tiers WhatsApp.<sup><a href="#refs">[T2]</a></sup></li>
+          <li><b>Graphe visuel interactif</b> — non cliquable dans le chat → envoyer en <b>image</b> + menus texte pour la navigation.</li>
+          <li><b>Médias outbound</b> — upload préalable via l'API média Turn.io (<code>id</code> requis) ; pas d'envoi direct de SVG.<sup><a href="#refs">[T2]</a></sup></li>
+        </ul>
+      </div>
+      <div class="panel warn" style="border-color:#fed7aa;background:linear-gradient(120deg,#fff7ed,#fff)">
+        <h3>⚠️ À ajuster — contraintes Turn.io & architecture</h3>
+        <ul class="reqlist">
+          <li><b>Webhook ≤ 5 secondes</b> — Turn.io coupe au-delà ; STT / LLM / génération doivent être <b>asynchrones</b> : acquitter vite, traiter en arrière-plan, répondre ensuite.<sup><a href="#refs">[T1]</a></sup></li>
+          <li><b>Pas de file d'attente outbound</b> — si <code>/v1/messages</code> échoue, le message n'est pas mis en queue ; prévoir retry côté ARED Edu.<sup><a href="#refs">[T2]</a></sup></li>
+          <li><b>Rate limiting</b> — limite par numéro WhatsApp ; dimensionner les envois massifs (classe entière) et espacer si besoin.<sup><a href="#refs">[T2]</a></sup></li>
+          <li><b>Dédoublonnage webhook</b> — vérifier l'unicité du <code>message id</code> pour éviter les doubles traitements (retries Turn.io).<sup><a href="#refs">[T1]</a></sup></li>
+          <li><b>Payloads boutons</b> — mapper les <code>reply.id</code> des listes/boutons vers la machine à états ARED Edu (équivalent des clics du prototype).</li>
+          <li><b>Sécurité webhooks</b> — valider la signature <code>X-Turn-Hook-Signature</code> (HMAC SHA256) sur chaque événement entrant.<sup><a href="#refs">[T1]</a></sup></li>
+          <li><b>Journeys Turn.io</b> — optionnels ; ARED Edu peut tout orchestrer via API custom plutôt que les automations Turn.io natives.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="reqbanner">≈ 95 % intégrable — Turn.io couvre inbound/outbound ; le reste = ajustements (async ML, PNG, templates, état session), pas des blocages.</div>
 
     <div class="panel" id="refs">
-      <h3>📚 Références (documentation officielle Meta · WhatsApp Cloud API)</h3>
+      <h3>📚 Références</h3>
       <ol class="refs">
-        <li>[1] Interactive messages — listes (≤ 10) & boutons (≤ 3) : <a href="https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/guides/interactive-messages</a></li>
-        <li>[2] Médias supportés (image JPEG/PNG, audio) — SVG non listé : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/reference/media</a></li>
+        <li>[1] Messages interactifs WhatsApp — listes (≤ 10) & boutons (≤ 3) : <a href="https://developers.facebook.com/docs/whatsapp/guides/interactive-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/guides/interactive-messages</a></li>
+        <li>[2] Médias supportés (JPEG/PNG, audio) — SVG non listé : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/reference/media" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/reference/media</a></li>
         <li>[3] Message templates (envoi proactif hors fenêtre) : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/guides/send-message-templates</a></li>
-        <li>[4] Service messages & fenêtre de service client de 24 h : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages</a></li>
-        <li>[5] Tarification & conversations (WhatsApp Business Platform) : <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing" target="_blank" rel="noopener">developers.facebook.com/documentation/business-messaging/whatsapp/pricing</a></li>
+        <li>[4] Fenêtre de service client 24 h : <a href="https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages/" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages</a></li>
+        <li>[5] Tarification WhatsApp Business Platform : <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing" target="_blank" rel="noopener">developers.facebook.com/documentation/business-messaging/whatsapp/pricing</a></li>
+        <li>[T1] Turn.io — Webhooks (inbound, statuts, timeout 5 s, signature) : <a href="https://whatsapp.turn.io/docs/api/webhooks" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/webhooks</a></li>
+        <li>[T2] Turn.io — Messages API (outbound, interactifs, templates, rate limit) : <a href="https://whatsapp.turn.io/docs/api/messages" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/messages</a></li>
+        <li>[T3] Turn.io — Extensions (<code>X-Turn-In-Reply-To</code>) : <a href="https://whatsapp.turn.io/docs/api/extensions" target="_blank" rel="noopener">whatsapp.turn.io/docs/api/extensions</a></li>
+        <li>[T4] Turn.io — Vue d'ensemble API : <a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">whatsapp.turn.io/docs/category/turn-api</a></li>
+        <li>[6] WhatsApp Flows (formulaires, CheckboxGroup, multi-sélection) : <a href="https://developers.facebook.com/docs/whatsapp/flows" target="_blank" rel="noopener">developers.facebook.com/docs/whatsapp/flows</a></li>
       </ol>
     </div>
   </section>
@@ -545,7 +731,7 @@
 
     <div class="qagroup">
       <h3>👩‍🏫 Enseignant</h3>
-      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> Configuration initiale après connexion par code. Sélection des classes (CI→CM2) et matières (Maths, Français).</div></details>
+      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> Configuration initiale après connexion par code. Sélection des classes (CI→CM2) et matières (Maths, Français). <b>Prototype :</b> multi-sélection ☑️. <b>WhatsApp :</b> à adapter (toggle + Valider ou saisie libre) — voir <b>Exigences</b>.</div></details>
       <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub central avec 5 options : Guide et enseignement, Apprentissage continu, Retours d'information, Profil, Fermer la session.</div></details>
       <details class="qa"><summary>Sub Menu 1 — Exercices / Guides</summary><div class="a"><b>Répond à :</b> Choix entre le module <b>Exercices</b> (saisie n° de leçon → résultat → boucle ou catégories) et le module <b>Guides/Leçon</b> (unité → niveau → Q&A).</div></details>
       <details class="qa"><summary>Module Exercices</summary><div class="a"><b>Répond à :</b> Entrée du numéro de leçon, affichage de l'exercice, option « autre exercice même thème » ou liste des catégories.</div></details>
@@ -574,8 +760,9 @@
     </div>
 
     <div class="qagroup">
-      <h3>📋 Intégration WhatsApp</h3>
-      <details class="qa"><summary>Faisabilité WhatsApp</summary><div class="a"><b>Répond à :</b> « Est-ce intégrable ? » ≈ 95 % via la WhatsApp Cloud API (menus, voix, images, IA). Adaptations : PNG au lieu de SVG, templates pour le push, graphe envoyé en image. Détails dans l'onglet <b>Exigences</b>.</div></details>
+      <h3>📋 Intégration WhatsApp · Turn.io</h3>
+      <details class="qa"><summary>Faisabilité Turn.io &amp; WhatsApp</summary><div class="a"><b>Répond à :</b> « Est-ce intégrable ? » ≈ 95 %. <b>Turn.io</b> gère inbound (webhooks) et outbound (<code>/v1/messages</code>) : menus, voix, images, statuts. <b>DS/ML</b> côté serveur : graphe, IA, exercices, traduction. Ajustements : PNG au lieu de SVG, templates pour le push hors 24 h, webhook répondu en &lt; 5 s (ML async), état session en base. Détails dans <b>Exigences</b> et <b>Implication technique</b>.</div></details>
+      <details class="qa"><summary>QCM vs sélection multiple</summary><div class="a"><b>Répond à :</b> « Le multiple choice est-il permis ? » <b>Oui</b> pour un QCM (une réponse parmi 2–10 options via boutons ≤ 3 ou liste ≤ 10). <b>Non</b> pour cocher plusieurs classes en même temps comme dans le prototype — adapter avec toggles paginés, saisie libre ou WhatsApp Flows. Voir <b>Exigences → QCM &amp; sélection multiple</b>.</div></details>
     </div>
 
     <div class="panel" id="qaempty" style="display:none;text-align:center;color:var(--muted)">Aucune fonctionnalité ne correspond à votre recherche.</div>
