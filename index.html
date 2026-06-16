@@ -778,7 +778,7 @@
    ============================================================ */
 const FLOWS = {
   teacher:{
-    start:"login",
+    start:"onboarding",
     screens:{
       login:{
         step:"Connexion — code enseignant", desc:"L'enseignant s'identifie avec son code personnel avant d'accéder au système.",
@@ -953,13 +953,13 @@ const FLOWS = {
       },
       endsession:{
         step:"Fermer la session", desc:"Confirmation de déconnexion.",
-        msgs:[{f:"bot",t:"🚪 Fermer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}],
+        msgs:[{f:"bot",t:"🚪 Fermer la session ?",x:"Vous pourrez recommencer depuis l'onboarding."}],
         opts:[{k:"1",label:"Oui, fermer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}]
       },
       session_end:{
-        step:"Session fermée", desc:"Déconnecté — reconnexion par code.",
+        step:"Session fermée", desc:"Session terminée — accès direct à l'onboarding.",
         msgs:[],
-        opts:[{k:"1",label:"Se reconnecter",to:"login"}]
+        opts:[{k:"1",label:"Recommencer",to:"onboarding"}]
       },
     }
   },
@@ -1207,20 +1207,8 @@ let feedbackTopic="", feedbackText="", feedbackImportance="", feedbackName="";
 /* ---- Catégories d'exercices ---- */
 const EXO_CATS=["Nombres & dénombrement","Opérations","Géométrie","Mesures","Lecture de syllabes","Compréhension"];
 
-/* ---- Connexion : code enseignant ---- */
-const TEACHER_ACCOUNTS={
-  "ENS-2026":"Mme Diallo",
-  "ENS-1804":"M. Ndiaye",
-  "ENS-7421":"Mme Sow"
-};
-let teacherCode="", teacherName="Mme Diallo", loggedIn=false;
-function normalizeCode(c){return (c||"").trim().toUpperCase().replace(/\s+/g,"");}
-function checkTeacherCode(c){
-  const code=normalizeCode(c);
-  if(TEACHER_ACCOUNTS[code]) return {ok:true,code:code,name:TEACHER_ACCOUNTS[code]};
-  if(/^ENS-\d{3,5}$/.test(code)) return {ok:true,code:code,name:"Enseignant"};   // tout code au bon format est accepté (prototype)
-  return {ok:false,code:code};
-}
+/* ---- Accès direct (pas de barrière code enseignant) ---- */
+let teacherCode="", teacherName="Mme Diallo", loggedIn=true;
 
 /* dynamic messages depending on class / subject / knowledge graph */
 function getMsgs(flowName,id,scr){
@@ -1249,14 +1237,10 @@ function getMsgs(flowName,id,scr){
     if(id==='feedback_importance') return [{f:"bot",t:"⚖️ Importance",x:"Quelle est l'importance de cet incident pour vous ?"}];
     if(id==='feedback_more') return [{f:"bot",t:"📋 Récapitulatif",x:"Sujet : "+feedbackTopic+"\nImportance : "+feedbackImportance+"\n\nVoulez-vous ajouter une autre information ?"}];
     if(id==='feedback_done') return [{f:"bot",t:"✅ Retour enregistré",x:"Merci ! Votre retour (« "+feedbackTopic+" ») a bien été transmis.\n"+(feedbackName?"Nom : "+feedbackName+"\n":"")+"Il sera pris en compte par l'équipe ARED."}];
-    if(id==='login') return [
-      {f:"bot",t:"🔐 Connexion enseignant",x:"Bienvenue sur ARED Edu.\nEntrez votre code enseignant pour vous connecter."},
-      {f:"bot",t:"🔑 Codes de démonstration",x:Object.keys(TEACHER_ACCOUNTS).map(c=>"• "+c+" — "+TEACHER_ACCOUNTS[c]).join("\n")+"\n\n⌨️ Saisissez un code (format ENS-XXXX) dans la barre du bas, ou touchez-en un ci-dessous."}
-    ];
     if(id==='profile'){const subs=teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', '):'—';
-      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n🔑 Code : "+(teacherCode||'—')+"\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
-    if(id==='endsession') return [{f:"bot",t:"🚪 Fermer la session ?",x:"Vous devrez vous reconnecter pour reprendre."}];
-    if(id==='session_end') return [{f:"bot",t:"👋 Session fermée",x:"À bientôt "+teacherName+" !\nReconnectez-vous avec votre code quand vous voulez."}];
+      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
+    if(id==='endsession') return [{f:"bot",t:"🚪 Fermer la session ?",x:"Vous pourrez recommencer depuis l'onboarding."}];
+    if(id==='session_end') return [{f:"bot",t:"👋 Session fermée",x:"À bientôt "+teacherName+" !\nVous pouvez recommencer quand vous voulez."}];
   }
   return scr.msgs;
 }
@@ -1264,10 +1248,6 @@ function getMsgs(flowName,id,scr){
 /* dynamic options (extra menu entries depending on class/subject count) */
 function getOpts(flowName,id,scr){
   if(flowName==='teacher'){
-    if(id==='login')
-      return Object.keys(TEACHER_ACCOUNTS).map(code=>(
-        {k:"🔑",label:code+" — "+TEACHER_ACCOUNTS[code],to:"__login:"+code}
-      )).concat([{k:"❓",label:"Je n'ai pas de code",to:"__nocode"}]);
     if(id==='exercise_lesson')
       return MATH_COURSES.slice(-5).map((c,i)=>({k:String(i+1),label:"Leçon "+c.lecon+" — "+c.titre,to:"__lesson:"+c.lecon}))
         .concat([{k:"0",label:"MENU",to:"home"}]);
@@ -1394,12 +1374,8 @@ function render(flowName){
       btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
       btn.onclick=()=>{
         if(o.to.indexOf('__ask:')===0){askTeacher(o.to.slice(6));return;}
-        if(o.to==='__nocode'){
-          chat.appendChild(makeBubble({f:'user',x:o.label}));
-          chat.appendChild(makeBubble({f:'bot',t:"ℹ️ Pas encore de code ?",x:"Votre code enseignant est fourni par votre encadreur ARED.\nPour tester, utilisez le code de démonstration ENS-2026."}));
-          chat.scrollTop=chat.scrollHeight;return;
-        }
-        if(o.to.indexOf('__login:')===0){loginTeacher(o.to.slice(8));return;}
+        if(o.to==='__nocode'){loginTeacher();return;}
+        if(o.to.indexOf('__login:')===0){loginTeacher();return;}
         if(o.to==='session_end'){loggedIn=false;}
         const u=makeBubble({f:'user',x:o.label});
         chat.appendChild(u);chat.scrollTop=chat.scrollHeight;
@@ -1510,24 +1486,11 @@ function answerTeacher(q){
     [{k:"1",label:"📚 Guide et enseignement",to:"submenu1"},{k:"2",label:"🌍 Traduction",to:"learning_groups"},{k:"3",label:"📝 Retours",to:"feedback_topic"}]);
 }
 
-function loginTeacher(code){
-  const chat=document.getElementById('chat-teacher');
-  chat.appendChild(makeBubble({f:'user',x:'🔑 '+normalizeCode(code)}));
-  chat.scrollTop=chat.scrollHeight;
-  const res=checkTeacherCode(code);
-  const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
-  setTimeout(()=>{
-    typing.remove();
-    if(res.ok){
-      loggedIn=true;teacherCode=res.code;teacherName=res.name;
-      chat.appendChild(makeBubble({f:'bot',t:"✅ Connexion réussie",x:"Bienvenue "+teacherName+" !\nCode : "+teacherCode+"\n\nConfigurons votre espace."}));
-      chat.scrollTop=chat.scrollHeight;
-      setTimeout(()=>{state.teacher='onboarding';render('teacher');},650);
-    }else{
-      chat.appendChild(makeBubble({f:'bot',t:"❌ Code invalide",x:"Le code « "+res.code+" » n'est pas reconnu.\nFormat attendu : ENS-XXXX (ex. ENS-2026)."}));
-      chat.scrollTop=chat.scrollHeight;
-    }
-  },450);
+function loginTeacher(){
+  // Accès direct : la connexion par code n'existe plus.
+  loggedIn=true;
+  teacherCode="";
+  setTimeout(()=>{state.teacher='onboarding';render('teacher');},0);
 }
 
 function guideAnswer(q){
@@ -1564,7 +1527,7 @@ function guideAnswer(q){
 
 function askTeacher(text,viaVoice){
   if(!text||!text.trim()) return;
-  if(state.teacher==='login'){loginTeacher(text);return;}
+  if(state.teacher==='login'){loginTeacher();return;}
   const chat=document.getElementById('chat-teacher');
   if(viaVoice) chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
   else chat.appendChild(makeBubble({f:'user',x:text}));
@@ -1630,8 +1593,8 @@ function wireTeacherInput(){
   };
   const homeBtn=document.getElementById('home-teacher');
   const endBtn=document.getElementById('end-teacher');
-  if(homeBtn) homeBtn.onclick=()=>{state.teacher=loggedIn?'home':'login';render('teacher');};
-  if(endBtn) endBtn.onclick=()=>{state.teacher=loggedIn?'endsession':'login';render('teacher');};
+  if(homeBtn) homeBtn.onclick=()=>{state.teacher='home';render('teacher');};
+  if(endBtn) endBtn.onclick=()=>{state.teacher='endsession';render('teacher');};
 }
 
 /* ============================================================

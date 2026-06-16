@@ -1,0 +1,58 @@
+Scenario,Given,When,Then
+Teacher login — typed code,Mme Diallo is not logged in. ARED Edu shows the login screen.,Types ENS-2026 in the message bar,System accepts login; greets Mme Diallo; shows class selection (onboarding)
+Teacher login — invalid code,Mme Diallo is not logged in. ARED Edu shows the login screen.,Types ABC-123 in the message bar,System rejects the code; prompts for valid ENS-XXXX format; remains on login
+Teacher login — no code help,Mme Diallo is not logged in. ARED Edu shows the login screen.,Taps or sends Je n'ai pas de code,System explains how to obtain a code; suggests demo code ENS-2026 (Mme Diallo)
+Onboarding — select one class,Mme Diallo (ENS-2026) logged in via typed code. Screen: class selection.,Selects CE2 and taps Valider,System shows subject selection (Maths / Français)
+Onboarding — select multiple classes,Mme Diallo (ENS-2026) logged in via typed code. Screen: class selection.,Selects CI and CE1 then validates,System records both classes; shows subject selection (WhatsApp: toggle + Valider pattern)
+Onboarding — select Maths only,Mme Diallo (ENS-2026) logged in. Screen: subject selection. Classes: CE2.,Selects Maths only and validates,System shows welcome for Mme Diallo with CE2 and Maths; offers Accéder au MENU
+Onboarding — select both subjects,Mme Diallo (ENS-2026) logged in. Screen: subject selection. Classes: CE2.,Selects Maths and Français then validates,System shows welcome listing CE2; Maths and Français; offers Accéder au MENU
+MENU — display options,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: welcome.,Taps Accéder au MENU,System shows MENU with 5 options: Guide et enseignement; Apprentissage continu; Retours d'information; Profil; Fermer session
+MENU — open Guide et enseignement,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: MENU.,Taps 1 or Guide et enseignement,System shows Sub Menu 1: Exercices and Guides / Leçon
+MENU — open Apprentissage continu,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: MENU.,Taps 2 or Apprentissage continu,System shows language groups (Pulaar; Wolof; Sérère; Mandinka; Soninké)
+MENU — open Retours,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: MENU.,Taps 3 or Retours d'information,System asks what the feedback is about (guides; learning; other)
+MENU — open Profil,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: MENU.,Taps 4 or Modifier votre profil,System shows profile: Mme Diallo; ENS-2026; CE2; Maths + Français; language
+Sub Menu 1 — open Exercices,Mme Diallo (ENS-2026) logged in. Screen: Sub Menu 1 (Guide et enseignement).,Taps Exercices,System prompts for lesson number with recent lesson shortcuts
+Sub Menu 1 — open Guides,Mme Diallo (ENS-2026) logged in. Screen: Sub Menu 1 (Guide et enseignement).,Taps Guides / Leçon,System asks to choose unit: Mathématiques or Français
+Exercise — enter lesson number,Mme Diallo (ENS-2026) logged in. Screen: Exercices.,Types 16 in the message bar,System generates exercise for Lesson 16 (theme Nombre 6) with mango word problem and follow-up options
+Exercise — pick lesson from list,Mme Diallo (ENS-2026) logged in. Screen: Exercices.,Taps Leçon 16 — Nombre 6 from the shortcut list,System shows exercise result for lesson 16 (same as typed entry)
+Exercise — same theme again,Mme Diallo (ENS-2026) logged in. Screen: exercise result (Lesson 16).,Taps Oui — autre exercice (même thème),System prompts for another lesson number (same theme flow)
+Exercise — open categories,Mme Diallo (ENS-2026) logged in. Screen: exercise result (Lesson 16).,Taps Non — liste des catégories,System lists categories: Nombres & dénombrement; Opérations; Géométrie; Mesures; Lecture de syllabes; Compréhension
+Exercise — pick category,Mme Diallo (ENS-2026) logged in. Screen: exercise categories.,Taps Nombres & dénombrement,System returns to lesson entry for that category
+Exercise — return to MENU,Mme Diallo (ENS-2026) logged in. Screen: Exercices.,Taps MENU or 0,System returns to main MENU
+Guide — select Maths unit,Mme Diallo (ENS-2026) logged in. Screen: Guides / Leçon.,Taps Mathématiques,System shows level list CI through CM2
+Guide — select Français unit,Mme Diallo (ENS-2026) logged in. Screen: Guides / Leçon.,Taps Français,System shows level list CI through CM2
+Guide — select level CE2 Maths,Mme Diallo (ENS-2026) logged in. Screen: Guides / Leçon · Mathématiques.,Taps CE2,System prompts to ask a question (text or voice) with suggested questions
+Guide — select level CM2 Français,Mme Diallo (ENS-2026) logged in. Screen: Guides / Leçon · Français.,Taps CM2,System prompts to ask a question about the CM2 Français guide
+Guide — suggested question,Mme Diallo (ENS-2026) logged in. Screen: guide Q&A · Maths · CE2.,Taps Comment introduire ce chapitre ?,System returns a structured guide answer for Maths CE2
+Guide — free-text question,Mme Diallo (ENS-2026) logged in. Screen: guide Q&A · Maths · CE2.,Types Comment évaluer les élèves sur ce chapitre ? in the message bar,System returns a relevant guide-style answer (RAG) for Maths CE2
+Guide — voice question,Mme Diallo (ENS-2026) logged in. Screen: guide Q&A · Maths · CE2.,Sends voice note: Quelles activités pratiques ?,System transcribes audio and returns a guide answer about practical activities
+Guide — new search after answer,Mme Diallo (ENS-2026) logged in. Screen: guide result · Maths · CE2.,Taps Nouvelle recherche,System returns to guide question prompt (Maths · CE2)
+Guide — return to MENU,Mme Diallo (ENS-2026) logged in. Screen: Guides / Leçon.,Taps MENU,System returns to main MENU
+Learning — select Wolof group,Mme Diallo (ENS-2026) logged in. Screen: Apprentissage continu.,Taps Wolof,System shows welcome with expression of the day and translation options
+Learning — start translation,Mme Diallo (ENS-2026) logged in. Screen: Wolof welcome.,Taps Oui — traduire un mot,System asks translation direction: Français→Local; Local→Français; or sub-menu
+Learning — FR to Local mode,Mme Diallo (ENS-2026) logged in. Screen: translation mode.,Taps Français → Langue locale,System shows list of local languages
+Learning — pick language,Mme Diallo (ENS-2026) logged in. Screen: FR→Local · language list.,Taps Wolof,System prompts: Entrez le mot à traduire
+Learning — translate word,Mme Diallo (ENS-2026) logged in. Screen: word entry (FR→Wolof).,Types école in the message bar,System returns French→Wolof translation (or closest match)
+Learning — Local to FR mode,Mme Diallo (ENS-2026) logged in. Screen: translation mode.,Taps Langue locale → Français,System prompts for a word in the local language
+Learning — another word loop,Mme Diallo (ENS-2026) logged in. Screen: translation result.,Taps Traduire un autre mot,System returns to translate-another-word prompt
+Learning — return to MENU,Mme Diallo (ENS-2026) logged in. Screen: Apprentissage continu.,Taps MENU,System returns to main MENU
+Feedback — topic guides,Mme Diallo (ENS-2026) logged in. Screen: Retours d'information.,Taps Par rapport aux guides,System prompts to describe the incident (text or voice)
+Feedback — describe incident,Mme Diallo (ENS-2026) logged in. Screen: feedback incident (guides).,Types Le guide CE2 manque d'exemples concrets in the message bar,System asks for importance level
+Feedback — set importance,Mme Diallo (ENS-2026) logged in. Screen: feedback importance.,Taps Importante,System shows recap and asks whether to add more information
+Feedback — add name,Mme Diallo (ENS-2026) logged in. Screen: feedback recap.,Taps Oui — ajouter une information,System prompts for name or extra info
+Feedback — submit with name,Mme Diallo (ENS-2026) logged in. Screen: feedback name entry.,Types Mme Diallo in the message bar,System confirms feedback recorded; thanks Mme Diallo; offers MENU
+Feedback — submit without extra info,Mme Diallo (ENS-2026) logged in. Screen: feedback recap.,Taps Non — envoyer le retour,System confirms feedback transmitted; offers MENU
+Profile — view current settings,Mme Diallo (ENS-2026) logged in. Screen: Profil.,Views the profile message,System displays Mme Diallo; ENS-2026; CE2; Maths + Français; preferred language
+Session — confirm logout,Mme Diallo (ENS-2026) logged in. Screen: Fermer la session.,Taps Oui fermer,System closes session; shows goodbye to Mme Diallo; option to reconnect
+Session — cancel logout,Mme Diallo (ENS-2026) logged in. Screen: Fermer la session.,Taps Non revenir,System returns to MENU without logging out
+Session — reconnect,Mme Diallo logged out. Screen: session closed.,Taps Se reconnecter then types ENS-2026,System returns to login; accepts typed code; greets Mme Diallo
+Student — receive exercise,Student Awa received exercise pushed by Mme Diallo (ENS-2026) for CE2 Maths.,Opens chat / taps Commencer,System greets Awa; explains 5-minute game; starts Question 1
+Student — Q1 correct answer,Student Awa on Question 1 (mango count image + audio).,Taps 4,System praises correct answer (4 mangues); offers next question
+Student — Q1 wrong then retry,Student Awa on Question 1.,Taps 3,System responds kindly (Presque); shows visual hint; allows retry without penalty
+Student — Q2 correct answer,Student Awa on Question 2 (4+2 addition image).,Taps 6,System confirms 6 mangues; marks end of daily game
+Student — Q2 wrong then retry,Student Awa on Question 2.,Taps 5,System gives gentle hint with mango visual; allows retry
+Student — reward and streak,Student Awa completed both questions.,Taps Voir mon résultat,System shows badge image; streak (e.g. 3 days); encouragement to return tomorrow
+Student — score sent to teacher,Student Awa on reward screen. Teacher: Mme Diallo (ENS-2026).,Taps Score envoyé à la maîtresse,System confirms results sent to Mme Diallo's class dashboard
+Student — replay demo,Student Awa after score sent to Mme Diallo.,Taps Recommencer la démo,System restarts student exercise flow from the beginning
+Free question — general help,Mme Diallo (ENS-2026) logged in. Onboarding done (CE2; Maths + Français). Screen: MENU.,Types Comment utiliser ARED Edu ? in the message bar,System returns helpful IA response about using the assistant (not an error)
+Context input — lesson number field,Mme Diallo (ENS-2026) logged in. Screen: Exercices.,Types 42 in the message bar,System treats input as lesson number; shows exercise for lesson 42 or graceful not-found message
