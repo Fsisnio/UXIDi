@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ARED Edu — UX Prototype (Enseignant · Élève · Système)</title>
+<title>MOHEBS Assistant — UX Prototype (Enseignant · Système)</title>
 <style>
   :root{
     --wa-green:#075E54;
@@ -316,9 +316,9 @@
 </head>
 <body>
 <header class="top">
-  <span class="logo">🤖 ARED Edu · UX Prototype</span>
-  <h1>Parcours UX : Enseignant · Élève · Système</h1>
-  <p>Prototype WhatsApp interactif. Touchez les réponses dans le téléphone pour suivre les étapes — la carte de droite montre où vous êtes et les liens entre chaque étape.</p>
+  <span class="logo">📱 MOHEBS Assistant · UX Prototype</span>
+  <h1>Chatbot WhatsApp — Enseignants du primaire (Sénégal)</h1>
+  <p>Prototype interactif du programme <b>MOHEBS</b> : inscription, guides PDF, apprentissage continu, retours matériel. Messaging via Turn.io · état par numéro de téléphone.</p>
 </header>
 
 <nav class="tabs">
@@ -336,8 +336,8 @@
   <!-- ============ TEACHER ============ -->
   <section class="view active" id="view-teacher" data-color="teacher">
     <div class="view-head">
-      <h2><span class="badge teacher">Enseignant</span> Assistant pédagogique au quotidien</h2>
-      <p>Le parcours suit le <b>nouveau flow</b> : connexion → MENU central → 4 modules (Exercices, Guides/Leçon, Traduction, Retours d'information). Le graphe de connaissances reste visible en référence.</p>
+      <h2><span class="badge teacher">Enseignant</span> Assistant MOHEBS · WhatsApp</h2>
+      <p>Parcours cible : <b>inscription</b> (mot de passe MOHEBS) → <b>MENU</b> → 5 modules (Guides, Apprentissage continu, Retours, Profil, Terminer). État persisté par numéro · commandes globales <code>menu</code> / <code>fin</code>.</p>
     </div>
     <div class="grid">
       <div class="phone-col">
@@ -346,7 +346,7 @@
           <div class="screen">
             <div class="wa-head">
               <div class="av">🤖</div>
-              <div><div class="nm">ARED Edu</div><div class="st">en ligne</div></div>
+              <div><div class="nm">MOHEBS Assistant</div><div class="st">en ligne</div></div>
               <div class="wa-acts">
                 <button class="wa-act" id="home-teacher" title="Revenir à l'accueil">🏠</button>
                 <button class="wa-act" id="end-teacher" title="Terminer la discussion">✖</button>
@@ -365,23 +365,23 @@
       <div>
         <div class="hint">👆 Touchez les boutons — <b>ou écrivez / dictez 🎤 une question</b> dans la barre du bas, à tout moment.</div>
         <div class="panel" style="border-color:#fde68a;background:linear-gradient(120deg,#fffbeb,#fff);margin-bottom:18px">
-          <h3>🔑 Codes enseignant de démonstration</h3>
-          <div class="sub" style="margin-bottom:8px">Utilisez l'un de ces codes sur l'écran de connexion (format <b>ENS-XXXX</b>).</div>
-          <div id="democodes" class="democodes"></div>
+          <h3>🔑 Inscription MOHEBS (prototype)</h3>
+          <div class="sub" style="margin-bottom:8px">Premier contact : mot de passe <b>assistantmohebs</b> · puis nom, niveau (CI→CM2), langue nationale.</div>
+          <div class="caps">
+            <div class="cap"><b>⌨️ menu</b><span>Retour au MENU principal (partout).</span></div>
+            <div class="cap"><b>⌨️ fin</b><span>Termine la session · « Au revoir ! »</span></div>
+            <div class="cap"><b>💾 Persistance</b><span>Profil sauvé (localStorage) — pas de ré-inscription.</span></div>
+          </div>
+          <button type="button" class="reply" style="margin-top:10px;width:100%;justify-content:center" onclick="localStorage.removeItem('mohebs_profile');location.reload();">🔄 Réinitialiser l'inscription (test)</button>
         </div>
         <div class="panel" style="border-color:#bae6fd;background:linear-gradient(120deg,#f0f9ff,#fff);margin-bottom:18px">
-          <h3>💬🎤 Question libre &amp; voix <span style="font-size:11px;font-weight:700;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:999px;vertical-align:middle">disponible partout</span></h3>
-          <div class="sub" style="margin-bottom:10px">L'enseignant n'est jamais bloqué dans les menus. Modèle hybride : menus guidés + conversation naturelle.</div>
-          <div class="caps">
-            <div class="cap"><b>⌨️ Texte libre</b><span>« Donne-moi un problème sur l'addition » → réponse + actions.</span></div>
-            <div class="cap"><b>🎤 Note vocale</b><span>Dicter la question ; ARED Edu la transcrit puis répond.</span></div>
-            <div class="cap"><b>🧭 Contextuel</b><span>Après chaque réponse, des suggestions relient au bon écran.</span></div>
-          </div>
-          <div style="margin-top:10px;font-size:12px;color:#0369a1">Essayez : « matériel pour le nombre 6 », « génère un exercice difficile », « mes élèves n'ont pas compris », « progrès de la classe ».</div>
+          <h3>💬 Saisie libre <span style="font-size:11px;font-weight:700;color:#0284c7;background:#e0f2fe;padding:2px 8px;border-radius:999px;vertical-align:middle">guides &amp; traduction</span></h3>
+          <div class="sub" style="margin-bottom:10px">Guides : langage naturel (« semaine 3, jour 1, lecture »). Fiches PDF uniquement pour <b>Pulaar</b> et <b>Wolof</b>.</div>
+          <div style="margin-top:10px;font-size:12px;color:#0369a1">Essayez : « Montre moi le plan de cours pour la lecture du premier jour de la troisième semaine », « école » (traduction), « vidéo addition wolof ».</div>
         </div>
         <div class="panel" style="margin-bottom:18px;border-color:#ddd6fe;background:linear-gradient(120deg,#faf5ff,#fff)">
-          <h3>🧠 Graphe de connaissances <span style="font-size:11px;font-weight:700;color:#7c3aed;background:#ede9fe;padding:2px 8px;border-radius:999px;vertical-align:middle">moteur du système</span></h3>
-          <div class="sub" style="margin-bottom:10px">Tout est dérivé de ce graphe : la prochaine leçon, les exercices, le planning et la remédiation suivent l'ordre des prérequis.</div>
+          <h3>🧠 Curriculum MOHEBS <span style="font-size:11px;font-weight:700;color:#7c3aed;background:#ede9fe;padding:2px 8px;border-radius:999px;vertical-align:middle">référence</span></h3>
+          <div class="sub" style="margin-bottom:10px">Les guides sont indexés par <b>matière</b> (Mathématiques / Lecture), <b>semaine</b> (1–26) et <b>jour</b> (1–5). Fiches générées en <b>Pulaar</b> et <b>Wolof</b> uniquement.</div>
           <div class="kgtabs" id="kgtabs"></div>
           <div id="kgview"></div>
           <div class="kglegend">
@@ -403,8 +403,8 @@
   <!-- ============ STUDENT ============ -->
   <section class="view" id="view-student" data-color="student">
     <div class="view-head">
-      <h2><span class="badge student">Élève</span> Exercices guidés (assisté par le parent)</h2>
-      <p>Pensé pour des enfants 6–11 ans (CI–CM2) sur le téléphone d'un parent : audio d'abord, images, une question à la fois, récompense immédiate, sessions de 5 min. L'enseignant pousse les exercices.</p>
+      <h2><span class="badge student">Élève</span> Démo pédagogique (hors scope MOHEBS v1)</h2>
+      <p>Le chatbot MOHEBS v1 cible les <b>enseignants</b> uniquement. Cette démo élève illustre une extension future : exercices poussés par l'enseignant, session parent-enfant ~5 min.</p>
     </div>
     <div class="grid">
       <div class="phone-col">
@@ -413,7 +413,7 @@
           <div class="screen">
             <div class="wa-head">
               <div class="av">🤖</div>
-              <div><div class="nm">ARED Edu · Awa</div><div class="st">exercice du jour</div></div>
+              <div><div class="nm">MOHEBS · Awa</div><div class="st">démo élève</div></div>
             </div>
             <div class="chat" id="chat-student"></div>
             <div class="replies" id="replies-student"></div>
@@ -434,58 +434,60 @@
   <!-- ============ OVERALL ============ -->
   <section class="view" id="view-overall" data-color="overall">
     <div class="view-head">
-      <h2><span class="badge overall">Système</span> Une seule boucle, un graphe de programme</h2>
-      <p>Les trois rôles alimentent un même graphe de curriculum. Les réponses des élèves remontent automatiquement dans les analyses de l'enseignant, qui déclenchent une remédiation ciblée.</p>
+      <h2><span class="badge overall">Système</span> Architecture MOHEBS · WhatsApp · Turn.io</h2>
+      <p>Un numéro WhatsApp, une machine à états par enseignant. Inscription persistée · session courante · 5 modules métier · commandes globales <code>menu</code> / <code>fin</code>.</p>
     </div>
 
     <div class="diagram">
-      <h3>🕸️ Architecture de la boucle pédagogique</h3>
+      <h3>🕸️ Flux global MOHEBS Assistant</h3>
       <div class="sysmap">
         <div class="graph-core">
-          <div class="gt">🧠 GRAPHE DE CONNAISSANCES</div>
-          <div class="gd">2 matières : 🔢 Mathématiques · 📖 Français<br>Concepts + prérequis + progression — source unique de vérité</div>
+          <div class="gt">📱 WHATSAPP + TURN.IO</div>
+          <div class="gd">Inbound webhooks · Outbound <code>/v1/messages</code><br>Texte, PDF, listes, boutons</div>
         </div>
-        <div class="arrows">↓ alimente &nbsp;&nbsp; ↓ alimente &nbsp;&nbsp; ↓ alimente</div>
+        <div class="arrows">↓ orchestration &nbsp;&nbsp; ↓ données &nbsp;&nbsp; ↓ intelligence</div>
         <div class="three">
           <div class="node-card">
             <div class="h"><span class="ic" style="background:var(--teacher)">👩‍🏫</span> Enseignant</div>
             <ul>
-              <li>Pose des questions (texte / voix 🎤)</li>
-              <li>Prépare la leçon</li>
-              <li>Génère exercices</li>
-              <li>Lance l'évaluation</li>
-              <li>Voit les analyses</li>
+              <li>Inscription (mot de passe MOHEBS)</li>
+              <li>Demande guides (NL → semaine/jour)</li>
+              <li>Traduction & vidéos</li>
+              <li>Signalements matériel</li>
+              <li>Gère son profil</li>
             </ul>
           </div>
           <div class="node-card">
-            <div class="h"><span class="ic" style="background:var(--student)">🧒</span> Élève</div>
+            <div class="h"><span class="ic" style="background:var(--overall)">⚙️</span> Backend</div>
             <ul>
-              <li>Reçoit l'exercice poussé</li>
-              <li>Répond (audio/image)</li>
-              <li>Récompense immédiate</li>
-              <li>Scores remontés auto</li>
+              <li>Profil User (téléphone, nom, niveau, langue)</li>
+              <li>Session state (JSON par numéro)</li>
+              <li>Stockage PDF guides</li>
+              <li>FeedbackReport en base</li>
+              <li>Dictionnaire + LLM</li>
             </ul>
           </div>
           <div class="node-card">
-            <div class="h"><span class="ic" style="background:var(--overall)">📊</span> Analyses</div>
+            <div class="h"><span class="ic" style="background:var(--tech)">🤖</span> ML / DS</div>
             <ul>
-              <li>Détecte les lacunes</li>
-              <li>Maîtrisé / À renforcer</li>
-              <li>Recommande remédiation</li>
-              <li>Planifie la semaine</li>
+              <li>Extraction sujet/semaine/jour (NLP)</li>
+              <li>RAG sur résumés de guides</li>
+              <li>Traduction pédagogique</li>
+              <li>Index vidéos Wolof/Pulaar</li>
+              <li>Analytics retours terrain</li>
             </ul>
           </div>
         </div>
-        <div class="arrows">⟲ &nbsp; La remédiation ciblée renvoie de nouveaux exercices à l'élève &nbsp; ⟲</div>
-        <div class="loopnote">L'élève ferme la boucle de l'enseignant : plus besoin de saisir les scores à la main → les analyses (Stage 10) deviennent vivantes.</div>
+        <div class="arrows">⟲ &nbsp; Contacts suivants : profil conservé → MENU direct &nbsp; ⟲</div>
+        <div class="loopnote">La session peut se terminer (<code>fin</code>) sans perdre l'inscription. Un nouveau message démarre une session fraîche avec accueil personnalisé.</div>
       </div>
 
       <div class="principles">
-        <div class="pri"><div class="pt">Source unique de vérité</div><div class="pd">Leçons, difficulté, planning et remédiation sont dérivés du graphe — jamais écrits à la main.</div></div>
-        <div class="pri"><div class="pt">Un seul numéro, plusieurs rôles</div><div class="pd">Le rôle stocké (teacher / parent-élève) change le comportement du bot. Pas d'app séparée.</div></div>
-        <div class="pri"><div class="pt">🖼️ Image d'abord</div><div class="pd">Cartes visuelles, flashcards et badges (SVG légers) remplacent le texte pour les jeunes élèves et le faible débit.</div></div>
-        <div class="pri"><div class="pt">Hors-ligne & faible débit</div><div class="pd">Texte + notes vocales + petites images. Aucun lien web nécessitant data/login.</div></div>
-        <div class="pri"><div class="pt">Français d'abord, voix locale</div><div class="pd">Texte en français (curriculum) ; instructions vocales possibles en langue locale pour les petits.</div></div>
+        <div class="pri"><div class="pt">État par numéro</div><div class="pd">Profil enregistré une fois ; <code>session_state</code> JSON côté serveur. Un silence ne réinitialise pas l'inscription.</div></div>
+        <div class="pri"><div class="pt">Commandes globales</div><div class="pd"><code>menu</code> → MENU principal · <code>fin</code> → « Au revoir ! » depuis n'importe quel écran.</div></div>
+        <div class="pri"><div class="pt">Guides Pulaar / Wolof</div><div class="pd">Génération de fiches limitée à ces langues ; les autres reçoivent un message explicite.</div></div>
+        <div class="pri"><div class="pt">Tout en français</div><div class="pd">Interface conversationnelle en français ; contenu localisé dans les fiches et traductions.</div></div>
+        <div class="pri"><div class="pt">Modèle de données</div><div class="pd">User {phone, name, grade, language, userId} · FeedbackReport {subject, week, day, problem_type, description}.</div></div>
       </div>
     </div>
   </section>
@@ -494,7 +496,7 @@
   <section class="view" id="view-map" data-color="map">
     <div class="view-head">
       <h2><span class="badge" style="background:#ede9fe;color:#6d28d9">Parcours</span> Cartographie des interfaces enseignant</h2>
-      <p>Vue d'ensemble de la navigation : les <b>parcours types</b> d'un enseignant et la <b>carte des connexions</b> entre tous les écrans (qui mène où). Généré à partir du graphe de flow réel de l'application.</p>
+      <p>Vue d'ensemble de la navigation MOHEBS : parcours types et carte des connexions entre écrans (flow réel de l'application).</p>
     </div>
 
     <div class="panel" style="margin-bottom:18px">
@@ -514,26 +516,26 @@
   <!-- ============ TECHNICAL IMPLICATIONS ============ -->
   <section class="view" id="view-tech" data-color="tech">
     <div class="view-head">
-      <h2><span class="badge tech">Implication technique</span> Data Science · Machine Learning · Turn.io</h2>
-      <p>Architecture cible d'ARED Edu : la <b>couche messaging</b> (messages entrants et sortants WhatsApp) est assurée par <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b>. La logique pédagogique, l'analyse et l'IA reposent sur une couche <b>Data Science / ML</b> côté serveur.</p>
+      <h2><span class="badge tech">Implication technique</span> MOHEBS · Turn.io · LLM</h2>
+      <p>Architecture cible de <b>MOHEBS Assistant</b> : messaging WhatsApp via <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b>, orchestration backend, stockage profils/retours, et couche <b>LLM + dictionnaire</b> pour guides et traductions.</p>
     </div>
 
-    <div class="reqbanner tech">Inbound &amp; outbound WhatsApp → <b>Turn.io</b> · Intelligence pédagogique → <b>Data Science + ML</b></div>
+    <div class="reqbanner tech">WhatsApp ⇄ <b>Turn.io</b> → <b>MOHEBS API</b> → Guides PDF · Traduction · Retours</div>
 
     <div class="panel" style="margin-bottom:18px;border-color:#a5f3fc;background:linear-gradient(120deg,#ecfeff,#fff)">
       <h3>📡 Architecture — qui fait quoi ?</h3>
       <div class="techflow">
-        <div class="techbox">👩‍🏫 Enseignant / 🧒 Élève<br><small style="font-weight:500">WhatsApp</small></div>
+        <div class="techbox">👩‍🏫 Enseignant<br><small style="font-weight:500">WhatsApp</small></div>
         <span class="techarrow">⇄</span>
         <div class="techbox turn">Turn.io<br><small style="font-weight:500">Inbound · Outbound</small></div>
         <span class="techarrow">→</span>
-        <div class="techbox app">ARED Edu API<br><small style="font-weight:500">Orchestration</small></div>
+        <div class="techbox app">MOHEBS API<br><small style="font-weight:500">State machine</small></div>
         <span class="techarrow">→</span>
-        <div class="techbox ds">Data Science<br><small style="font-weight:500">Graphe · Analytics</small></div>
+        <div class="techbox ds">Stockage<br><small style="font-weight:500">Users · PDF · Reports</small></div>
         <span class="techarrow">+</span>
-        <div class="techbox ml">Machine Learning<br><small style="font-weight:500">NLP · Génération</small></div>
+        <div class="techbox ml">LLM / NLP<br><small style="font-weight:500">Guides · Traduction</small></div>
       </div>
-      <div class="sub" style="margin-top:8px">Turn.io reçoit les messages (<b>inbound</b> via webhooks) et envoie les réponses (<b>outbound</b> via <code>/v1/messages</code>). ARED Edu traite le contenu, consulte le graphe de connaissances et appelle les modèles ML si besoin.</div>
+      <div class="sub" style="margin-top:8px">Chaque message entrant déclenche : lookup profil par téléphone → lecture <code>session_state</code> → traitement du module actif → réponse outbound Turn.io.</div>
     </div>
 
     <div class="reqgrid">
@@ -544,59 +546,59 @@
           <li><b>Outbound</b> — envoi synchrone via <code>POST /v1/messages</code> : texte, médias, templates, messages interactifs (listes, boutons).<sup><a href="#techrefs">[T2]</a></sup></li>
           <li><b>Statuts de livraison</b> — notifications outbound (delivered, read, failed) pour le suivi des envois.<sup><a href="#techrefs">[T1]</a></sup></li>
           <li><b>Lien inbound ↔ outbound</b> — header <code>X-Turn-In-Reply-To</code> pour tracer quelle réponse répond à quel message (audit, analytics, entraînement ML).<sup><a href="#techrefs">[T3]</a></sup></li>
-          <li><b>Aligné WhatsApp Business API</b> — Turn.io expose un sous-ensemble compatible Meta ; ARED Edu n'appelle pas Meta directement.</li>
+          <li><b>Aligné WhatsApp Business API</b> — Turn.io expose un sous-ensemble compatible Meta ; MOHEBS n'appelle pas Meta directement.</li>
         </ul>
       </div>
       <div class="panel ds" style="border-color:#c7d2fe;background:linear-gradient(120deg,#eef2ff,#fff)">
-        <h3>📊 Data Science — logique &amp; données</h3>
+        <h3>📊 Données &amp; persistance</h3>
         <ul class="reqlist">
-          <li><b>Graphe de connaissances</b> — source unique : concepts, prérequis, statuts (maîtrisé / en cours / à renforcer) par matière et niveau.</li>
-          <li><b>Séquençage curriculum</b> — leçons Maths (semaine · jour · n°) et séquence Français dérivées du graphe.</li>
-          <li><b>Analytics classe</b> — agrégation des scores élèves → % de maîtrise par nœud, détection des lacunes.</li>
-          <li><b>Remontées terrain</b> — structuration des retours d'information (guides, apprentissage, incidents) pour amélioration continue.</li>
-          <li><b>Profils enseignants</b> — code ENS, classes, matières, historique d'usage (tables relationnelles / entrepôt).</li>
-          <li><b>Tableaux de bord</b> — indicateurs pédagogiques : progression, concepts faibles, usage des modules.</li>
+          <li><b>User</b> — <code>phone_number</code> (PK), name, grade (CI→CM2), language (6 langues), userId, session_state JSON.</li>
+          <li><b>FeedbackReport</b> — subject, week, day, problem_type (missing/damaged/insufficient), description, created_at.</li>
+          <li><b>Guides PDF</b> — indexés par matière × semaine × jour ; stockage objet (S3 ou équivalent).</li>
+          <li><b>Dictionnaire pédagogique</b> — termes FR ↔ langues nationales ; fallback LLM.</li>
+          <li><b>Vidéos</b> — catalogue Wolof/Pulaar indexé par sujet éducatif.</li>
+          <li><b>Inscription persistante</b> — un silence entre messages ne supprime pas le profil enregistré.</li>
         </ul>
       </div>
     </div>
 
     <div class="reqgrid" style="margin-top:18px">
       <div class="panel ml" style="border-color:#e9d5ff;background:linear-gradient(120deg,#faf5ff,#fff)">
-        <h3>🤖 Machine Learning — intelligence conversationnelle</h3>
+        <h3>🤖 LLM / NLP — intelligence conversationnelle</h3>
         <ul class="reqlist">
-          <li><b>NLP / Question libre</b> — compréhension des questions enseignant (texte) → routage vers le bon module (guide, exercice, traduction…).</li>
-          <li><b>Speech-to-Text</b> — transcription des notes vocales 🎤 (audio WhatsApp → texte) avant traitement NLP.</li>
-          <li><b>RAG sur guides</b> — Retrieval-Augmented Generation : questions sur les guides pédagogiques → réponses ancrées dans le contenu officiel.</li>
-          <li><b>Génération d'exercices</b> — modèle conditionné par leçon, niveau, matière et graphe de prérequis.</li>
-          <li><b>Traduction FR ↔ langues locales</b> — modèles multilingues (Pulaar, Wolof, Sérère, Mandinka, Soninké) avec fallback « mot le plus proche ».</li>
-          <li><b>Recommandation / remédiation</b> — suggestion de concepts à retravailler à partir des scores agrégés (classification + règles graphe).</li>
+          <li><b>Extraction guide</b> — NLP/regex : matière, semaine (1–26), jour (1–5) depuis langage naturel.</li>
+          <li><b>RAG guides</b> — questions de suivi sur le résumé du plan de cours (contexte + LLM).</li>
+          <li><b>Traduction</b> — dictionnaire d'abord ; LLM si pas de correspondance exacte + exemples d'usage.</li>
+          <li><b>Recherche vidéos</b> — matching sujet + langue (Wolof/Pulaar) ; refus hors sujet éducatif.</li>
+          <li><b>Filtrage langue guides</b> — génération fiche uniquement Pulaar/Wolof ; message explicite sinon.</li>
+          <li><b>Pas de templates bruts</b> — jamais afficher d'expressions techniques (<code>if(is_nil…)</code>) à l'utilisateur.</li>
         </ul>
       </div>
       <div class="panel warn">
         <h3>⚙️ Pipeline technique (résumé)</h3>
         <ol class="refs" style="margin-top:8px">
-          <li><b>1.</b> Message WhatsApp entrant → webhook Turn.io → ARED Edu API</li>
-          <li><b>2.</b> Identification utilisateur (code ENS / rôle élève) + état de session</li>
-          <li><b>3.</b> Si menu structuré → machine à états (flow UX) ; si texte/voix libre → NLP + ML</li>
-          <li><b>4.</b> Consultation graphe de connaissances + données classe (Data Science)</li>
-          <li><b>5.</b> Génération réponse (règles + modèles ML si nécessaire)</li>
-          <li><b>6.</b> Réponse outbound via Turn.io <code>/v1/messages</code> (texte, image, liste interactive)</li>
-          <li><b>7.</b> Logging événements → entrepôt données → ré-entraînement / analytics</li>
+          <li><b>1.</b> Message WhatsApp entrant → webhook Turn.io → MOHEBS API</li>
+          <li><b>2.</b> Lookup User par téléphone · si inconnu → flow inscription</li>
+          <li><b>3.</b> Commandes globales <code>menu</code> / <code>fin</code> · sinon module courant (<code>session_state</code>)</li>
+          <li><b>4.</b> Guides : extraction NLP → vérif langue → lookup PDF → résumé structuré</li>
+          <li><b>5.</b> Traduction / vidéos : dictionnaire + LLM · index vidéos</li>
+          <li><b>6.</b> Retours : collecte multi-tours → INSERT FeedbackReport</li>
+          <li><b>7.</b> Réponse outbound Turn.io (texte, PDF, listes, boutons)</li>
         </ol>
       </div>
     </div>
 
     <div class="panel" style="margin-top:18px">
-      <h3>🧩 Stack Data Science &amp; ML (composants)</h3>
+      <h3>🧩 Stack technique (composants)</h3>
       <div class="techstack">
-        <div class="cap"><b>Entrepôt / Base</b><span>PostgreSQL ou équivalent — profils, sessions, scores, retours, logs messages.</span></div>
-        <div class="cap"><b>Graphe de connaissances</b><span>Modèle nœuds/arêtes (JSON ou graphe DB) — prérequis, objectifs, maîtrise classe.</span></div>
-        <div class="cap"><b>ETL / Pipelines</b><span>Ingestion webhooks Turn.io, normalisation, agrégation scores, features pour ML.</span></div>
-        <div class="cap"><b>LLM + RAG</b><span>Questions guides, aide contextuelle — index vectoriel sur contenus pédagogiques.</span></div>
-        <div class="cap"><b>STT (Speech-to-Text)</b><span>Transcription audio WhatsApp (Whisper ou API cloud) avant NLP.</span></div>
-        <div class="cap"><b>Modèles génératifs</b><span>Exercices, reformulations, traductions — prompts conditionnés par leçon/niveau.</span></div>
-        <div class="cap"><b>MLOps</b><span>Versioning modèles, monitoring dérive, ré-entraînement sur retours terrain.</span></div>
-        <div class="cap"><b>API orchestration</b><span>Backend ARED Edu — relie Turn.io, DS, ML et machine à états UX.</span></div>
+        <div class="cap"><b>Base de données</b><span>PostgreSQL — User, FeedbackReport, logs messages.</span></div>
+        <div class="cap"><b>Stockage PDF</b><span>Object storage — plans de cours par matière/semaine/jour.</span></div>
+        <div class="cap"><b>Webhook handler</b><span>API Node/Python — réponse &lt; 5 s ; ML async si besoin.</span></div>
+        <div class="cap"><b>State machine</b><span>Modules : registration, home, guides, learning, feedback, profile, session_end.</span></div>
+        <div class="cap"><b>LLM + RAG</b><span>Questions de suivi sur guides · reformulation résumés.</span></div>
+        <div class="cap"><b>Dictionnaire</b><span>Termes pédagogiques FR ↔ 6 langues nationales.</span></div>
+        <div class="cap"><b>Turn.io outbound</b><span>Texte, documents PDF, listes interactives, boutons.</span></div>
+        <div class="cap"><b>API orchestration</b><span>MOHEBS API — relie Turn.io, DB, LLM et machine à états.</span></div>
       </div>
     </div>
 
@@ -615,10 +617,10 @@
   <section class="view" id="view-req" data-color="req">
     <div class="view-head">
       <h2><span class="badge req">Exigences</span> Faisabilité — Turn.io · WhatsApp · DS / ML</h2>
-      <p>ARED Edu passe par <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b> pour tout le messaging (<b>inbound</b> webhooks, <b>outbound</b> <code>/v1/messages</code>). La logique pédagogique, le graphe de connaissances et l'IA tournent côté serveur — hors limites WhatsApp. Ce qui est faisable tel quel, et ce qui demande un ajustement.</p>
+      <p>MOHEBS Assistant passe par <b><a href="https://whatsapp.turn.io/docs/category/turn-api" target="_blank" rel="noopener">Turn.io</a></b> pour le messaging WhatsApp. Inscription, guides PDF, traduction, retours matériel et session tournent côté serveur. Ce qui est faisable et ce qui demande un ajustement.</p>
     </div>
 
-    <div class="reqbanner tech">WhatsApp ⇄ <b>Turn.io</b> (inbound / outbound) → <b>ARED Edu API</b> → Data Science + ML</div>
+    <div class="reqbanner tech">WhatsApp ⇄ <b>Turn.io</b> → <b>MOHEBS API</b> → Profils · Guides · Retours</div>
 
     <div class="reqgrid">
       <div class="panel turn" style="border-color:#a5f3fc;background:linear-gradient(120deg,#ecfeff,#fff)">
@@ -626,10 +628,11 @@
         <ul class="reqlist">
           <li><b>Inbound</b> — texte, audio, image, boutons interactifs reçus par <b>webhook</b> (<code>whatsapp</code>).<sup><a href="#refs">[T1]</a></sup></li>
           <li><b>Outbound synchrone</b> — réponses via <code>POST /v1/messages</code> : texte, médias, listes, boutons.<sup><a href="#refs">[T2]</a></sup></li>
-          <li><b>Menus & navigation</b> — listes interactives (≤ 10 lignes) et boutons de réponse (≤ 3) : MENU, classes, matières, modules.<sup><a href="#refs">[1]</a><a href="#refs">[T2]</a></sup></li>
-          <li><b>QCM / choix unique</b> — une réponse parmi N options : boutons (≤ 3) ou liste (≤ 10) ; idéal pour exercices élève et menus.<sup><a href="#refs">[1]</a></sup></li>
+          <li><b>Menus MOHEBS</b> — 5 options MENU ; numéro ou libellé complet acceptés (<code>1</code> ou <code>1) Accéder aux guides</code>).<sup><a href="#refs">[1]</a></sup></li>
+          <li><b>Envoi PDF guides</b> — document outbound via API média Turn.io après upload.<sup><a href="#refs">[T2]</a><a href="#refs">[2]</a></sup></li>
+          <li><b>Liens vidéo</b> — message texte avec URL dans la fenêtre de service 24 h.<sup><a href="#refs">[4]</a></sup></li>
           <li><b>Notes vocales</b> — réception inbound (<code>audio</code> / <code>voice</code>) et renvoi outbound.<sup><a href="#refs">[2]</a><a href="#refs">[T1]</a></sup></li>
-          <li><b>Images pédagogiques</b> — flashcards, badges, exercices visuels (JPEG / PNG uploadés puis envoyés).<sup><a href="#refs">[2]</a><a href="#refs">[T2]</a></sup></li>
+          <li><b>Documents PDF</b> — plans de cours envoyés comme pièces jointes (upload média Turn.io).<sup><a href="#refs">[2]</a><a href="#refs">[T2]</a></sup></li>
           <li><b>Statuts de livraison</b> — <code>sent</code>, <code>delivered</code>, <code>read</code>, <code>failed</code> pour tracer les envois élèves.<sup><a href="#refs">[T1]</a></sup></li>
           <li><b>Traçabilité inbound ↔ outbound</b> — header <code>X-Turn-In-Reply-To</code> pour lier réponse et message d'origine.<sup><a href="#refs">[T3]</a></sup></li>
         </ul>
@@ -637,13 +640,13 @@
       <div class="panel ok">
         <h3>✅ Faisable côté serveur (hors Turn.io)</h3>
         <ul class="reqlist">
-          <li><b>Graphe de connaissances</b> — prérequis, maîtrise classe, séquençage leçons : logique Data Science, aucune limite messaging.</li>
-          <li><b>Question libre & voix → IA</b> — NLP + STT + RAG guides : traitement backend après réception du webhook.</li>
-          <li><b>Génération d'exercices</b> — modèles ML conditionnés par leçon, niveau et graphe.</li>
-          <li><b>Traduction FR ↔ langues locales</b> — modèles multilingues + fallback côté ML.</li>
-          <li><b>Analytics & remédiation</b> — agrégation scores, détection lacunes, recommandations.</li>
-          <li><b>Session & machine à états</b> — code ENS, classes, écran courant : état stocké en base, pas dans Turn.io.</li>
-          <li><b>Retours terrain</b> — structuration et stockage des incidents signalés par l'enseignant.</li>
+          <li><b>Inscription</b> — mot de passe, profil User persisté par téléphone.</li>
+          <li><b>Machine à états</b> — registration, guides, learning, feedback, profile, session ; <code>session_state</code> JSON.</li>
+          <li><b>Guides NLP</b> — extraction matière/semaine/jour + RAG sur résumé PDF.</li>
+          <li><b>Traduction</b> — dictionnaire + LLM · 6 langues nationales.</li>
+          <li><b>Retours matériel</b> — collecte structurée FeedbackReport en base.</li>
+          <li><b>Commandes globales</b> — <code>menu</code> / <code>fin</code> interceptées avant le module courant.</li>
+          <li><b>Profil UTF-8</b> — noms accentués (é, è, ê) · grades CI→CM2.</li>
         </ul>
       </div>
     </div>
@@ -657,16 +660,15 @@
           <ul class="reqlist">
             <li><b>Autorisé nativement</b> — format standard des messages interactifs WhatsApp.</li>
             <li><b>Boutons de réponse</b> — max <b>3</b> options par message (ex. « Oui / Non / MENU »).</li>
-            <li><b>Listes interactives</b> — max <b>10</b> lignes (ex. catégories d'exercices, modules du MENU).</li>
-            <li><b>Exercices élève</b> — réponse par chiffre, emoji ou bouton ; une question à la fois.</li>
-            <li><b>Navigation enseignant</b> — tous les choix « une option parmi N » du parcours.</li>
+            <li><b>Listes interactives</b> — max <b>10</b> lignes (ex. langues, types de problème matériel).</li>
+            <li><b>Choix MENU & retours</b> — une option par message : numéro ou libellé complet.</li>
           </ul>
         </div>
         <div class="panel warn" style="margin:0">
           <h3 style="font-size:14px">⚠️ Sélection multiple — plusieurs cases en même temps</h3>
           <ul class="reqlist">
             <li><b>Non natif</b> — pas de cases à cocher simultanées dans une liste ou des boutons classiques.<sup><a href="#refs">[1]</a></sup></li>
-            <li><b>Onboarding classes (CI→CM2)</b> — le prototype ☑️ multi-classe doit être adapté.</li>
+            <li><b>Onboarding inscription</b> — nom + niveau + langue : saisie libre ou listes ; pas de multi-sélection native.<sup><a href="#refs">[1]</a></sup></li>
             <li><b>Contournement recommandé</b> — boutons <b>toggle</b> + « ✅ Valider (N classes) » : chaque clic met à jour l'état serveur ; paginer par groupes de 3 (limite boutons).</li>
             <li><b>Matières (Maths + Français)</b> — simple : 2 toggles + Valider (tenable en un message).</li>
             <li><b>Alternative texte</b> — « Écrivez vos classes : CI, CE1, CM2 » → parsing NLP côté serveur.</li>
@@ -691,17 +693,17 @@
         <h3>⚠️ À ajuster — contraintes Turn.io & architecture</h3>
         <ul class="reqlist">
           <li><b>Webhook ≤ 5 secondes</b> — Turn.io coupe au-delà ; STT / LLM / génération doivent être <b>asynchrones</b> : acquitter vite, traiter en arrière-plan, répondre ensuite.<sup><a href="#refs">[T1]</a></sup></li>
-          <li><b>Pas de file d'attente outbound</b> — si <code>/v1/messages</code> échoue, le message n'est pas mis en queue ; prévoir retry côté ARED Edu.<sup><a href="#refs">[T2]</a></sup></li>
+          <li><b>Pas de file d'attente outbound</b> — retry côté MOHEBS API si <code>/v1/messages</code> échoue.<sup><a href="#refs">[T2]</a></sup></li>
           <li><b>Rate limiting</b> — limite par numéro WhatsApp ; dimensionner les envois massifs (classe entière) et espacer si besoin.<sup><a href="#refs">[T2]</a></sup></li>
           <li><b>Dédoublonnage webhook</b> — vérifier l'unicité du <code>message id</code> pour éviter les doubles traitements (retries Turn.io).<sup><a href="#refs">[T1]</a></sup></li>
-          <li><b>Payloads boutons</b> — mapper les <code>reply.id</code> des listes/boutons vers la machine à états ARED Edu (équivalent des clics du prototype).</li>
+          <li><b>Payloads boutons</b> — mapper les <code>reply.id</code> des listes/boutons vers la machine à états MOHEBS.</li>
           <li><b>Sécurité webhooks</b> — valider la signature <code>X-Turn-Hook-Signature</code> (HMAC SHA256) sur chaque événement entrant.<sup><a href="#refs">[T1]</a></sup></li>
-          <li><b>Journeys Turn.io</b> — optionnels ; ARED Edu peut tout orchestrer via API custom plutôt que les automations Turn.io natives.</li>
+          <li><b>Journeys Turn.io</b> — optionnels ; MOHEBS orchestre via API custom.</li>
         </ul>
       </div>
     </div>
 
-    <div class="reqbanner">≈ 95 % intégrable — Turn.io couvre inbound/outbound ; le reste = ajustements (async ML, PNG, templates, état session), pas des blocages.</div>
+    <div class="reqbanner">≈ 95 % intégrable — Turn.io couvre messaging ; MOHEBS gère inscription, guides, traduction et retours côté serveur.</div>
 
     <div class="panel" id="refs">
       <h3>📚 Références</h3>
@@ -724,45 +726,44 @@
   <section class="view" id="view-qa" data-color="qa">
     <div class="view-head">
       <h2><span class="badge qa">Q&amp;A</span> Que fait chaque fonctionnalité ?</h2>
-      <p>Référentiel des fonctionnalités d'ARED Edu : à quelle question chacune répond, en bref. Cliquez pour déplier.</p>
+      <p>Référentiel MOHEBS Assistant : à quelle question chaque fonctionnalité répond. Cliquez pour déplier.</p>
     </div>
 
     <input class="qasearch" id="qasearch" placeholder="🔎 Rechercher une fonctionnalité…" autocomplete="off" />
 
     <div class="qagroup">
-      <h3>👩‍🏫 Enseignant</h3>
-      <details class="qa"><summary>Onboarding — classes & matières</summary><div class="a"><b>Répond à :</b> Configuration initiale après connexion par code. Sélection des classes (CI→CM2) et matières (Maths, Français). <b>Prototype :</b> multi-sélection ☑️. <b>WhatsApp :</b> à adapter (toggle + Valider ou saisie libre) — voir <b>Exigences</b>.</div></details>
-      <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub central avec 5 options : Guide et enseignement, Apprentissage continu, Retours d'information, Profil, Fermer la session.</div></details>
-      <details class="qa"><summary>Sub Menu 1 — Exercices / Guides</summary><div class="a"><b>Répond à :</b> Choix entre le module <b>Exercices</b> (saisie n° de leçon → résultat → boucle ou catégories) et le module <b>Guides/Leçon</b> (unité → niveau → Q&A).</div></details>
-      <details class="qa"><summary>Module Exercices</summary><div class="a"><b>Répond à :</b> Entrée du numéro de leçon, affichage de l'exercice, option « autre exercice même thème » ou liste des catégories.</div></details>
-      <details class="qa"><summary>Module Guides/Leçon</summary><div class="a"><b>Répond à :</b> Unité de terrain (Maths/Français) → niveau → question libre/voix → réponse du guide → nouvelle recherche ou MENU.</div></details>
-      <details class="qa"><summary>Module Traduction (Apprentissage continu)</summary><div class="a"><b>Répond à :</b> Groupes de langues locales → bienvenue → traduire un mot (FR↔Local) → saisie → traduction → boucle.</div></details>
-      <details class="qa"><summary>Module Retours d'information</summary><div class="a"><b>Répond à :</b> Sujet (guides, apprentissage, autre) → saisie incident → importance → info supplémentaire → confirmation → MENU.</div></details>
-      <details class="qa"><summary>Profil & fermer session</summary><div class="a"><b>Répond à :</b> Modifier classes/matières/langue. Fermer la session déconnecte et renvoie vers la connexion par code.</div></details>
-      <details class="qa"><summary>Question libre & voix 🎤</summary><div class="a"><b>Répond à :</b> Saisie contextuelle selon l'écran (n° leçon, question guide, mot à traduire, incident…) ou question générale avec réponse IA.</div></details>
+      <h3>👩‍🏫 Enseignant · MOHEBS</h3>
+      <details class="qa"><summary>Inscription (premier contact)</summary><div class="a"><b>Répond à :</b> « Comment démarrer ? » Mot de passe <b>assistantmohebs</b> → nom → niveau (CI→CM2) → langue nationale. Profil sauvé par numéro ; contacts suivants = MENU direct.</div></details>
+      <details class="qa"><summary>MENU principal</summary><div class="a"><b>Répond à :</b> Hub avec 5 options MOHEBS. Tapez <b>menu</b> n'importe où pour y revenir. Tapez <b>fin</b> pour terminer la session.</div></details>
+      <details class="qa"><summary>1) Accéder aux guides</summary><div class="a"><b>Répond à :</b> Demande en langage naturel (matière, semaine 1–26, jour 1–5). PDF + résumé si langue <b>Pulaar</b> ou <b>Wolof</b>. Questions de suivi sur le guide.</div></details>
+      <details class="qa"><summary>2) Apprentissage continu</summary><div class="a"><b>Répond à :</b> Traduction de termes pédagogiques (dictionnaire + LLM) ou vidéos éducatives (Wolof/Pulaar uniquement).</div></details>
+      <details class="qa"><summary>3) Retours d'information</summary><div class="a"><b>Répond à :</b> Signalement matériel : leçon (matière, semaine, jour) → type (manquant, endommagé, insuffisant) → description → confirmation.</div></details>
+      <details class="qa"><summary>4) Modifier votre profil</summary><div class="a"><b>Répond à :</b> Affiche nom, niveau, langue, userId. Mise à jour de chaque champ puis retour au MENU.</div></details>
+      <details class="qa"><summary>5) Terminer la session</summary><div class="a"><b>Répond à :</b> « Au revoir ! » — prochain message = nouvelle session (inscription conservée).</div></details>
     </div>
 
     <div class="qagroup">
-      <h3>🧒 Élève</h3>
-      <details class="qa"><summary>Réception d'exercice</summary><div class="a"><b>Répond à :</b> « Qu'est-ce que je dois faire ? » L'exercice est <b>poussé par l'enseignant</b> ; le parent ouvre, l'enfant participe (session ~5 min).</div></details>
-      <details class="qa"><summary>Questions audio + image</summary><div class="a"><b>Répond à :</b> « Comment répondre quand je ne lis pas encore ? » Consigne en <b>voix</b>, support en <b>image</b>, réponse par chiffre/emoji. Une question à la fois.</div></details>
-      <details class="qa"><summary>Réessai bienveillant</summary><div class="a"><b>Répond à :</b> « Et si je me trompe ? » Jamais de sanction : indice visuel et nouvelle tentative.</div></details>
-      <details class="qa"><summary>Récompense & série</summary><div class="a"><b>Répond à :</b> « Pourquoi revenir ? » Badge image + série (streak) pour la motivation.</div></details>
-      <details class="qa"><summary>Remontée des scores</summary><div class="a"><b>Répond à :</b> « Que deviennent mes réponses ? » Les scores remontent <b>automatiquement</b> vers les analyses de l'enseignant.</div></details>
+      <h3>🧒 Élève (extension future)</h3>
+      <details class="qa"><summary>Réception d'exercice</summary><div class="a"><b>Hors scope MOHEBS v1.</b> Démo UX : exercice poussé par l'enseignant · session parent-enfant ~5 min.</div></details>
+      <details class="qa"><summary>Questions audio + image</summary><div class="a"><b>Hors scope MOHEBS v1.</b> Démo : consigne vocale + image · réponse par chiffre/emoji.</div></details>
+      <details class="qa"><summary>Réessai bienveillant</summary><div class="a"><b>Hors scope MOHEBS v1.</b> Démo : indice visuel sans sanction si mauvaise réponse.</div></details>
+      <details class="qa"><summary>Récompense & série</summary><div class="a"><b>Hors scope MOHEBS v1.</b> Démo : badge + streak de motivation.</div></details>
+      <details class="qa"><summary>Remontée des scores</summary><div class="a"><b>Hors scope MOHEBS v1.</b> Démo : scores vers tableau enseignant.</div></details>
     </div>
 
     <div class="qagroup">
-      <h3>🕸️ Système</h3>
-      <details class="qa"><summary>Graphe de connaissances</summary><div class="a"><b>Répond à :</b> « Sur quoi se base le contenu ? » Concepts + prérequis par matière. <b>Source unique</b> dont dérivent leçon, exercices, planning et remédiation.</div></details>
-      <details class="qa"><summary>Image d'abord 🖼️</summary><div class="a"><b>Répond à :</b> « Comment limiter le texte ? » Flashcards, cartes à compter et badges (SVG/PNG légers) pour les jeunes élèves et le faible débit.</div></details>
-      <details class="qa"><summary>Boucle pédagogique</summary><div class="a"><b>Répond à :</b> « Comment tout se connecte ? » Enseignant → élève → analyses → remédiation → élève. L'élève ferme la boucle de l'enseignant.</div></details>
-      <details class="qa"><summary>Un numéro, plusieurs rôles</summary><div class="a"><b>Répond à :</b> « Faut-il plusieurs apps ? » Non : le rôle stocké (enseignant / parent-élève) change le comportement du bot. Tout sur WhatsApp.</div></details>
+      <h3>🕸️ Système MOHEBS</h3>
+      <details class="qa"><summary>Modèle User</summary><div class="a"><b>Répond à :</b> « Qu'est-ce qui est stocké ? » phone_number, name, grade, language, userId, session_state JSON.</div></details>
+      <details class="qa"><summary>Modèle FeedbackReport</summary><div class="a"><b>Répond à :</b> « Où vont les retours ? » subject, week, day, problem_type, description, created_at.</div></details>
+      <details class="qa"><summary>Commandes menu / fin</summary><div class="a"><b>Répond à :</b> « Comment naviguer ? » <code>menu</code> → MENU · <code>fin</code> → « Au revoir ! » depuis tout écran.</div></details>
+      <details class="qa"><summary>Persistance inscription</summary><div class="a"><b>Répond à :</b> « Un silence réinitialise-t-il ? » Non — profil conservé ; prochain contact = MENU avec accueil personnalisé.</div></details>
+      <details class="qa"><summary>Guides Pulaar / Wolof only</summary><div class="a"><b>Répond à :</b> « Toutes les langues ont des fiches ? » Non — génération limitée à Pulaar et Wolof ; message explicite pour les autres.</div></details>
     </div>
 
     <div class="qagroup">
       <h3>📋 Intégration WhatsApp · Turn.io</h3>
-      <details class="qa"><summary>Faisabilité Turn.io &amp; WhatsApp</summary><div class="a"><b>Répond à :</b> « Est-ce intégrable ? » ≈ 95 %. <b>Turn.io</b> gère inbound (webhooks) et outbound (<code>/v1/messages</code>) : menus, voix, images, statuts. <b>DS/ML</b> côté serveur : graphe, IA, exercices, traduction. Ajustements : PNG au lieu de SVG, templates pour le push hors 24 h, webhook répondu en &lt; 5 s (ML async), état session en base. Détails dans <b>Exigences</b> et <b>Implication technique</b>.</div></details>
-      <details class="qa"><summary>QCM vs sélection multiple</summary><div class="a"><b>Répond à :</b> « Le multiple choice est-il permis ? » <b>Oui</b> pour un QCM (une réponse parmi 2–10 options via boutons ≤ 3 ou liste ≤ 10). <b>Non</b> pour cocher plusieurs classes en même temps comme dans le prototype — adapter avec toggles paginés, saisie libre ou WhatsApp Flows. Voir <b>Exigences → QCM &amp; sélection multiple</b>.</div></details>
+      <details class="qa"><summary>Faisabilité Turn.io &amp; WhatsApp</summary><div class="a"><b>Répond à :</b> « Est-ce intégrable ? » ≈ 95 %. Turn.io : inbound/outbound, PDF, menus. MOHEBS API : inscription, guides NLP, traduction, retours. Ajustements : webhook &lt; 5 s, upload PDF, listes/boutons. Voir <b>Exigences</b> et <b>Implication technique</b>.</div></details>
+      <details class="qa"><summary>QCM vs sélection multiple</summary><div class="a"><b>Répond à :</b> MENU et choix type problème = une réponse (boutons/liste). Inscription niveau/langue = saisie libre ou liste, pas de cases multiples natives.</div></details>
     </div>
 
     <div class="panel" id="qaempty" style="display:none;text-align:center;color:var(--muted)">Aucune fonctionnalité ne correspond à votre recherche.</div>
@@ -770,7 +771,7 @@
 
 </div>
 
-<footer>Prototype généré à partir de votre PDF ARED Edu · ouvrez et touchez les écrans pour explorer les parcours.</footer>
+<footer>Prototype MOHEBS Assistant · programme enseignants primaire Sénégal · ouvrez et touchez les écrans pour explorer.</footer>
 
 <script>
 /* ============================================================
@@ -778,189 +779,163 @@
    ============================================================ */
 const FLOWS = {
   teacher:{
-    start:"onboarding",
+    start:"reg_welcome",
     screens:{
-      login:{
-        step:"Connexion — code enseignant", desc:"L'enseignant s'identifie avec son code personnel avant d'accéder au système.",
-        msgs:[],
+      /* ---- Inscription (premier contact) ---- */
+      reg_welcome:{
+        step:"Inscription — bienvenue", desc:"Premier contact : proposer l'inscription.",
+        msgs:[{f:"bot",t:"👋 Bienvenue sur MOHEBS Assistant",x:"Je suis l'assistant WhatsApp du programme MOHEBS pour les enseignants du primaire au Sénégal.\n\nSouhaitez-vous vous inscrire ?"}],
+        opts:[{k:"1",label:"Oui",to:"reg_password"},{k:"2",label:"Non",to:"reg_decline"}]
+      },
+      reg_decline:{
+        step:"Inscription refusée", desc:"L'utilisateur a refusé l'inscription.",
+        msgs:[{f:"bot",t:"ℹ️ Inscription requise",x:"L'inscription est nécessaire pour utiliser MOHEBS Assistant.\nRépondez « Oui » quand vous serez prêt(e)."}],
+        opts:[{k:"1",label:"Oui — m'inscrire",to:"reg_password"}]
+      },
+      reg_password:{
+        step:"Inscription — mot de passe", desc:"Mot de passe d'accès : assistantmohebs.",
+        msgs:[{f:"bot",t:"🔐 Mot de passe d'accès",x:"Entrez le mot de passe d'accès MOHEBS dans la barre du bas."}],
         opts:[]
       },
-      onboarding:{
-        step:"Onboarding — classes", desc:"Sélection d'une OU plusieurs classes. Stocké une fois, jamais redemandé.",
-        type:"multiselect", kind:"class", to:"subjectpick",
-        msgs:[{f:"bot",t:"👋 Bonjour, je suis ARED Edu",x:"Je vous accompagne à partir d'un graphe de connaissances officiel.\n\nSélectionnez votre/vos classe(s), puis validez :"}],
-        opts:[{k:"✅",label:"Valider → Matières",to:"subjectpick"}]
+      reg_name:{
+        step:"Inscription — nom", desc:"Nom libre (UTF-8, accents acceptés).",
+        msgs:[{f:"bot",t:"👤 Votre nom",x:"Quel est votre nom ? (accents acceptés : é, è, ê…)"}],
+        opts:[]
       },
-      subjectpick:{
-        step:"Onboarding — matières", desc:"Choix des matières. Puis message de bienvenue.",
-        type:"multiselect", kind:"subject", to:"welcome",
-        msgs:[{f:"bot",t:"📚 Vos matières",x:"Sélectionnez votre/vos matière(s) :"}],
-        opts:[{k:"✅",label:"Valider → Bienvenue",to:"welcome"}]
+      reg_grade:{
+        step:"Inscription — niveau", desc:"Un seul niveau : CI → CM2.",
+        msgs:[{f:"bot",t:"🏫 Votre niveau",x:"Quel niveau enseignez-vous ?"}],
+        opts:[]
       },
-      welcome:{
-        step:"Message de bienvenue", desc:"Accueil personnalisé avant le MENU principal.",
-        msgs:[{f:"bot",t:"👋 Bienvenue sur ARED Edu",x:"Bonjour ! Je suis votre assistant pédagogique.\nTouchez le MENU pour commencer."}],
-        opts:[{k:"▶️",label:"Accéder au MENU",to:"home"}]
+      reg_language:{
+        step:"Inscription — langue", desc:"Langue nationale : Joola, Mandinka, Pulaar, Sereer, Soninke, Wolof.",
+        msgs:[{f:"bot",t:"🗣️ Votre langue",x:"Quelle langue nationale utilisez-vous ?"}],
+        opts:[]
       },
+      /* ---- MENU principal ---- */
       home:{
-        step:"MENU principal", desc:"Hub central — 5 options selon le nouveau flow.",
+        step:"MENU principal", desc:"Hub — 5 options MOHEBS.",
         msgs:[],
         opts:[
-          {k:"1",label:"📚 Guide et enseignement",to:"submenu1"},
-          {k:"2",label:"🌍 Apprentissage continu",to:"learning_groups"},
-          {k:"3",label:"📝 Retours d'information",to:"feedback_topic"},
-          {k:"4",label:"👤 Modifier votre profil",to:"profile"},
-          {k:"5",label:"🚪 Fermer la session",to:"endsession"}
+          {k:"1",label:"1) Accéder aux guides",to:"guide_prompt"},
+          {k:"2",label:"2) Apprentissage continu",to:"learning_menu"},
+          {k:"3",label:"3) Retours d'information",to:"feedback_lesson"},
+          {k:"4",label:"4) Modifier votre profil",to:"profile"},
+          {k:"5",label:"5) Terminer la session",to:"session_end"}
         ]
       },
-      /* ---- Sub Menu 1 : Exercices OU Guides/Leçon ---- */
-      submenu1:{
-        step:"Sub Menu 1", desc:"Choix entre module Exercices et module Guides/Leçon.",
-        msgs:[{f:"bot",t:"📚 Guide et enseignement",x:"Que souhaitez-vous faire ?"}],
-        opts:[
-          {k:"1",label:"✏️ Exercices",to:"exercise_lesson"},
-          {k:"2",label:"📖 Guides / Leçon",to:"guide_units"},
-          {k:"0",label:"Retour au MENU",to:"home"}
-        ]
-      },
-      /* ---- Module Exercices (rose) ---- */
-      exercise_lesson:{
-        step:"Entrée n° de leçon", desc:"L'enseignant saisit le numéro de leçon.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
-      },
-      exercise_result:{
-        step:"Résultat exercice", desc:"Affichage de l'exercice généré pour la leçon.",
-        msgs:[],
-        opts:[
-          {k:"1",label:"Oui — autre exercice (même thème)",to:"exercise_lesson"},
-          {k:"2",label:"Non — liste des catégories",to:"exercise_cats"},
-          {k:"0",label:"MENU",to:"home"}
-        ]
-      },
-      exercise_cats:{
-        step:"Liste des catégories", desc:"Catégories d'exercices disponibles.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
-      },
-      /* ---- Module Guides/Leçon (rouge/orange) ---- */
-      guide_units:{
-        step:"Unités de terrain", desc:"Mathématiques ou Lecture-Écriture.",
-        msgs:[{f:"bot",t:"📖 Guides / Leçon",x:"Choisissez l'unité de terrain :"}],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
-      },
-      guide_level:{
-        step:"Liste des niveaux", desc:"Niveaux CI → CM2.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour",to:"guide_units"}]
-      },
+      /* ---- Feature 1 — Guides ---- */
       guide_prompt:{
-        step:"Message de saisie", desc:"Invite à poser une question sur le guide.",
-        msgs:[{f:"bot",t:"💬 Posez votre question",x:"Écrivez ou dictez 🎤 votre question sur ce guide dans la barre du bas."}],
-        opts:[{k:"0",label:"Retour",to:"guide_level"}]
+        step:"Guides — demande", desc:"Demande en langage naturel (matière, semaine, jour).",
+        msgs:[{f:"bot",t:"📚 Accéder aux guides",x:"Demandez un plan de cours.\nEx. : « Montre moi le plan de cours pour la lecture du premier jour de la troisième semaine »\nou « semaine 2, jour 2, mathématiques ».\n\nTapez menu pour revenir."}],
+        opts:[
+          {k:"💬",label:"semaine 3, jour 1, lecture",to:"__guide:demo1"},
+          {k:"💬",label:"semaine 2, jour 2, mathématiques",to:"__guide:demo2"},
+          {k:"0",label:"menu",to:"home"}
+        ]
       },
       guide_result:{
-        step:"Résultat de recherche", desc:"Réponse du guide à la question posée.",
+        step:"Guides — résultat", desc:"PDF + résumé structuré ou message d'erreur.",
         msgs:[],
         opts:[
-          {k:"1",label:"Nouvelle recherche",to:"guide_prompt"},
-          {k:"0",label:"MENU",to:"home"}
+          {k:"💬",label:"Poser une question sur ce guide",to:"guide_followup"},
+          {k:"📚",label:"Demander un autre guide",to:"guide_prompt"},
+          {k:"0",label:"menu",to:"home"}
         ]
       },
-      /* ---- Module Traduction / Apprentissage continu (bleu) ---- */
-      learning_groups:{
-        step:"Groupes de langues", desc:"Liste des groupes de langues de traduction.",
-        msgs:[{f:"bot",t:"🌍 Apprentissage continu",x:"Choisissez un groupe de langues locales :"}],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+      guide_followup:{
+        step:"Guides — suivi", desc:"Question de suivi sur le guide (LLM + résumé).",
+        msgs:[{f:"bot",t:"💬 Question sur le guide",x:"Posez votre question sur le contenu du guide dans la barre du bas."}],
+        opts:[{k:"📚",label:"Nouveau guide",to:"guide_prompt"},{k:"0",label:"menu",to:"home"}]
       },
-      learning_welcome:{
-        step:"Message de bienvenue court", desc:"Accueil dans le module de traduction.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour",to:"learning_groups"}]
-      },
-      learning_ask:{
-        step:"Traduire un mot ?", desc:"L'enseignant choisit de traduire ou non.",
-        msgs:[],
+      /* ---- Feature 2 — Apprentissage continu ---- */
+      learning_menu:{
+        step:"Apprentissage continu", desc:"Traduction ou vidéos éducatives.",
+        msgs:[{f:"bot",t:"🌍 Apprentissage continu",x:"Que souhaitez-vous faire ?"}],
         opts:[
-          {k:"1",label:"Oui — traduire un mot",to:"learning_mode"},
-          {k:"2",label:"Non — revenir",to:"learning_welcome"},
-          {k:"0",label:"MENU",to:"home"}
+          {k:"1",label:"Traduire un terme pédagogique",to:"learning_translate"},
+          {k:"2",label:"Vidéos éducatives",to:"learning_video"},
+          {k:"0",label:"menu",to:"home"}
         ]
-      },
-      learning_mode:{
-        step:"Mode de traduction", desc:"Français→Local, Local→Français, ou sous-menu.",
-        msgs:[{f:"bot",t:"🔄 Mode de traduction",x:"Dans quel sens traduire ?"}],
-        opts:[{k:"0",label:"Retour",to:"learning_ask"}]
-      },
-      learning_lang:{
-        step:"Liste des langues locales", desc:"Pulaar, Wolof, Sérère, Mandinka, Soninké.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour",to:"learning_mode"}]
-      },
-      learning_word:{
-        step:"Saisie du mot", desc:"L'enseignant entre le mot à traduire.",
-        msgs:[{f:"bot",t:"⌨️ Entrez le mot",x:"Écrivez le mot à traduire dans la barre du bas."}],
-        opts:[{k:"0",label:"Retour",to:"learning_lang"}]
       },
       learning_translate:{
-        step:"Traduction du mot", desc:"Résultat : mot traduit ou mot le plus proche.",
+        step:"Traduction — saisie", desc:"Mot + langue (dictionnaire puis LLM).",
+        msgs:[{f:"bot",t:"🔄 Traduction",x:"Entrez le mot à traduire et la langue cible.\nEx. : « école en wolof » ou « addition en pulaar »"}],
+        opts:[{k:"0",label:"menu",to:"home"}]
+      },
+      learning_translate_result:{
+        step:"Traduction — résultat", desc:"Traduction + exemples + confirmation.",
+        msgs:[],
+        opts:[{k:"1",label:"Traduire un autre mot",to:"learning_translate"},{k:"0",label:"menu",to:"home"}]
+      },
+      learning_video:{
+        step:"Vidéos — recherche", desc:"Vidéos Wolof/Pulaar uniquement.",
+        msgs:[{f:"bot",t:"🎬 Vidéos éducatives",x:"Quel sujet recherchez-vous ? (Wolof et Pulaar uniquement)\nEx. : « addition en wolof »"}],
+        opts:[{k:"0",label:"menu",to:"home"}]
+      },
+      learning_video_result:{
+        step:"Vidéos — résultat", desc:"Titre + lien ou suggestion d'affiner.",
+        msgs:[],
+        opts:[{k:"1",label:"Nouvelle recherche",to:"learning_video"},{k:"0",label:"menu",to:"home"}]
+      },
+      /* ---- Feature 3 — Retours d'information ---- */
+      feedback_lesson:{
+        step:"Retour — leçon", desc:"Matière, semaine (1–26), jour (1–5).",
+        msgs:[{f:"bot",t:"📝 Retours d'information",x:"Indiquez la matière, la semaine (1–26) et le jour (1–5).\nEx. : « Mathématiques, semaine 4, jour 2 »"}],
+        opts:[{k:"0",label:"menu",to:"home"}]
+      },
+      feedback_problem:{
+        step:"Retour — type de problème", desc:"Matériel manquant / endommagé / quantité insuffisante.",
         msgs:[],
         opts:[
-          {k:"1",label:"Traduire un autre mot",to:"learning_ask"},
-          {k:"0",label:"MENU",to:"home"}
+          {k:"1",label:"1. Matériel manquant",to:"__fbprob:missing"},
+          {k:"2",label:"2. Matériel endommagé",to:"__fbprob:damaged"},
+          {k:"3",label:"3. Quantité insuffisante",to:"__fbprob:insufficient"},
+          {k:"0",label:"menu",to:"home"}
         ]
       },
-      /* ---- Module Retours d'information (vert) ---- */
-      feedback_topic:{
-        step:"Sujet du retour", desc:"Par rapport aux guides, apprentissage, ou autre.",
-        msgs:[{f:"bot",t:"📝 Retours d'information",x:"Votre retour concerne :"}],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
-      },
-      feedback_incident:{
-        step:"Saisie de l'incident", desc:"Description libre de l'incident.",
-        msgs:[{f:"bot",t:"✍️ Décrivez l'incident",x:"Écrivez ou dictez 🎤 votre retour dans la barre du bas."}],
-        opts:[{k:"0",label:"Annuler",to:"feedback_topic"}]
-      },
-      feedback_importance:{
-        step:"Importance de l'incident", desc:"Niveau d'importance selon l'utilisateur.",
-        msgs:[],
-        opts:[{k:"0",label:"Retour",to:"feedback_incident"}]
-      },
-      feedback_more:{
-        step:"Ajouter une info ?", desc:"L'utilisateur peut ajouter un nom ou autre info.",
-        msgs:[],
-        opts:[
-          {k:"1",label:"Oui — ajouter une information",to:"feedback_name"},
-          {k:"2",label:"Non — envoyer le retour",to:"feedback_done"},
-          {k:"0",label:"MENU",to:"home"}
-        ]
-      },
-      feedback_name:{
-        step:"Nom / info supplémentaire", desc:"Saisie du nom ou complément.",
-        msgs:[{f:"bot",t:"👤 Votre nom",x:"Entrez votre nom ou une information complémentaire."}],
-        opts:[{k:"0",label:"Retour",to:"feedback_more"}]
+      feedback_description:{
+        step:"Retour — description", desc:"Texte libre sur l'incident.",
+        msgs:[{f:"bot",t:"✍️ Description",x:"Décrivez le problème de matériel rencontré."}],
+        opts:[{k:"0",label:"menu",to:"home"}]
       },
       feedback_done:{
-        step:"Retour enregistré", desc:"Confirmation puis retour au MENU.",
+        step:"Retour — confirmé", desc:"Signalement enregistré.",
         msgs:[],
-        opts:[{k:"0",label:"MENU",to:"home"}]
+        opts:[{k:"0",label:"menu",to:"home"}]
       },
-      /* ---- Profil & session ---- */
+      /* ---- Feature 4 — Profil ---- */
       profile:{
-        step:"Modifier votre profil", desc:"Classes, matières, langue.",
+        step:"Modifier votre profil", desc:"Afficher et mettre à jour nom, niveau, langue.",
         msgs:[],
-        opts:[{k:"0",label:"Retour au MENU",to:"home"}]
+        opts:[
+          {k:"1",label:"Modifier le nom",to:"profile_name"},
+          {k:"2",label:"Modifier le niveau",to:"profile_grade"},
+          {k:"3",label:"Modifier la langue",to:"profile_language"},
+          {k:"0",label:"menu",to:"home"}
+        ]
       },
-      endsession:{
-        step:"Fermer la session", desc:"Confirmation de déconnexion.",
-        msgs:[{f:"bot",t:"🚪 Fermer la session ?",x:"Vous pourrez recommencer depuis l'onboarding."}],
-        opts:[{k:"1",label:"Oui, fermer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}]
+      profile_name:{
+        step:"Profil — nom", desc:"Mise à jour du nom (UTF-8).",
+        msgs:[{f:"bot",t:"👤 Nouveau nom",x:"Entrez votre nouveau nom :"}],
+        opts:[{k:"0",label:"Annuler",to:"profile"}]
       },
+      profile_grade:{
+        step:"Profil — niveau", desc:"CI, CP, CE1, CE2, CM1, CM2.",
+        msgs:[{f:"bot",t:"🏫 Nouveau niveau",x:"Choisissez votre niveau :"}],
+        opts:[]
+      },
+      profile_language:{
+        step:"Profil — langue", desc:"6 langues nationales.",
+        msgs:[{f:"bot",t:"🗣️ Nouvelle langue",x:"Choisissez votre langue :"}],
+        opts:[]
+      },
+      /* ---- Feature 5 — Session ---- */
       session_end:{
-        step:"Session fermée", desc:"Session terminée — accès direct à l'onboarding.",
-        msgs:[],
-        opts:[{k:"1",label:"Recommencer",to:"onboarding"}]
-      },
+        step:"Session terminée", desc:"Au revoir — prochain message = nouvelle session.",
+        msgs:[{f:"bot",t:"👋 Au revoir !",x:"Au revoir !"}],
+        opts:[]
+      }
     }
   },
 
@@ -1207,109 +1182,176 @@ let feedbackTopic="", feedbackText="", feedbackImportance="", feedbackName="";
 /* ---- Catégories d'exercices ---- */
 const EXO_CATS=["Nombres & dénombrement","Opérations","Géométrie","Mesures","Lecture de syllabes","Compréhension"];
 
-/* ---- Accès direct (pas de barrière code enseignant) ---- */
-let teacherCode="", teacherName="Mme Diallo", loggedIn=true;
+/* ---- MOHEBS : profil utilisateur (simule DB par numéro) ---- */
+const MOHEBS_PASSWORD='assistantmohebs';
+const MOHEBS_PHONE='+221770000001';
+const GRADES=['CI','CP','CE1','CE2','CM1','CM2'];
+const LANGS_MOHEBS=['Joola','Mandinka','Pulaar','Sereer','Soninke','Wolof'];
+const GUIDE_LANGS=['Pulaar','Wolof'];
+const GUIDE_SUBJECTS={math:'Mathématiques',lecture:'Lecture',mathématiques:'Mathématiques',mathematiques:'Mathématiques',français:'Lecture',francais:'Lecture',lecture:'Lecture'};
+const PROBLEM_LABELS={missing:'Matériel manquant',damaged:'Matériel endommagé',insufficient:'Quantité insuffisante'};
+let userProfile={phone:MOHEBS_PHONE,name:'',grade:'',language:'',userId:1001,registered:false};
+let sessionActive=true;
+let showReturnGreeting=false;
+let guideContext=null;
+let feedbackData={};
+let pendingRegName='';
+
+function loadProfile(){
+  try{const s=localStorage.getItem('mohebs_profile');if(s)userProfile=JSON.parse(s);}catch(e){}
+}
+function saveProfile(){localStorage.setItem('mohebs_profile',JSON.stringify(userProfile));}
+function teacherDisplayName(){return userProfile.name||'Enseignant';}
+function normalizeLangInput(s){
+  const m={joola:'Joola',mandinka:'Mandinka',pulaar:'Pulaar',pular:'Pulaar',sereer:'Sereer',sérère:'Sereer',serere:'Sereer',soninke:'Soninke',soninké:'Soninke',wolof:'Wolof'};
+  const k=(s||'').trim().toLowerCase();return m[k]||'';
+}
+function matchMenuInput(text,opts){
+  const t=(text||'').trim().toLowerCase();
+  if(!t)return null;
+  for(const o of opts){
+    if(t===o.k.toLowerCase()||t===o.label.toLowerCase())return o;
+    if(t===o.k.replace(/\D/g,'')&&/^\d$/.test(o.k))return o;
+    if(t.startsWith(o.k.toLowerCase()+')'))return o;
+  }
+  return null;
+}
+function handleGlobalCommand(text){
+  const t=(text||'').trim().toLowerCase();
+  if(t==='menu'){state.teacher='home';render('teacher');return true;}
+  if(t==='fin'){endSession();return true;}
+  return false;
+}
+function endSession(){
+  sessionActive=false;
+  state.teacher='session_end';
+  render('teacher');
+}
+function startTeacherSession(){
+  loadProfile();
+  sessionActive=true;
+  showReturnGreeting=!!userProfile.registered;
+  state.teacher=userProfile.registered?'home':'reg_welcome';
+  render('teacher');
+}
+function completeRegistration(){
+  userProfile.registered=true;
+  userProfile.userId=userProfile.userId||1001;
+  saveProfile();
+  state.teacher='home';
+  render('teacher');
+  const chat=document.getElementById('chat-teacher');
+  if(chat){
+    chat.appendChild(makeBubble({f:'bot',t:'✅ Inscription réussie',x:'Bienvenue '+userProfile.name+' !\nNiveau : '+userProfile.grade+' · Langue : '+userProfile.language}));
+    chat.scrollTop=chat.scrollHeight;
+  }
+}
+function parseGuideRequest(text){
+  const s=(text||'').toLowerCase();
+  let subject=null,week=null,day=null;
+  const sw=s.match(/semaine\s*(\d{1,2})/);if(sw)week=+sw[1];
+  const dw=s.match(/jour\s*(\d)/);if(dw)day=+dw[1];
+  if(/math|mathématique|mathematique/.test(s))subject='Mathématiques';
+  if(/lecture|français|francais|lire/.test(s))subject='Lecture';
+  if(/premier|1er|première|premiere/.test(s)&&!day)day=1;
+  if(/deuxième|deuxieme|second/.test(s)&&!day)day=2;
+  if(/troisième|troisieme/.test(s)&&!week)week=3;
+  if(/troisième|troisieme/.test(s)&&!day&&week===3)day=1;
+  return {subject,week,day};
+}
+function lookupGuide(subject,week,day){
+  const key=(subject||'').toLowerCase()+'-'+week+'-'+day;
+  const db={
+    'lecture-3-1':{pdf:'guide_lecture_s3_j1.pdf',objective:'Reconnaître les voyelles dans des mots simples.',sessions:['Découverte des sons (15 min)','Pratique en binôme (20 min)','Synthèse (10 min)'],homework:'Relire 5 mots avec un parent.'},
+    'mathématiques-2-2':{pdf:'guide_math_s2_j2.pdf',objective:'Comparer des quantités jusqu\'à 10.',sessions:['Manipulation avec objets (15 min)','Exercices guidés (20 min)','Évaluation rapide (10 min)'],homework:'Compter des objets à la maison.'}
+  };
+  return db[key]||db[(subject||'').toLowerCase().replace('é','e')+'-'+week+'-'+day]||null;
+}
+function buildGuideResponse(req){
+  const {subject,week,day}=req;
+  if(!subject||!week||!day)return {ok:false,msg:'Précisez la matière, la semaine (1–26) et le jour (1–5).\nEx. : « semaine 3, jour 1, lecture »'};
+  if(week<1||week>26||day<1||day>5)return {ok:false,msg:'Semaine (1–26) ou jour (1–5) invalide.'};
+  if(!GUIDE_LANGS.includes(userProfile.language))
+    return {ok:false,msg:'La génération de fiche n\'est disponible que pour les langues Pulaar et Wolof, pas pour '+userProfile.language+'.'};
+  const g=lookupGuide(subject,week,day);
+  if(!g)return {ok:false,msg:'Guide introuvable pour '+subject+', semaine '+week+', jour '+day+'.\n\nDemandez un autre guide.'};
+  guideContext={subject,week,day,summary:g};
+  return {ok:true,msgs:[
+    {f:'bot',t:'📎 '+g.pdf,x:'Plan de cours — '+subject+' · Semaine '+week+' · Jour '+day},
+    {f:'bot',t:'📋 Résumé',x:'🎯 Objectif : '+g.objective+'\n\n📚 Séances :\n'+g.sessions.map((s,i)=>(i+1)+'. '+s).join('\n')+'\n\n📝 Devoirs : '+g.homework}
+  ]};
+}
+function translateTerm(text){
+  const s=(text||'').toLowerCase();
+  const dict={
+    'école':{wolof:'daara',pulaar:'daara',examples:['Aller à l\'école → Dem daara.','L\'école est ouverte.']},
+    'addition':{wolof:'jokkale',pulaar:'winndere',examples:['Faire une addition → Def jokkale.','Addition simple en classe.']},
+    'élève':{wolof:'xale',pulaar:'moƴƴere',examples:['Chaque élève participe.','L\'élève lit à voix haute.']}
+  };
+  let word=Object.keys(dict).find(w=>s.includes(w));
+  let lang=normalizeLangInput(s.replace(/en | en/g,' '));
+  if(!lang){for(const l of LANGS_MOHEBS)if(s.includes(l.toLowerCase()))lang=l;}
+  if(!word){const parts=s.split(/\s+en\s+/);if(parts.length===2){word=parts[0].trim();lang=normalizeLangInput(parts[1]);}}
+  if(!word)word=(s.split(/\s+/)[0]||'').trim();
+  const entry=dict[word]||dict['école'];
+  const langKey=(lang||userProfile.language||'Wolof').toLowerCase();
+  const tr=entry[langKey]||entry.wolof||'…';
+  return '🔄 '+word+' → '+lang+' : « '+tr+' »\n\nExemples :\n• '+entry.examples.join('\n• ')+'\n\nTermes proches : daara, école, classe\n\nPouvez-vous confirmer si cela vous semble correct ?';
+}
+function lookupVideo(text){
+  const s=(text||'').toLowerCase();
+  if(/football|musique|film|divertissement/.test(s))return {ok:false,msg:'Je ne propose que des vidéos éducatives. Précisez un sujet pédagogique (ex. addition, lecture).'};
+  if(/wolof/.test(s)&&/addition|math/.test(s))return {ok:true,title:'Addition en Wolof — CP',url:'https://example.mohebs.sn/videos/addition-wolof-cp'};
+  if(/pulaar/.test(s)&&/lecture|lire/.test(s))return {ok:true,title:'Lecture de syllabes en Pulaar',url:'https://example.mohebs.sn/videos/lecture-pulaar'};
+  if(/wolof|pulaar/.test(s))return {ok:false,msg:'Aucune vidéo trouvée pour ce sujet. Essayez d\'affiner (ex. « addition en wolof »).'};
+  return {ok:false,msg:'Vidéos disponibles en Wolof et Pulaar uniquement. Indiquez la langue et le sujet.'};
+}
+function parseFeedbackLesson(text){
+  const s=(text||'').toLowerCase();
+  let subject=/math/.test(s)?'Mathématiques':/lecture|français|francais/.test(s)?'Lecture':null;
+  const sw=s.match(/semaine\s*(\d{1,2})/);const dw=s.match(/jour\s*(\d)/);
+  const week=sw?+sw[1]:null;const day=dw?+dw[1]:null;
+  return {subject,week,day,valid:!!(subject&&week>=1&&week<=26&&day>=1&&day<=5)};
+}
+function profileText(){
+  return 'Nom : '+userProfile.name+'\nNiveau : '+userProfile.grade+'\nLangue : '+userProfile.language+'\nuserId : '+userProfile.userId;
+}
 
 /* dynamic messages depending on class / subject / knowledge graph */
 function getMsgs(flowName,id,scr){
   if(flowName==='teacher'){
-    if(id==='welcome') return [{f:"bot",t:"👋 Bienvenue "+teacherName+" !",x:"Votre espace ARED Edu est prêt.\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+(teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', ')||'—')+"\n\nTouchez le MENU pour commencer."}];
-    if(id==='home') return [{f:"bot",t:"📋 MENU",x:"Bonjour "+teacherName+" 👋\nQue souhaitez-vous faire ?"}];
-    if(id==='exercise_lesson') return [{f:"bot",t:"✏️ Exercices",x:"Entrez le numéro de la leçon (ex. 16).\nOu choisissez une leçon ci-dessous :"}];
-    if(id==='exercise_result'){
-      const c=MATH_COURSES.find(x=>x.lecon===exerciseLessonNum)||curMathLesson();
-      return [{f:"bot",t:"📝 Exercice — Leçon "+exerciseLessonNum,x:"Thème : "+c.titre+"\n\nAwa a 4 mangues. Sa mère lui donne 2.\nCombien a-t-elle au total ? 🥭"},
-        {f:"bot",t:"Voulez-vous un autre exercice sur le même thème ?",x:""}];
+    if(id==='home'){
+      let x='Bonjour '+teacherDisplayName()+" 👋\n\n1) Accéder aux guides\n2) Apprentissage continu\n3) Retours d'information\n4) Modifier votre profil\n5) Terminer la session";
+      if(showReturnGreeting){x='Ravi de vous retrouver, M./Mme '+teacherDisplayName()+'!\n\n'+x;showReturnGreeting=false;}
+      return [{f:"bot",t:"📋 MENU",x}];
     }
-    if(id==='exercise_cats') return [{f:"bot",t:"📂 Liste des catégories",x:"Choisissez une catégorie pour un nouvel exercice, ou retournez au MENU."}];
-    if(id==='guide_level'){const s=subjMeta(guideSubject);return [{f:"bot",t:"📖 "+s.icon+" "+s.label,x:"Choisissez le niveau :"}];}
-    if(id==='guide_result'){const s=subjMeta(guideSubject);
-      return [{f:"bot",t:"📘 Guide "+s.icon+" "+s.label+" · "+guideLevel,x:guideAnswer(guideQuery||"Comment introduire ce chapitre ?").t.replace(/^📘[^\n]+\n/,'')}];}
-    if(id==='learning_welcome'){const l=langMeta(learnLang);
-      return [{f:"bot",t:"🌍 "+l.label,x:"Bienvenue dans l'apprentissage continu !\nExpression du jour : "+l.phrase}];}
-    if(id==='learning_ask') return [{f:"bot",t:"🔄 Traduction",x:"Où souhaitez-vous traduire un nouveau mot ?"}];
-    if(id==='learning_translate'){
-      const l=langMeta(learnLang);
-      const tr=learnMode==='loc2fr'?(learnWord+" → français (approx.)"):(learnWord+" → "+l.label+" : « … »");
-      return [{f:"bot",t:"🗣️ Traduction",x:tr+"\n\n(Mot le plus proche si traduction exacte indisponible)"}];
+    if(id==='guide_result'&&guideContext){
+      const g=guideContext.summary;
+      return [{f:'bot',t:'📎 '+g.pdf,x:'Plan de cours — '+guideContext.subject+' · S'+guideContext.week+' J'+guideContext.day},
+        {f:'bot',t:'📋 Résumé',x:'🎯 Objectif : '+g.objective+'\n\n📚 Séances :\n'+g.sessions.map((s,i)=>(i+1)+'. '+s).join('\n')+'\n\n📝 Devoirs : '+g.homework}];
     }
-    if(id==='feedback_incident') return [{f:"bot",t:"📝 Retour : "+feedbackTopic,x:"Décrivez l'incident ou votre remarque."}];
-    if(id==='feedback_importance') return [{f:"bot",t:"⚖️ Importance",x:"Quelle est l'importance de cet incident pour vous ?"}];
-    if(id==='feedback_more') return [{f:"bot",t:"📋 Récapitulatif",x:"Sujet : "+feedbackTopic+"\nImportance : "+feedbackImportance+"\n\nVoulez-vous ajouter une autre information ?"}];
-    if(id==='feedback_done') return [{f:"bot",t:"✅ Retour enregistré",x:"Merci ! Votre retour (« "+feedbackTopic+" ») a bien été transmis.\n"+(feedbackName?"Nom : "+feedbackName+"\n":"")+"Il sera pris en compte par l'équipe ARED."}];
-    if(id==='profile'){const subs=teacherSubjects.length?teacherSubjects.map(s=>subjMeta(s).icon+" "+subjMeta(s).label).join(', '):'—';
-      return [{f:"bot",t:"👤 Votre profil",x:"Nom : "+teacherName+"\n📚 Classes : "+fmtClasses()+"\n📕 Matières : "+subs+"\n🌍 Langue : "+langMeta(learnLang).label+"\n\nQue souhaitez-vous modifier ?"}];}
-    if(id==='endsession') return [{f:"bot",t:"🚪 Fermer la session ?",x:"Vous pourrez recommencer depuis l'onboarding."}];
-    if(id==='session_end') return [{f:"bot",t:"👋 Session fermée",x:"À bientôt "+teacherName+" !\nVous pouvez recommencer quand vous voulez."}];
+    if(id==='learning_translate_result') return [{f:'bot',t:'🗣️ Traduction',x:translateTerm(feedbackData.lastTranslation||'école')}];
+    if(id==='learning_video_result'&&feedbackData.videoResult){
+      const v=feedbackData.videoResult;
+      return v.ok?[{f:'bot',t:'🎬 '+v.title,x:v.url}]:[{f:'bot',t:'ℹ️ Aucune vidéo',x:v.msg}];
+    }
+    if(id==='feedback_problem') return [{f:'bot',t:'📝 Type de problème',x:'Leçon : '+feedbackData.subject+', semaine '+feedbackData.week+', jour '+feedbackData.day+'\n\nQuel type de problème ?'}];
+    if(id==='feedback_done') return [{f:'bot',t:'✅ Enregistré',x:'Votre signalement de problème de matériel a été enregistré avec succès.'}];
+    if(id==='profile') return [{f:'bot',t:'👤 Votre profil',x:profileText()+'\n\nQue souhaitez-vous modifier ?'}];
   }
   return scr.msgs;
 }
 
-/* dynamic options (extra menu entries depending on class/subject count) */
+/* dynamic options */
 function getOpts(flowName,id,scr){
   if(flowName==='teacher'){
-    if(id==='exercise_lesson')
-      return MATH_COURSES.slice(-5).map((c,i)=>({k:String(i+1),label:"Leçon "+c.lecon+" — "+c.titre,to:"__lesson:"+c.lecon}))
-        .concat([{k:"0",label:"MENU",to:"home"}]);
-    if(id==='exercise_result')
-      return [{k:"1",label:"Oui — autre exercice (même thème)",to:"exercise_lesson"},
-              {k:"2",label:"Non — liste des catégories",to:"exercise_cats"},
-              {k:"0",label:"MENU",to:"home"}];
-    if(id==='exercise_cats')
-      return EXO_CATS.map((c,i)=>({k:String(i+1),label:c,to:"__exocat:"+i}))
-        .concat([{k:"🔄",label:"Nouvelle leçon",to:"exercise_lesson"},{k:"0",label:"MENU",to:"home"}]);
-    if(id==='guide_units')
-      return SUBJECTS.map((s,i)=>({k:String(i+1),label:s.icon+" "+s.label,to:"__guidesub:"+s.id}))
-        .concat([{k:"0",label:"MENU",to:"home"}]);
-    if(id==='guide_level')
-      return CLASSES.map((c,i)=>({k:String(i+1),label:c.id+" — "+c.sub,to:"__guidelvl:"+c.id}))
-        .concat([{k:"0",label:"Retour",to:"guide_units"}]);
-    if(id==='guide_prompt'){
-      const qs=guideSubject==='math'
-        ?["Comment introduire ce chapitre ?","Quelles activités pratiques ?","Comment évaluer ?"]
-        :["Comment introduire ce chapitre ?","Activités de lecture ?","Que faire si un élève bloque ?"];
-      return qs.map(q=>({k:"💬",label:q,to:"__ask:"+q}))
-        .concat([{k:"0",label:"Retour",to:"guide_level"}]);
-    }
-    if(id==='guide_result')
-      return [{k:"1",label:"Nouvelle recherche",to:"guide_prompt"},{k:"0",label:"MENU",to:"home"}];
-    if(id==='learning_groups')
-      return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
-        .concat([{k:"0",label:"MENU",to:"home"}]);
-    if(id==='learning_ask')
-      return [{k:"1",label:"Oui — traduire un mot",to:"learning_mode"},
-              {k:"2",label:"Non — revenir",to:"learning_welcome"},{k:"0",label:"MENU",to:"home"}];
-    if(id==='learning_mode')
-      return [{k:"1",label:"Français → Local",to:"__learnmode:fr2loc"},
-              {k:"2",label:"Local → Français",to:"__learnmode:loc2fr"},
-              {k:"3",label:"Choisir une autre langue",to:"learning_lang"},
-              {k:"0",label:"Retour",to:"learning_ask"}];
-    if(id==='learning_lang')
-      return LANGS.map((l,i)=>({k:String(i+1),label:"🗣️ "+l.label,to:"__lang:"+l.id}))
-        .concat([{k:"0",label:"Retour",to:"learning_mode"}]);
-    if(id==='learning_translate')
-      return [{k:"1",label:"Traduire un autre mot",to:"learning_ask"},{k:"0",label:"MENU",to:"home"}];
-    if(id==='feedback_topic')
-      return [{k:"1",label:"Par rapport aux guides",to:"__feedback:guides"},
-              {k:"2",label:"Par rapport à l'apprentissage continu",to:"__feedback:learning"},
-              {k:"3",label:"Autres",to:"__feedback:autres"},
-              {k:"0",label:"MENU",to:"home"}];
-    if(id==='feedback_importance')
-      return ["Faible","Moyenne","Élevée","Critique"].map((s,i)=>({k:String(i+1),label:s,to:"__importance:"+s}))
-        .concat([{k:"0",label:"Retour",to:"feedback_incident"}]);
-    if(id==='feedback_more')
-      return [{k:"1",label:"Oui — ajouter une information",to:"feedback_name"},
-              {k:"2",label:"Non — envoyer le retour",to:"feedback_done"},
-              {k:"0",label:"MENU",to:"home"}];
-    if(id==='profile')
-      return [{k:"1",label:"Modifier mes classes",to:"onboarding"},
-              {k:"2",label:"Modifier mes matières",to:"subjectpick"},
-              {k:"3",label:"Langue à apprendre",to:"learning_groups"},
-              {k:"0",label:"MENU",to:"home"}];
-    if(id==='endsession')
-      return [{k:"1",label:"Oui, fermer",to:"session_end"},{k:"0",label:"Non, revenir",to:"home"}];
-    if(id==='session_end')
-      return [{k:"1",label:"Se reconnecter",to:"login"}];
+    if(id==='reg_grade') return GRADES.map((g,i)=>({k:String(i+1),label:g,to:'__grade:'+g}));
+    if(id==='reg_language'||id==='profile_language')
+      return LANGS_MOHEBS.map((l,i)=>({k:String(i+1),label:l,to:'__lang:'+l}));
+    if(id==='profile_grade')
+      return GRADES.map((g,i)=>({k:String(i+1),label:g,to:'__grade:'+g}));
+    if(id==='session_end'&&!sessionActive)
+      return [{k:'▶️',label:'Nouveau message (nouvelle session)',to:'__newsession'}];
   }
   return scr.opts;
 }
@@ -1374,22 +1416,28 @@ function render(flowName){
       btn.innerHTML='<span class="k">'+o.k+'</span><span>'+o.label+'</span>';
       btn.onclick=()=>{
         if(o.to.indexOf('__ask:')===0){askTeacher(o.to.slice(6));return;}
-        if(o.to==='__nocode'){loginTeacher();return;}
-        if(o.to.indexOf('__login:')===0){loginTeacher();return;}
-        if(o.to==='session_end'){loggedIn=false;}
+        if(o.to==='__guide:demo1'){processGuideRequest('semaine 3, jour 1, lecture');return;}
+        if(o.to==='__guide:demo2'){processGuideRequest('semaine 2, jour 2, mathématiques');return;}
+        if(o.to==='session_end'){endSession();return;}
+        if(o.to==='__newsession'){startTeacherSession();return;}
         const u=makeBubble({f:'user',x:o.label});
         chat.appendChild(u);chat.scrollTop=chat.scrollHeight;
         setTimeout(()=>{
-          if(o.to.indexOf('__lesson:')===0){exerciseLessonNum=parseInt(o.to.split(':')[1],10);const c=MATH_COURSES.find(x=>x.lecon===exerciseLessonNum);exerciseTheme=c?c.titre:"Leçon "+exerciseLessonNum;state[flowName]='exercise_result';}
-          else if(o.to.indexOf('__exocat:')===0){exerciseTheme=EXO_CATS[parseInt(o.to.split(':')[1],10)];state[flowName]='exercise_lesson';}
-          else if(o.to.indexOf('__guidesub:')===0){guideSubject=o.to.split(':')[1];state[flowName]='guide_level';}
-          else if(o.to.indexOf('__guidelvl:')===0){guideLevel=o.to.split(':')[1];state[flowName]='guide_prompt';}
-          else if(o.to.indexOf('__lang:')===0){learnLang=o.to.split(':')[1];state[flowName]=state[flowName]==='learning_mode'||state[flowName]==='learning_lang'?'learning_word':'learning_welcome';}
-          else if(o.to.indexOf('__learnmode:')===0){learnMode=o.to.split(':')[1];state[flowName]='learning_lang';}
-          else if(o.to.indexOf('__feedback:')===0){feedbackTopic=o.to.split(':')[1]==='guides'?'Par rapport aux guides':o.to.split(':')[1]==='learning'?'Par rapport à l\'apprentissage continu':'Autres';state[flowName]='feedback_incident';}
-          else if(o.to.indexOf('__importance:')===0){feedbackImportance=o.to.split(':')[1];state[flowName]='feedback_more';}
-          else state[flowName]=o.to;
-          render(flowName);
+          if(o.to.indexOf('__grade:')===0){
+            const g=o.to.slice(8);
+            if(state.teacher==='profile_grade'){userProfile.grade=g;saveProfile();state.teacher='home';render(flowName);chat.appendChild(makeBubble({f:'bot',t:'✅ Profil mis à jour',x:'Niveau : '+g}));chat.scrollTop=chat.scrollHeight;return;}
+            userProfile.grade=g;state.teacher='reg_language';render(flowName);return;
+          }
+          if(o.to.indexOf('__lang:')===0){
+            const l=o.to.slice(6);
+            if(state.teacher==='profile_language'){userProfile.language=l;saveProfile();state.teacher='home';render(flowName);chat.appendChild(makeBubble({f:'bot',t:'✅ Profil mis à jour',x:'Langue : '+l}));chat.scrollTop=chat.scrollHeight;return;}
+            userProfile.language=l;completeRegistration();return;
+          }
+          if(o.to.indexOf('__fbprob:')===0){feedbackData.problemType=o.to.slice(9);state.teacher='feedback_description';render(flowName);return;}
+          if(o.to==='home'&&o.label.match(/menu/i)){} 
+          state[flowName]=o.to;
+          if(o.to==='session_end') endSession();
+          else render(flowName);
         },260);
       };
       rep.appendChild(btn);
@@ -1461,102 +1509,86 @@ function showSuggestions(flowName,suggestions){
   const back=document.createElement('button');
   back.className='reply muted';
   back.textContent='↩︎ Revenir au menu';
-  back.onclick=()=>render(flowName);
+  back.onclick=()=>{state[flowName]='home';render(flowName);};
   rep.appendChild(back);
 }
 
+function processGuideRequest(text){
+  const chat=document.getElementById('chat-teacher');
+  const req=parseGuideRequest(text);
+  const res=buildGuideResponse(req);
+  if(!res.ok){
+    chat.appendChild(makeBubble({f:'bot',t:'ℹ️ Guide',x:res.msg}));
+    chat.scrollTop=chat.scrollHeight;
+    state.teacher='guide_prompt';
+    render('teacher');
+    return;
+  }
+  state.teacher='guide_result';
+  render('teacher');
+}
+function processGuideFollowup(text){
+  const chat=document.getElementById('chat-teacher');
+  const ctx=guideContext?('\nContexte : '+guideContext.subject+' S'+guideContext.week+' J'+guideContext.day+' — '+guideContext.summary.objective):'';
+  chat.appendChild(makeBubble({f:'bot',t:'💬 Réponse',x:'(LLM) Concernant votre question « '+text+' » :'+ctx+'\n\nVoici des pistes pédagogiques adaptées au guide en cours.'}));
+  chat.scrollTop=chat.scrollHeight;
+  state.teacher='guide_followup';
+  render('teacher');
+}
+
 function answerTeacher(q){
-  const s=q.toLowerCase();
-  const A=(t,sug)=>({t,sug});
-  if(/(matériel|materiel|objet|bâton|baton|caillou)/.test(s))
-    return A("📦 Matériel pour « Nombre 6 » :\n• 6 bâtonnets / cailloux\n• Ardoise + craie\n• Image de 6 objets",[{k:"1",label:"Préparer la leçon",to:"prepare"}]);
-  if(/(exercice|exo|problème|probleme|addition|calcul)/.test(s))
-    return A("📝 Voici un exercice :\nAwa a 4 mangues, sa mère lui donne 2.\nCombien en a-t-elle au total ? 🥭",[{k:"2",label:"Générer un autre (choisir le niveau)",to:"exercise"},{k:"3",label:"Évaluation rapide",to:"assess"}]);
-  if(/(éval|eval|test|contrôle|controle|quiz)/.test(s))
-    return A("✅ Évaluation rapide : 5 questions, 5 minutes.",[{k:"3",label:"Lancer l'évaluation",to:"assess"}]);
-  if(/(résultat|resultat|progrès|progres|analyse|classe|suivi|où en sont|ou en sont)/.test(s))
-    return A("📊 Classe CI-A : Nombres 1-5 ✅, Comparaison ✅.\nÀ renforcer : Décomposition ⚠️, Addition ⚠️.",[{k:"4",label:"Voir analyses détaillées",to:"analytics"},{k:"3",label:"Remédiation",to:"remediation"}]);
-  if(/(compris|comprennent|remédiation|remediation|difficile|en difficulté|aider|expli)/.test(s))
-    return A("🔍 Concept à retravailler : Décomposition du nombre 6.\nJe peux générer une explication, un jeu ou des exercices ciblés.",[{k:"1",label:"Ouvrir la remédiation",to:"remediation"}]);
-  if(/(planning|semaine|planifi|programme)/.test(s))
-    return A("🗓️ Semaine 4 : Nombre 6 → Composition → Décomposition → Addition → Révision.",[{k:"1",label:"Voir le planning",to:"planning"}]);
-  if(/(leçon|lecon|prépar|prepar|nombre 6|déroul|deroul|cours)/.test(s))
-    return A("📖 Leçon 16 — Nombre 6.\n🎯 Objectif : découvrir le 6.\n📚 Prérequis : nombres 0-5, comparaison.",[{k:"1",label:"Préparer / démarrer la leçon",to:"prepare"}]);
-  return A("Je peux vous aider via le MENU : exercices, guides/leçon, traduction, retours d'information.\nQue souhaitez-vous ?",
-    [{k:"1",label:"📚 Guide et enseignement",to:"submenu1"},{k:"2",label:"🌍 Traduction",to:"learning_groups"},{k:"3",label:"📝 Retours",to:"feedback_topic"}]);
-}
-
-function loginTeacher(){
-  // Accès direct : la connexion par code n'existe plus.
-  loggedIn=true;
-  teacherCode="";
-  setTimeout(()=>{state.teacher='onboarding';render('teacher');},0);
-}
-
-function guideAnswer(q){
-  const s=q.toLowerCase();
-  const sm=subjMeta(guideSubject);
-  const head="📘 Guide "+sm.icon+" "+sm.label+" · "+guideLevel+"\n";
-  const A=(t,sug)=>({t:head+t,sug:sug||[{k:"💬",label:"Nouvelle recherche",to:"guide_prompt"}]});
-  if(/(introdu|commenc|démarr|demarr|débuter|debuter|amorce|entrée|entree|lancer)/.test(s))
-    return A("Pour introduire le chapitre :\n1️⃣ Partez du vécu de l'élève (objets de la classe).\n2️⃣ Posez une question ouverte.\n3️⃣ Faites manipuler avant d'écrire.\n4️⃣ Faites verbaliser en groupe.");
-  if(/(activ|exercice|jeu|pratique|manipul)/.test(s))
-    return A(guideSubject==='math'
-      ? "Activités proposées :\n• Compter des objets réels\n• Jeux de cartes à compter\n• Ardoise : écrire le nombre\n• Travail en binôme"
-      : "Activités proposées :\n• Jeux de sons (phonèmes)\n• Lecture de syllabes au tableau\n• Chasse aux mots dans la classe\n• Copie sur ardoise");
-  if(/(éval|eval|test|contrôle|controle|vérifi|verifi|note|mesur)/.test(s))
-    return A("Évaluation suggérée :\n• Observation continue pendant les activités\n• Mini-quiz de 5 questions\n• Grille : reconnaît · écrit · utilise le concept");
-  if(/(matériel|materiel|support|outil|besoin)/.test(s))
-    return A(guideSubject==='math'
-      ? "Matériel : bâtonnets, cailloux, capsules, ardoise + craie, images du nombre."
-      : "Matériel : alphabet mural, cartes-syllabes, ardoise + craie, petits textes illustrés.");
-  if(/(bloque|difficult|comprend pas|n'y arrive|aider|lent|faible|échou|echou)/.test(s))
-    return A("Si un élève bloque :\n• Revenez au prérequis (voir le graphe).\n• Repassez par la manipulation concrète.\n• Donnez un exemple proche de son quotidien.\n• Valorisez chaque petit progrès.",
-      [{k:"💬",label:"Autre question",to:"guide_prompt"}]);
-  if(/(durée|duree|temps|combien de temps|minute)/.test(s))
-    return A("Durée conseillée : 30 à 45 min en 3 temps — découverte 10' · pratique 20' · synthèse 10'.");
-  if(/(objectif|but|compétence|competence|finalité|finalite)/.test(s))
-    return A("Objectif : amener l'élève à maîtriser le concept et ses prérequis avant de passer au suivant (voir le graphe de connaissances).");
-  if(/(progress|ordre|suite|étape|etape|séquence|sequence|prérequis|prerequis)/.test(s))
-    return A("Progression conseillée : suivez l'ordre des prérequis du graphe — chaque concept s'appuie sur le précédent.");
-  return A("Je réponds sur ce guide : introduction, activités, évaluation, matériel, durée, progression et élèves en difficulté. Posez votre question 👇",
-    [{k:"💬",label:"Comment introduire ?",to:"__ask:Comment introduire ce chapitre ?"},
-     {k:"💬",label:"Comment évaluer ?",to:"__ask:Comment évaluer les élèves ?"},
-     {k:"0",label:"MENU",to:"home"}]);
+  return {t:"Tapez menu pour le MENU principal, ou choisissez une option ci-dessous.",
+    sug:[{k:"1",label:"1) Accéder aux guides",to:"guide_prompt"},{k:"2",label:"2) Apprentissage continu",to:"learning_menu"},{k:"3",label:"3) Retours d'information",to:"feedback_lesson"}]};
 }
 
 function askTeacher(text,viaVoice){
   if(!text||!text.trim()) return;
-  if(state.teacher==='login'){loginTeacher();return;}
+  if(handleGlobalCommand(text)) return;
   const chat=document.getElementById('chat-teacher');
+  if(state.teacher==='session_end'&&!sessionActive){startTeacherSession();return;}
   if(viaVoice) chat.appendChild(makeBubble({f:'user',voice:'« '+text+' »'}));
   else chat.appendChild(makeBubble({f:'user',x:text}));
   chat.scrollTop=chat.scrollHeight;
 
-  /* ---- saisie contextuelle selon l'écran ---- */
-  if(state.teacher==='exercise_lesson'){
-    const n=parseInt(text.replace(/\D/g,''),10);
-    if(n){exerciseLessonNum=n;const c=MATH_COURSES.find(x=>x.lecon===n);exerciseTheme=c?c.titre:"Leçon "+n;}
-    else exerciseLessonNum=16;
-    setTimeout(()=>{state.teacher='exercise_result';render('teacher');},400);return;
+  const scr=state.teacher;
+  const menuMatch=scr==='home'?matchMenuInput(text,FLOWS.teacher.screens.home.opts):null;
+  if(menuMatch){state.teacher=menuMatch.to;if(menuMatch.to==='session_end')endSession();else render('teacher');return;}
+
+  if(scr==='reg_welcome'){
+    const t=text.trim().toLowerCase();
+    if(/^oui|yes|1/.test(t)){state.teacher='reg_password';render('teacher');}
+    else if(/^non|no|2/.test(t)){state.teacher='reg_decline';render('teacher');}
+    else chat.appendChild(makeBubble({f:'bot',t:'ℹ️',x:'Répondez Oui ou Non pour vous inscrire.'}));
+    chat.scrollTop=chat.scrollHeight;return;
   }
-  if(state.teacher==='guide_prompt'||state.teacher==='guide_result'){
-    guideQuery=text;
-    const ans=guideAnswer(text);
-    const typing=makeBubble({f:'bot',x:'… ✍️'});chat.appendChild(typing);chat.scrollTop=chat.scrollHeight;
-    setTimeout(()=>{typing.remove();state.teacher='guide_result';render('teacher');},450);return;
+  if(scr==='reg_password'){
+    if(text.trim()===MOHEBS_PASSWORD){state.teacher='reg_name';render('teacher');}
+    else chat.appendChild(makeBubble({f:'bot',t:'❌ Mot de passe incorrect',x:'Réessayez ou contactez votre encadreur MOHEBS.'}));
+    chat.scrollTop=chat.scrollHeight;return;
   }
-  if(state.teacher==='learning_word'){
-    learnWord=text;
-    setTimeout(()=>{state.teacher='learning_translate';render('teacher');},400);return;
+  if(scr==='reg_name'){
+    pendingRegName=text.trim();userProfile.name=pendingRegName;state.teacher='reg_grade';render('teacher');return;
   }
-  if(state.teacher==='feedback_incident'){
-    feedbackText=text;
-    setTimeout(()=>{state.teacher='feedback_importance';render('teacher');},400);return;
+  if(scr==='guide_prompt'){processGuideRequest(text);return;}
+  if(scr==='guide_followup'||scr==='guide_result'){processGuideFollowup(text);return;}
+  if(scr==='learning_translate'){
+    feedbackData.lastTranslation=text;state.teacher='learning_translate_result';render('teacher');return;
   }
-  if(state.teacher==='feedback_name'){
-    feedbackName=text;
-    setTimeout(()=>{state.teacher='feedback_done';render('teacher');},400);return;
+  if(scr==='learning_video'){
+    feedbackData.videoResult=lookupVideo(text);state.teacher='learning_video_result';render('teacher');return;
+  }
+  if(scr==='feedback_lesson'){
+    const p=parseFeedbackLesson(text);
+    if(!p.valid){chat.appendChild(makeBubble({f:'bot',t:'ℹ️ Format attendu',x:'Indiquez matière, semaine (1–26) et jour (1–5).\nEx. : Mathématiques, semaine 4, jour 2'}));chat.scrollTop=chat.scrollHeight;return;}
+    feedbackData={subject:p.subject,week:p.week,day:p.day};state.teacher='feedback_problem';render('teacher');return;
+  }
+  if(scr==='feedback_description'){
+    feedbackData.description=text;state.teacher='feedback_done';render('teacher');return;
+  }
+  if(scr==='profile_name'){
+    userProfile.name=text.trim();saveProfile();state.teacher='home';render('teacher');
+    chat.appendChild(makeBubble({f:'bot',t:'✅ Profil mis à jour',x:'Nom : '+userProfile.name}));
+    chat.scrollTop=chat.scrollHeight;return;
   }
 
   const ans=answerTeacher(text);
@@ -1577,10 +1609,10 @@ function wireTeacherInput(){
   send.onclick=fire;
   tin.addEventListener('keydown',e=>{if(e.key==='Enter')fire();});
   const samples=[
-    "Comment expliquer la décomposition du nombre 6 ?",
-    "Donne-moi un exercice difficile sur l'addition",
-    "Quels élèves sont en difficulté ?",
-    "De quel matériel ai-je besoin pour la leçon ?"
+    "semaine 3, jour 1, lecture",
+    "école en wolof",
+    "Mathématiques, semaine 4, jour 2",
+    "vidéo addition en pulaar"
   ];
   let vi=0;
   mic.onclick=()=>{
@@ -1594,7 +1626,7 @@ function wireTeacherInput(){
   const homeBtn=document.getElementById('home-teacher');
   const endBtn=document.getElementById('end-teacher');
   if(homeBtn) homeBtn.onclick=()=>{state.teacher='home';render('teacher');};
-  if(endBtn) endBtn.onclick=()=>{state.teacher='endsession';render('teacher');};
+  if(endBtn) endBtn.onclick=()=>{endSession();};
 }
 
 /* ============================================================
@@ -1662,34 +1694,27 @@ function renderKG(){
 }
 
 /* init */
-['teacher','student'].forEach(f=>{
+loadProfile();
+['student'].forEach(f=>{
   state[f]=FLOWS[f].start;
   buildSteps(f);
   render(f);
 });
+buildSteps('teacher');
+startTeacherSession();
 wireTeacherInput();
 buildKGtabs();
 renderKG();
-
-/* Affiche les codes enseignant par défaut */
-(function(){
-  const box=document.getElementById('democodes');if(!box)return;
-  box.innerHTML=Object.keys(TEACHER_ACCOUNTS).map(c=>
-    '<div class="democode"><code>'+c+'</code><span class="who">'+TEACHER_ACCOUNTS[c]+'</span></div>'
-  ).join('');
-})();
 
 /* ============================================================
    TEACHER JOURNEY MAP  (onglet « Parcours »)
    ============================================================ */
 const TEACHER_JOURNEYS=[
-  {t:"🔑 Connexion & configuration", s:["Connexion (code)","Choix classes","Choix matières","Bienvenue","MENU"]},
-  {t:"✏️ Module Exercices", s:["MENU","Guide et enseignement","N° de leçon","Résultat","Autre exercice ?","Catégories"]},
-  {t:"📖 Module Guides/Leçon", s:["MENU","Guide et enseignement","Unité (Maths/Français)","Niveau","Question 💬","Résultat","Nouvelle recherche"]},
-  {t:"🌍 Module Traduction", s:["MENU","Groupes langues","Bienvenue","Traduire un mot ?","Mode FR↔Local","Langue","Saisie mot","Traduction"]},
-  {t:"📝 Module Retours", s:["MENU","Sujet du retour","Saisie incident","Importance","Ajouter info ?","Nom","Confirmation"]},
-  {t:"👤 Profil & session", s:["MENU","Modifier profil","Classes / matières","Fermer session"]},
-  {t:"💬 Question libre (partout)", s:["Tout écran","Texte / voix 🎤","Réponse contextuelle"]}
+  {t:"🔑 Inscription MOHEBS", s:["Bienvenue","Mot de passe","Nom","Niveau","Langue","MENU"]},
+  {t:"📚 Guides", s:["MENU","Demande (NL)","PDF + résumé","Question suivi","Nouveau guide"]},
+  {t:"🌍 Apprentissage continu", s:["MENU","Traduction / Vidéos","Résultat","Confirmation"]},
+  {t:"📝 Retours matériel", s:["MENU","Leçon (S/J)","Type problème","Description","Confirmation"]},
+  {t:"👤 Profil & session", s:["MENU","Modifier profil","fin / Terminer","Au revoir !"]}
 ];
 function renderJourneys(){
   const box=document.getElementById('journeys');if(!box)return;
@@ -1700,57 +1725,42 @@ function renderJourneys(){
 }
 
 const TZONE={
-  auth:{c:'#0284c7',l:'Connexion'}, cfg:{c:'#6366f1',l:'Configuration'},
-  hub:{c:'#7c3aed',l:'MENU (hub)'}, sub:{c:'#db2777',l:'Guide et enseignement'},
-  exo:{c:'#ec4899',l:'Exercices'}, guide:{c:'#ea580c',l:'Guides/Leçon'},
-  learn:{c:'#2563eb',l:'Traduction'}, feed:{c:'#16a34a',l:'Retours'},
-  prof:{c:'#0d9488',l:'Profil'}, session:{c:'#dc2626',l:'Session'}
+  reg:{c:'#0284c7',l:'Inscription'}, hub:{c:'#7c3aed',l:'MENU'},
+  guide:{c:'#ea580c',l:'Guides'}, learn:{c:'#2563eb',l:'Apprentissage'},
+  feed:{c:'#16a34a',l:'Retours'}, prof:{c:'#0d9488',l:'Profil'},
+  session:{c:'#dc2626',l:'Session'}
 };
 const TNODES=[
-  {id:'login',l:'🔑 Connexion',lay:0,z:'auth'},
-  {id:'onboarding',l:'🏫 Classes',lay:1,z:'cfg'},
-  {id:'subjectpick',l:'📕 Matières',lay:2,z:'cfg'},
-  {id:'welcome',l:'👋 Bienvenue',lay:3,z:'cfg'},
-  {id:'home',l:'📋 MENU',lay:4,z:'hub'},
-  {id:'submenu1',l:'📚 Guide et enseignement',lay:5,z:'sub'},
-  {id:'profile',l:'👤 Profil',lay:5,z:'prof'},
-  {id:'endsession',l:'🚪 Fermer session',lay:5,z:'session'},
-  {id:'exercise_lesson',l:'✏️ N° leçon',lay:6,z:'exo'},
-  {id:'exercise_result',l:'📝 Résultat exo',lay:7,z:'exo'},
-  {id:'exercise_cats',l:'📂 Catégories',lay:8,z:'exo'},
-  {id:'guide_units',l:'📖 Unité terrain',lay:6,z:'guide'},
-  {id:'guide_level',l:'📚 Niveau',lay:7,z:'guide'},
-  {id:'guide_prompt',l:'💬 Question',lay:8,z:'guide'},
-  {id:'guide_result',l:'📘 Résultat',lay:9,z:'guide'},
-  {id:'learning_groups',l:'🌍 Groupes langues',lay:6,z:'learn'},
-  {id:'learning_welcome',l:'👋 Bienvenue court',lay:7,z:'learn'},
-  {id:'learning_ask',l:'🔄 Traduire ?',lay:8,z:'learn'},
-  {id:'learning_mode',l:'↔️ Mode',lay:9,z:'learn'},
-  {id:'learning_lang',l:'🗣️ Langue',lay:10,z:'learn'},
-  {id:'learning_word',l:'⌨️ Saisie mot',lay:11,z:'learn'},
-  {id:'learning_translate',l:'🗣️ Traduction',lay:12,z:'learn'},
-  {id:'feedback_topic',l:'📝 Sujet retour',lay:6,z:'feed'},
-  {id:'feedback_incident',l:'✍️ Incident',lay:7,z:'feed'},
-  {id:'feedback_importance',l:'⚖️ Importance',lay:8,z:'feed'},
-  {id:'feedback_more',l:'➕ Plus d\'info ?',lay:9,z:'feed'},
-  {id:'feedback_name',l:'👤 Nom',lay:10,z:'feed'},
-  {id:'feedback_done',l:'✅ Enregistré',lay:11,z:'feed'}
+  {id:'reg_welcome',l:'👋 Inscription',lay:0,z:'reg'},
+  {id:'reg_password',l:'🔐 Mot de passe',lay:1,z:'reg'},
+  {id:'reg_name',l:'👤 Nom',lay:2,z:'reg'},
+  {id:'reg_grade',l:'🏫 Niveau',lay:3,z:'reg'},
+  {id:'reg_language',l:'🗣️ Langue',lay:4,z:'reg'},
+  {id:'home',l:'📋 MENU',lay:5,z:'hub'},
+  {id:'guide_prompt',l:'📚 Demande guide',lay:6,z:'guide'},
+  {id:'guide_result',l:'📎 PDF + résumé',lay:7,z:'guide'},
+  {id:'guide_followup',l:'💬 Suivi guide',lay:8,z:'guide'},
+  {id:'learning_menu',l:'🌍 Apprentissage',lay:6,z:'learn'},
+  {id:'learning_translate',l:'🔄 Traduction',lay:7,z:'learn'},
+  {id:'learning_video',l:'🎬 Vidéos',lay:7,z:'learn'},
+  {id:'feedback_lesson',l:'📝 Leçon',lay:6,z:'feed'},
+  {id:'feedback_problem',l:'⚠️ Type problème',lay:7,z:'feed'},
+  {id:'feedback_description',l:'✍️ Description',lay:8,z:'feed'},
+  {id:'feedback_done',l:'✅ Enregistré',lay:9,z:'feed'},
+  {id:'profile',l:'👤 Profil',lay:6,z:'prof'},
+  {id:'session_end',l:'👋 Au revoir',lay:6,z:'session'}
 ];
 const TEDGES=[
-  ['login','onboarding'],['onboarding','subjectpick'],['subjectpick','welcome'],['welcome','home'],
-  ['home','submenu1'],['home','learning_groups'],['home','feedback_topic'],['home','profile'],['home','endsession'],
-  ['submenu1','exercise_lesson'],['submenu1','guide_units'],
-  ['exercise_lesson','exercise_result'],['exercise_result','exercise_lesson'],['exercise_result','exercise_cats'],['exercise_cats','exercise_lesson'],
-  ['guide_units','guide_level'],['guide_level','guide_prompt'],['guide_prompt','guide_result'],['guide_result','guide_prompt'],
-  ['learning_groups','learning_welcome'],['learning_welcome','learning_ask'],['learning_ask','learning_mode'],['learning_ask','learning_welcome'],
-  ['learning_mode','learning_lang'],['learning_lang','learning_word'],['learning_word','learning_translate'],['learning_translate','learning_ask'],
-  ['feedback_topic','feedback_incident'],['feedback_incident','feedback_importance'],['feedback_importance','feedback_more'],
-  ['feedback_more','feedback_name'],['feedback_more','feedback_done'],['feedback_name','feedback_done'],
-  ['endsession','login'],
-  ['submenu1','home','b'],['exercise_lesson','home','b'],['exercise_result','home','b'],['exercise_cats','home','b'],
-  ['guide_units','home','b'],['guide_level','home','b'],['guide_prompt','home','b'],['guide_result','home','b'],
-  ['learning_groups','home','b'],['learning_welcome','home','b'],['learning_ask','home','b'],['learning_translate','home','b'],
-  ['feedback_topic','home','b'],['feedback_done','home','b'],['profile','home','b'],['endsession','home','b']
+  ['reg_welcome','reg_password'],['reg_welcome','reg_decline'],['reg_decline','reg_password'],
+  ['reg_password','reg_name'],['reg_name','reg_grade'],['reg_grade','reg_language'],['reg_language','home'],
+  ['home','guide_prompt'],['home','learning_menu'],['home','feedback_lesson'],['home','profile'],['home','session_end'],
+  ['guide_prompt','guide_result'],['guide_result','guide_followup'],['guide_followup','guide_prompt'],['guide_result','guide_prompt'],
+  ['learning_menu','learning_translate'],['learning_menu','learning_video'],['learning_translate','learning_translate_result'],
+  ['learning_video','learning_video_result'],
+  ['feedback_lesson','feedback_problem'],['feedback_problem','feedback_description'],['feedback_description','feedback_done'],
+  ['profile','profile_name'],['profile','profile_grade'],['profile','profile_language'],
+  ['guide_prompt','home','b'],['guide_result','home','b'],['guide_followup','home','b'],
+  ['learning_menu','home','b'],['learning_translate','home','b'],['feedback_lesson','home','b'],['feedback_done','home','b'],['profile','home','b']
 ];
 function renderTeacherMap(){
   const host=document.getElementById('teachermap');if(!host)return;
